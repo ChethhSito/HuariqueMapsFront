@@ -1,72 +1,74 @@
 /* apps/frontend/src/components/LandingPage.css */
 
 :root {
-  --peru-bg: #ffffff;
-  --peru-white: #2b3990;
-  --peru-text: #d25c5a;
-  --peru-text-dark: #d25c5a;
-  --peru-navbar-bg: rgba(43, 57, 144, 0.95);
-  --peru-border: rgba(43, 57, 144, 0.15);
-  --peru-border-btn: #fdd701;
-  --peru-red: #2b3990;
-  --peru-red-bright: #2b3990;
-  --peru-red-dark: #1c266b;
-  --peru-red-light: rgba(43, 57, 144, 0.1);
+  --peru-bg: #ede1d7;
+  --peru-white: #ffffff;
+  --peru-box-bg: #ede1d7;
+  --peru-text: #110906;
+  --peru-text-dark: #bd2d2d;
+  --peru-navbar-bg: rgba(237, 225, 215, 0.95);
+  --peru-border: #110906;
+  --peru-border-btn: #110906;
+  --peru-red: #bd2d2d;
+  --peru-red-bright: #bd2d2d;
+  --peru-red-dark: #8a1e1e;
+  --peru-red-light: rgba(189, 45, 45, 0.08);
   --font-title: 'Pacifico', cursive;
   --font-sans: 'Outfit', sans-serif;
 
   /* Button custom styles */
-  --btn-primary-bg: #2b3990;
-  --btn-primary-text: #fdd701;
+  --btn-primary-bg: #110906;
+  --btn-primary-text: #ede1d7;
   --btn-secondary-bg: transparent;
-  --btn-secondary-text: #d25c5a;
-  --btn-secondary-border: #d25c5a;
-  --btn-secondary-bg-hover: rgba(210, 92, 90, 0.08);
+  --btn-secondary-text: #110906;
+  --btn-secondary-border: #110906;
+  --btn-secondary-bg-hover: rgba(17, 9, 6, 0.08);
   
   /* Outline button join styles */
-  --btn-join-text: #fdd701;
-  --btn-join-border: #fdd701;
+  --btn-join-text: #110906;
+  --btn-join-border: #110906;
 
   /* Form input custom styles */
   --input-bg: #ffffff;
-  --input-text: #0f172a;
-  --input-border: rgba(0, 0, 0, 0.12);
-  --form-label-color: #fdd701;
+  --input-text: #110906;
+  --input-border: #110906;
+  --form-label-color: #bd2d2d;
   
   /* Card tags & details */
-  --tag-bg: #fdd701;
-  --tag-text: #2b3990;
-  --tag-border: #fdd701;
-  --card-footer-text: rgba(255, 255, 255, 0.8);
-  --card-title-color: #ffffff;
-  --card-desc-color: rgba(255, 255, 255, 0.85);
+  --tag-bg: #bd2d2d;
+  --tag-text: #ffffff;
+  --tag-border: #bd2d2d;
+  --card-footer-text: rgba(17, 9, 6, 0.7);
+  --card-title-color: #bd2d2d;
+  --card-desc-color: #110906;
 
   /* Navbar custom styles */
-  --navbar-text: #ffffff;
-  --navbar-text-hover: #fdd701;
+  --navbar-text: #110906;
+  --navbar-text-hover: #bd2d2d;
 
   /* Map variables */
-  --map-dashboard-bg: #ffffff;
-  --map-bg: #f8fafc;
-  --map-grid: rgba(0, 0, 0, 0.03);
-  --map-line: rgba(0, 0, 0, 0.015);
-  --map-border: rgba(0, 0, 0, 0.08);
+  --map-dashboard-bg: #ede1d7;
+  --map-bg: #e5d8cd;
+  --map-grid: rgba(17, 9, 6, 0.04);
+  --map-line: rgba(17, 9, 6, 0.02);
+  --map-border: #110906;
   --map-shadow: rgba(0, 0, 0, 0.06);
-  --map-header: #2b3990;
-  --map-header-text: #ffffff;
-  --map-sidebar: #ffffff;
-  --map-text: #475569;
-  --map-text-dark: #0f172a;
-  --map-overlay: rgba(255, 255, 255, 0.95);
-  --map-active-item: rgba(43, 57, 144, 0.08);
-  --map-accent: #2b3990;
-  --map-accent-bright: #fdd701;
+  --map-header: #110906;
+  --map-header-text: #ede1d7;
+  --map-sidebar: #ede1d7;
+  --map-text: #110906;
+  --map-text-dark: #bd2d2d;
+  --map-overlay: rgba(237, 225, 215, 0.95);
+  --map-active-item: rgba(189, 45, 45, 0.08);
+  --map-accent: #bd2d2d;
+  --map-accent-bright: #e53e3e;
 }
 
 /* Dark theme overrides */
 :root.dark-theme {
   --peru-bg: #0f1016;
   --peru-white: #16171d;
+  --peru-box-bg: #16171d;
   --peru-text: #94a3b8;
   --peru-text-dark: #f8fafc;
   --peru-border: rgba(255, 255, 255, 0.08);
@@ -744,7 +746,7 @@
 .suggestions-card {
   width: 100%;
   max-width: 540px;
-  background: var(--peru-white);
+  background: var(--peru-box-bg);
   border: 1.5px solid var(--peru-border);
   border-radius: 16px;
   padding: 40px;
