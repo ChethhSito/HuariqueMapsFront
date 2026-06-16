@@ -81,123 +81,127 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
     <div className="landing-container">
       {/* Navigation Bar */}
       <nav className="navbar">
-        <a href="#" className="nav-logo" onClick={() => { scrollToSection('inicio'); setIsMenuOpen(false); }}>
-          Huarique<span>Map</span>
-        </a>
-        
-        {/* Hamburger Toggle Button for mobile and tablets */}
-        <button 
-          className="btn-hamburger" 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle navigation menu"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            {isMenuOpen ? (
-              <>
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </>
-            ) : (
-              <>
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </>
-            )}
-          </svg>
-        </button>
-
-        {/* Desktop links */}
-        <div className="nav-links">
-          <span className="nav-link" onClick={() => scrollToSection('inicio')}>Inicio</span>
-          <span className="nav-link" onClick={() => scrollToSection('concepto')}>Identidad</span>
-          <span className="nav-link" onClick={() => scrollToSection('restaurantes')}>Restaurantes</span>
-          <span className="nav-link" onClick={() => scrollToSection('sugerencias')}>Sugerencias</span>
-        </div>
-
-        {/* Desktop auth */}
-        <div className="navbar-auth">
-          <button 
-            className="btn-theme-toggle" 
-            onClick={onToggleTheme} 
-            title={isDark ? 'Modo Claro' : 'Modo Oscuro'}
-          >
-            {isDark ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-              </svg>
-            )}
-          </button>
+        <div className="navbar-container">
+          <a href="#" className="nav-logo" onClick={() => { scrollToSection('inicio'); setIsMenuOpen(false); }}>
+            Huarique<span>Map</span>
+          </a>
           
-          <button className="btn-join" onClick={handleAuthAction}>
-            Únete
+          {/* Hamburger Toggle Button for mobile and tablets */}
+          <button 
+            className="btn-hamburger" 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              {isMenuOpen ? (
+                <>
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </>
+              ) : (
+                <>
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+                </>
+              )}
+            </svg>
           </button>
-          <button className="btn-nav-map" onClick={() => onNavigate('map')}>
-            Ver Mapa Interactivo
-          </button>
+
+          {/* Desktop links */}
+          <div className="nav-links">
+            <span className="nav-link" onClick={() => scrollToSection('inicio')}>Inicio</span>
+            <span className="nav-link" onClick={() => scrollToSection('concepto')}>Identidad</span>
+            <span className="nav-link" onClick={() => scrollToSection('restaurantes')}>Restaurantes</span>
+            <span className="nav-link" onClick={() => scrollToSection('sugerencias')}>Sugerencias</span>
+          </div>
+
+          {/* Desktop auth */}
+          <div className="navbar-auth">
+            <button 
+              className="btn-theme-toggle" 
+              onClick={onToggleTheme} 
+              title={isDark ? 'Modo Claro' : 'Modo Oscuro'}
+            >
+              {isDark ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                  <line x1="1" y1="12" x2="3" y2="12"></line>
+                  <line x1="21" y1="12" x2="23" y2="12"></line>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+              )}
+            </button>
+            
+            <button className="btn-join" onClick={handleAuthAction}>
+              Únete
+            </button>
+            <button className="btn-nav-map" onClick={() => onNavigate('map')}>
+              Ver Mapa Interactivo
+            </button>
+          </div>
         </div>
 
         {/* Mobile Dropdown Navigation Menu Drawer */}
         {isMenuOpen && (
           <div className="nav-menu-mobile">
-            <span className="nav-link-mobile" onClick={() => { scrollToSection('inicio'); setIsMenuOpen(false); }}>
-              Inicio
-            </span>
-            <span className="nav-link-mobile" onClick={() => { scrollToSection('concepto'); setIsMenuOpen(false); }}>
-              Identidad
-            </span>
-            <span className="nav-link-mobile" onClick={() => { scrollToSection('restaurantes'); setIsMenuOpen(false); }}>
-              Restaurantes
-            </span>
-            <span className="nav-link-mobile" onClick={() => { scrollToSection('sugerencias'); setIsMenuOpen(false); }}>
-              Sugerencias
-            </span>
-            <div className="navbar-auth-mobile">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0' }}>
-                <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--peru-text-dark)' }}>Tema</span>
-                <button 
-                  className="btn-theme-toggle" 
-                  onClick={onToggleTheme} 
-                  title={isDark ? 'Modo Claro' : 'Modo Oscuro'}
-                >
-                  {isDark ? (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="5"></circle>
-                      <line x1="12" y1="1" x2="12" y2="3"></line>
-                      <line x1="12" y1="21" x2="12" y2="23"></line>
-                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                      <line x1="1" y1="12" x2="3" y2="12"></line>
-                      <line x1="21" y1="12" x2="23" y2="12"></line>
-                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                  ) : (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                  )}
-                </button>
-              </div>
-              <div className="mobile-auth-buttons">
-              <button className="btn-join-2" onClick={() => { handleAuthAction(); setIsMenuOpen(false); }}>
-                Únete
-              </button>
-              <button className="btn-nav-map-2" onClick={() => { onNavigate('map'); setIsMenuOpen(false); }}>
-                Ver Mapa Interactivo
-              </button>
+            <div className="section-container" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <span className="nav-link-mobile" onClick={() => { scrollToSection('inicio'); setIsMenuOpen(false); }}>
+                Inicio
+              </span>
+              <span className="nav-link-mobile" onClick={() => { scrollToSection('concepto'); setIsMenuOpen(false); }}>
+                Identidad
+              </span>
+              <span className="nav-link-mobile" onClick={() => { scrollToSection('restaurantes'); setIsMenuOpen(false); }}>
+                Restaurantes
+              </span>
+              <span className="nav-link-mobile" onClick={() => { scrollToSection('sugerencias'); setIsMenuOpen(false); }}>
+                Sugerencias
+              </span>
+              <div className="navbar-auth-mobile">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0' }}>
+                  <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--peru-text-dark)' }}>Tema</span>
+                  <button 
+                    className="btn-theme-toggle" 
+                    onClick={onToggleTheme} 
+                    title={isDark ? 'Modo Claro' : 'Modo Oscuro'}
+                  >
+                    {isDark ? (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                      </svg>
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                <div className="mobile-auth-buttons">
+                  <button className="btn-join-2" onClick={() => { handleAuthAction(); setIsMenuOpen(false); }}>
+                    Únete
+                  </button>
+                  <button className="btn-nav-map-2" onClick={() => { onNavigate('map'); setIsMenuOpen(false); }}>
+                    Ver Mapa Interactivo
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -206,188 +210,198 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
 
       {/* Hero Section */}
       <section id="inicio" className="hero-section">
-        <div className="hero-content">
-          <span className="hero-tagline">Orgullo y Tradición Gastronómica</span>
-          <h1 className="hero-title">
-            Descubre el verdadero sabor peruano
-            <span className="hero-flag-phrase">
-              <span className="flag-red">unidos</span>{' '}
-              <span className="flag-white">por la</span>{' '}
-              <span className="flag-red">comida</span>
-            </span>
-          </h1>
-          <p className="hero-desc">
-            Encuentra y comparte los "Huariques" más emblemáticos de tu zona. 
-            Esos rincones ocultos cargados de historia, tradición, sazón y la pasión 
-            que une a todo el Perú en una sola mesa.
-          </p>
-          <div className="hero-actions">
-            <button className="btn-primary" onClick={() => onNavigate('map')}>
-              Explorar Mapa Interactivo
-            </button>
-            <button className="btn-secondary" onClick={() => scrollToSection('concepto')}>
-              Conocer el Proyecto
-            </button>
+        <div className="section-container hero-container-inner">
+          <div className="hero-content">
+            <span className="hero-tagline">Orgullo y Tradición Gastronómica</span>
+            <h1 className="hero-title">
+              Descubre el verdadero sabor peruano
+              <span className="hero-flag-phrase">
+                <span className="flag-red">unidos</span>{' '}
+                <span className="flag-white">por la</span>{' '}
+                <span className="flag-red">comida</span>
+              </span>
+            </h1>
+            <p className="hero-desc">
+              Encuentra y comparte los "Huariques" más emblemáticos de tu zona. 
+              Esos rincones ocultos cargados de historia, tradición, sazón y la pasión 
+              que une a todo el Perú en una sola mesa.
+            </p>
+            <div className="hero-actions">
+              <button className="btn-primary" onClick={() => onNavigate('map')}>
+                Explorar Mapa Interactivo
+              </button>
+              <button className="btn-secondary" onClick={() => scrollToSection('concepto')}>
+                Conocer el Proyecto
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="hero-image-wrapper">
-          <div className="hero-image-glow"></div>
-          <img 
-            src={heroImage} 
-            alt="Deliciosa comida peruana: Ceviche y Lomo Saltado" 
-            className="hero-image"
-          />
+          <div className="hero-image-wrapper">
+            <div className="hero-image-glow"></div>
+            <img 
+              src={heroImage} 
+              alt="Deliciosa comida peruana: Ceviche y Lomo Saltado" 
+              className="hero-image"
+            />
+          </div>
         </div>
       </section>
 
       {/* Concept / Identity Section (White Themed - Peruvian Flag concept) */}
       <section id="concepto" className="concept-section">
-        <span className="section-tag">Nuestra Identidad</span>
-        <h2 className="section-title">¿Qué nos une como Peruanos?</h2>
-        
-        <div className="concept-grid">
-          <div className="concept-card">
-            <h3 className="concept-card-title">El Concepto de "Huarique"</h3>
-            <p className="concept-card-desc">
-              Un huarique no es solo un restaurante; es un templo del sabor. Son lugares 
-              tradicionales, a menudo discretos y familiares, reconocidos de boca en boca por 
-              servir porciones generosas y una sazón inigualable.
-            </p>
-          </div>
+        <div className="section-container">
+          <span className="section-tag">Nuestra Identidad</span>
+          <h2 className="section-title">¿Qué nos une como Peruanos?</h2>
+          
+          <div className="concept-grid">
+            <div className="concept-card">
+              <h3 className="concept-card-title">El Concepto de "Huarique"</h3>
+              <p className="concept-card-desc">
+                Un huarique no es solo un restaurante; es un templo del sabor. Son lugares 
+                tradicionales, a menudo discretos y familiares, reconocidos de boca en boca por 
+                servir porciones generosas y una sazón inigualable.
+              </p>
+            </div>
 
-          <div className="concept-card">
-            <h3 className="concept-card-title">Identidad Patriótica</h3>
-            <p className="concept-card-desc">
-              La gastronomía es el hilo conductor de nuestra historia. Costa, Sierra y Selva 
-              se entrelazan a través de ingredientes autóctonos como el ají amarillo, el limón 
-              y el maíz, creando platos que representan nuestra bandera y orgullo.
-            </p>
-          </div>
+            <div className="concept-card">
+              <h3 className="concept-card-title">Identidad Patriótica</h3>
+              <p className="concept-card-desc">
+                La gastronomía es el hilo conductor de nuestra historia. Costa, Sierra y Selva 
+                se entrelazan a través de ingredientes autóctonos como el ají amarillo, el limón 
+                y el maíz, creando platos que representan nuestra bandera y orgullo.
+              </p>
+            </div>
 
-          <div className="concept-card">
-            <h3 className="concept-card-title">Comunidad y Cultura</h3>
-            <p className="concept-card-desc">
-              Este mapa interactivo está diseñado para registrar, valorar y mantener viva la 
-              cultura de la carretilla, el huarique marino y la picantería. Un espacio hecho 
-              por peruanos, para el mundo.
-            </p>
+            <div className="concept-card">
+              <h3 className="concept-card-title">Comunidad y Cultura</h3>
+              <p className="concept-card-desc">
+                Este mapa interactivo está diseñado para registrar, valorar y mantener viva la 
+                cultura de la carretilla, el huarique marino y la picantería. Un espacio hecho 
+                por peruanos, para el mundo.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Patriotic Banner */}
       <section className="patriotic-banner">
-        <h2 className="banner-title">La comida que nos une</h2>
-        <p className="banner-desc">
-          Desde un ceviche al paso en una carretilla hasta el lomo saltado más tradicional del centro histórico, 
-          cada huarique cuenta una historia de esfuerzo, unión y amor por nuestra tierra.
-        </p>
+        <div className="section-container">
+          <h2 className="banner-title">La comida que nos une</h2>
+          <p className="banner-desc">
+            Desde un ceviche al paso en una carretilla hasta el lomo saltado más tradicional del centro histórico, 
+            cada huarique cuenta una historia de esfuerzo, unión y amor por nuestra tierra.
+          </p>
+        </div>
       </section>
 
       {/* Popular Restaurants Section */}
       <section id="restaurantes" className="restaurants-section">
-        <span className="section-tag">Recomendaciones</span>
-        <h2 className="section-title">Restaurantes Populares</h2>
-        <p className="restaurants-section-desc">
-          Una selección de huariques tradicionales muy queridos por la comunidad. 
-          Explora su sabor único antes de ver su ubicación geoespacial en el mapa.
-        </p>
-        
-        <div className="restaurants-grid">
-          {popularRestaurants.map((res) => (
-            <div key={res.id} className="restaurant-card">
-              <div className="restaurant-img-wrapper">
-                <img src={res.imagen} alt={res.nombre} className="restaurant-img" />
-              </div>
-              <div className="restaurant-card-body">
-                <div className="restaurant-card-header">
-                  <h3 className="restaurant-card-title">{res.nombre}</h3>
-                  <span className="huarique-tag" style={{ margin: 0 }}>{res.tipoComida}</span>
+        <div className="section-container">
+          <span className="section-tag">Recomendaciones</span>
+          <h2 className="section-title">Restaurantes Populares</h2>
+          <p className="restaurants-section-desc">
+            Una selección de huariques tradicionales muy queridos por la comunidad. 
+            Explora su sabor único antes de ver su ubicación geoespacial en el mapa.
+          </p>
+          
+          <div className="restaurants-grid">
+            {popularRestaurants.map((res) => (
+              <div key={res.id} className="restaurant-card">
+                <div className="restaurant-img-wrapper">
+                  <img src={res.imagen} alt={res.nombre} className="restaurant-img" />
                 </div>
-                <p className="restaurant-card-desc">{res.descripcion}</p>
-                <div className="restaurant-card-footer">
-                  <span>Horario: {res.horario}</span>
-                  <span>Ubicación: {res.ubicacion}</span>
+                <div className="restaurant-card-body">
+                  <div className="restaurant-card-header">
+                    <h3 className="restaurant-card-title">{res.nombre}</h3>
+                    <span className="huarique-tag" style={{ margin: 0 }}>{res.tipoComida}</span>
+                  </div>
+                  <p className="restaurant-card-desc">{res.descripcion}</p>
+                  <div className="restaurant-card-footer">
+                    <span>Horario: {res.horario}</span>
+                    <span>Ubicación: {res.ubicacion}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Suggestions Box Section */}
       <section id="sugerencias" className="suggestions-section">
-        <span className="section-tag">Participa</span>
-        <h2 className="section-title">Buzón de Sugerencias</h2>
-        
-        <div className="suggestions-container-grid">
-          {/* Left Column: Image for suggestion box */}
-          <div className="suggestions-image-column">
-            <img 
-              src={characterImage} 
-              alt="Buzón de Sugerencias" 
-              className="suggestions-image"
-            />
-          </div>
+        <div className="section-container">
+          <span className="section-tag">Participa</span>
+          <h2 className="section-title">Buzón de Sugerencias</h2>
+          
+          <div className="suggestions-container-grid">
+            {/* Left Column: Image for suggestion box */}
+            <div className="suggestions-image-column">
+              <img 
+                src={characterImage} 
+                alt="Buzón de Sugerencias" 
+                className="suggestions-image"
+              />
+            </div>
 
-          {/* Right Column: Suggestions Card & Form */}
-          <div className="suggestions-form-column">
-            <div className="suggestions-card">
-              <h3 className="suggestions-title">Recomienda un Huarique</h3>
-              <p className="suggestions-desc">
-                ¿Conoces algún rincón culinario secreto que merezca estar en el mapa? 
-                Escríbenos y ayúdanos a expandir nuestra comunidad de sabor.
-              </p>
+            {/* Right Column: Suggestions Card & Form */}
+            <div className="suggestions-form-column">
+              <div className="suggestions-card">
+                <h3 className="suggestions-title">Recomienda un Huarique</h3>
+                <p className="suggestions-desc">
+                  ¿Conoces algún rincón culinario secreto que merezca estar en el mapa? 
+                  Escríbenos y ayúdanos a expandir nuestra comunidad de sabor.
+                </p>
 
-              {isSubmitted ? (
-                <div className="success-message">
-                  ¡Gracias por tu recomendación! Analizaremos el huarique sugerido para agregarlo pronto al mapa interactivo.
-                </div>
-              ) : (
-                <form onSubmit={handleSuggestionSubmit}>
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="nombre">Nombre Completo</label>
-                    <input 
-                      type="text" 
-                      id="nombre" 
-                      className="form-input" 
-                      value={nombre} 
-                      onChange={(e) => setNombre(e.target.value)} 
-                      required 
-                      placeholder="Ej. Juan Pérez"
-                    />
+                {isSubmitted ? (
+                  <div className="success-message">
+                    ¡Gracias por tu recomendación! Analizaremos el huarique sugerido para agregarlo pronto al mapa interactivo.
                   </div>
+                ) : (
+                  <form onSubmit={handleSuggestionSubmit}>
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="nombre">Nombre Completo</label>
+                      <input 
+                        type="text" 
+                        id="nombre" 
+                        className="form-input" 
+                        value={nombre} 
+                        onChange={(e) => setNombre(e.target.value)} 
+                        required 
+                        placeholder="Ej. Juan Pérez"
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="correo">Correo Electrónico</label>
-                    <input 
-                      type="email" 
-                      id="correo" 
-                      className="form-input" 
-                      value={correo} 
-                      onChange={(e) => setCorreo(e.target.value)} 
-                      required 
-                      placeholder="Ej. juan@correo.com"
-                    />
-                  </div>
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="correo">Correo Electrónico</label>
+                      <input 
+                        type="email" 
+                        id="correo" 
+                        className="form-input" 
+                        value={correo} 
+                        onChange={(e) => setCorreo(e.target.value)} 
+                        required 
+                        placeholder="Ej. juan@correo.com"
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="descripcion">Detalles del Huarique (Nombre, especialidad, dirección)</label>
-                    <textarea 
-                      id="descripcion" 
-                      className="form-textarea" 
-                      value={descripcion} 
-                      onChange={(e) => setDescripcion(e.target.value)} 
-                      required 
-                      placeholder="Ej. Cevichería El Primo en Surquillo, Jr. Dante 420. Recomiendo el ceviche de pota."
-                    ></textarea>
-                  </div>
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="descripcion">Detalles del Huarique (Nombre, especialidad, dirección)</label>
+                      <textarea 
+                        id="descripcion" 
+                        className="form-textarea" 
+                        value={descripcion} 
+                        onChange={(e) => setDescripcion(e.target.value)} 
+                        required 
+                        placeholder="Ej. Cevichería El Primo en Surquillo, Jr. Dante 420. Recomiendo el ceviche de pota."
+                      ></textarea>
+                    </div>
 
-                  <button type="submit" className="btn-submit">
-                    Enviar Sugerencia
-                  </button>
-                </form>
-              )}
+                    <button type="submit" className="btn-submit">
+                      Enviar Sugerencia
+                    </button>
+                  </form>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -395,59 +409,61 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
 
       {/* Improved 3-Column Footer */}
       <footer className="footer">
-        <div className="footer-grid">
-          {/* Left Column: Logo and Info */}
-          <div className="footer-col">
-            <a href="#" className="footer-logo" onClick={() => scrollToSection('inicio')}>
-              Huarique<span>Map</span>
-            </a>
-            <p className="footer-info-text">
-              Conectando a los amantes de la buena comida con los rincones culinarios más emblemáticos 
-              y tradicionales del Perú. Promovemos el turismo gastronómico local de forma gratuita.
-            </p>
-          </div>
+        <div className="section-container">
+          <div className="footer-grid">
+            {/* Left Column: Logo and Info */}
+            <div className="footer-col">
+              <a href="#" className="footer-logo" onClick={() => scrollToSection('inicio')}>
+                Huarique<span>Map</span>
+              </a>
+              <p className="footer-info-text">
+                Conectando a los amantes de la buena comida con los rincones culinarios más emblemáticos 
+                y tradicionales del Perú. Promovemos el turismo gastronómico local de forma gratuita.
+              </p>
+            </div>
 
-          {/* Middle Column: Site Map */}
-          <div className="footer-col">
-            <h3 className="footer-col-title">Mapa del Sitio</h3>
-            <ul className="footer-links">
-              <li>
-                <span className="footer-link-item" onClick={() => scrollToSection('inicio')}>
-                  Inicio
-                </span>
-              </li>
-              <li>
-                <span className="footer-link-item" onClick={() => scrollToSection('concepto')}>
-                  Nuestra historia
-                </span>
-              </li>
-              <li>
-                <span className="footer-link-item" onClick={() => scrollToSection('restaurantes')}>
-                  Te brindamos
-                </span>
-              </li>
-            </ul>
-          </div>
+            {/* Middle Column: Site Map */}
+            <div className="footer-col">
+              <h3 className="footer-col-title">Mapa del Sitio</h3>
+              <ul className="footer-links">
+                <li>
+                  <span className="footer-link-item" onClick={() => scrollToSection('inicio')}>
+                    Inicio
+                  </span>
+                </li>
+                <li>
+                  <span className="footer-link-item" onClick={() => scrollToSection('concepto')}>
+                    Nuestra historia
+                  </span>
+                </li>
+                <li>
+                  <span className="footer-link-item" onClick={() => scrollToSection('restaurantes')}>
+                    Te brindamos
+                  </span>
+                </li>
+              </ul>
+            </div>
 
-          {/* Right Column: Contact Details */}
-          <div className="footer-col">
-            <h3 className="footer-col-title">Contacto</h3>
-            <div className="footer-contact-info">
-              <div className="footer-contact-item">
-                <span className="footer-contact-label">Línea de Atención</span>
-                <span className="footer-contact-value">+51 999 888 777</span>
-              </div>
-              <div className="footer-contact-item">
-                <span className="footer-contact-label">Correo de Soporte</span>
-                <span className="footer-contact-value">contacto@huariquemap.pe</span>
+            {/* Right Column: Contact Details */}
+            <div className="footer-col">
+              <h3 className="footer-col-title">Contacto</h3>
+              <div className="footer-contact-info">
+                <div className="footer-contact-item">
+                  <span className="footer-contact-label">Línea de Atención</span>
+                  <span className="footer-contact-value">+51 999 888 777</span>
+                </div>
+                <div className="footer-contact-item">
+                  <span className="footer-contact-label">Correo de Soporte</span>
+                  <span className="footer-contact-value">contacto@huariquemap.pe</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Footer Bottom copyright */}
-        <div className="footer-bottom">
-          <p>© 2026 HuariqueMap. Creado con orgullo en Perú. Todos los derechos reservados.</p>
+          {/* Footer Bottom copyright */}
+          <div className="footer-bottom">
+            <p>© 2026 HuariqueMap. Creado con orgullo en Perú. Todos los derechos reservados.</p>
+          </div>
         </div>
       </footer>
     </div>
