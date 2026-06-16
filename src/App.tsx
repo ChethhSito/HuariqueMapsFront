@@ -17,7 +17,7 @@ function App() {
       {currentView === 'landing' ? (
         <LandingPage onNavigate={navigateTo} />
       ) : (
-        <div style={{ background: '#0b0f19', minHeight: '100vh', padding: '40px 8%' }}>
+        <div style={{ background: '#0b0f19', minHeight: '100vh', padding: '20px 3%' }}>
           <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
             <button 
               onClick={() => navigateTo('landing')}

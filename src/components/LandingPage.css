@@ -210,13 +210,7 @@
   transform: translateY(-8px) rotate(1deg);
 }
 
-/* Concept Section */
-.concept-section {
-  padding: 100px 8%;
-  background: #0b0c10;
-  border-top: 1px solid rgba(255, 255, 255, 0.03);
-  text-align: center;
-}
+
 
 .section-tag {
   color: var(--peru-red-bright);
@@ -242,12 +236,30 @@
   flex-wrap: wrap;
 }
 
+.concept-section {
+  padding: 100px 8%;
+  background: #ffffff;
+  text-align: center;
+  color: #1e293b;
+}
+
+.concept-section .section-title {
+  color: #0f172a;
+}
+
+.concept-grid {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .concept-card {
   flex: 1;
   min-width: 280px;
   max-width: 360px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #f8fafc;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 16px;
   padding: 35px 25px;
   transition: all 0.3s;
@@ -256,27 +268,21 @@
 
 .concept-card:hover {
   transform: translateY(-10px);
-  background: rgba(200, 39, 47, 0.03);
-  border-color: rgba(200, 39, 47, 0.2);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-}
-
-.concept-icon {
-  font-size: 36px;
-  margin-bottom: 20px;
-  display: inline-block;
+  background: rgba(200, 39, 47, 0.04);
+  border-color: rgba(200, 39, 47, 0.3);
+  box-shadow: 0 15px 30px rgba(200, 39, 47, 0.1);
 }
 
 .concept-card-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--peru-white);
+  color: #0f172a;
   margin: 0 0 12px 0;
 }
 
 .concept-card-desc {
   font-size: 15px;
-  color: #94a3b8;
+  color: #475569;
   line-height: 1.6;
   margin: 0;
 }

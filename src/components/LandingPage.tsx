@@ -50,7 +50,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
       {/* Navigation Bar */}
       <nav className="navbar">
         <a href="#" className="nav-logo" onClick={() => scrollToSection('inicio')}>
-          🇵🇪 Huarique<span>Map</span>
+          Huarique<span>Map</span>
         </a>
         <div className="nav-links">
           <span className="nav-link" onClick={() => scrollToSection('inicio')}>Inicio</span>
@@ -101,7 +101,6 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
         
         <div className="concept-grid">
           <div className="concept-card">
-            <span className="concept-icon">🍲</span>
             <h3 className="concept-card-title">El Concepto de "Huarique"</h3>
             <p className="concept-card-desc">
               Un huarique no es solo un restaurante; es un templo del sabor. Son lugares 
@@ -111,7 +110,6 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
           </div>
 
           <div className="concept-card">
-            <span className="concept-icon">❤️</span>
             <h3 className="concept-card-title">Identidad Patriótica</h3>
             <p className="concept-card-desc">
               La gastronomía es el hilo conductor de nuestra historia. Costa, Sierra y Selva 
@@ -121,7 +119,6 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
           </div>
 
           <div className="concept-card">
-            <span className="concept-icon">🤝</span>
             <h3 className="concept-card-title">Comunidad y Cultura</h3>
             <p className="concept-card-desc">
               Este mapa interactivo está diseñado para registrar, valorar y mantener viva la 
@@ -163,8 +160,8 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
                 </div>
                 <p className="restaurant-card-desc">{res.descripcion}</p>
                 <div className="restaurant-card-footer">
-                  <span>⏰ {res.horario}</span>
-                  <span>📍 {res.ubicacion}</span>
+                  <span>Horario: {res.horario}</span>
+                  <span>Ubicación: {res.ubicacion}</span>
                 </div>
               </div>
             </div>
@@ -174,8 +171,8 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
 
       {/* Footer */}
       <footer className="footer">
-        <p>© 2026 HuariqueMap. Creado con orgullo en Perú 🇵🇪</p>
-        <p>Hecho para celebrar nuestra diversidad gastronómica y conectar sabores <span>❤</span></p>
+        <p>© 2026 HuariqueMap. Creado con orgullo en Perú</p>
+        <p>Hecho para celebrar nuestra diversidad gastronómica y conectar sabores</p>
       </footer>
     </div>
   );

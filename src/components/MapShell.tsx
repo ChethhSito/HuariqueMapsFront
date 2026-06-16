@@ -85,7 +85,6 @@ export default function MapShell() {
       {/* Header */}
       <header className="dashboard-header">
         <div className="brand">
-          <span className="logo-icon">📍</span>
           <h1 className="brand-title">HuariqueMap Explorer</h1>
         </div>
         <div className="status-badge">
@@ -105,7 +104,7 @@ export default function MapShell() {
           
           {!loading && error && (
             <div className="no-data-msg" style={{ color: '#f87171' }}>
-              ⚠️ {error}
+              Error: {error}
               <br />
               <small style={{ display: 'block', marginTop: '8px', color: '#94a3b8' }}>
                 Asegúrate de que el backend de NestJS esté corriendo en el puerto 3000.
@@ -128,7 +127,7 @@ export default function MapShell() {
                 <span className="huarique-tag">{h.tipoComida}</span>
                 <p className="huarique-desc">{h.descripcion}</p>
                 <div className="huarique-meta">
-                  <span>⏰ {h.horario || 'No especificado'}</span>
+                  <span>Horario: {h.horario || 'No especificado'}</span>
                 </div>
               </li>
             ))}
