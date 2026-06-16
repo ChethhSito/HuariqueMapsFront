@@ -648,7 +648,9 @@
 }
 
 .restaurant-card {
-  width: 360px;
+  flex: 1;
+  min-width: 280px;
+  max-width: 360px;
   background: var(--peru-white);
   border: 1.5px solid var(--peru-border);
   border-radius: 16px;
@@ -992,8 +994,8 @@
    Media Queries: Tablets and Mobile Devices
    ========================================================================== */
 
-/* Tablets & Small Desktops (Less than 1024px) */
-@media (max-width: 1024px) {
+/* Tablets & Small Desktops (Less than 1200px) */
+@media (max-width: 1200px) {
   .section-container,
   .navbar-container {
     width: 80%;
@@ -1026,6 +1028,18 @@
 
   .restaurants-section {
     padding: 80px 0;
+  }
+}
+
+/* Tablets & Laptops (Less than 1024px) */
+@media (max-width: 1024px) {
+  .suggestions-container-grid {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .suggestions-card {
+    padding: 24px 20px;
   }
 }
 
@@ -1128,13 +1142,8 @@
 
 /* Mobiles (Less than 480px) */
 @media (max-width: 480px) {
-  .section-container,
-  .navbar-container {
-    width: 92%;
-  }
-
   .navbar {
-    padding: 12px 0;
+    padding: 12px 4%;
   }
 
   .navbar-auth {
@@ -1172,7 +1181,7 @@
   }
 
   .restaurants-section {
-    padding: 60px 0;
+    padding: 60px 4%;
   }
 
   .restaurant-card {
@@ -1180,7 +1189,7 @@
   }
 
   .suggestions-section {
-    padding: 60px 0;
+    padding: 60px 4%;
   }
 
   .suggestions-title {
@@ -1188,6 +1197,6 @@
   }
 
   .footer {
-    padding: 40px 0 20px 0;
+    padding: 40px 4% 20px 4%;
   }
 }
