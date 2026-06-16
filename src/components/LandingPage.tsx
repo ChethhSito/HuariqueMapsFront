@@ -210,7 +210,11 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
           <span className="hero-tagline">Orgullo y Tradición Gastronómica</span>
           <h1 className="hero-title">
             Descubre el verdadero sabor peruano
-            <span>unidos por la comida</span>
+            <span className="hero-flag-phrase">
+              <span className="flag-red">unidos</span>{' '}
+              <span className="flag-white">por la</span>{' '}
+              <span className="flag-red">comida</span>
+            </span>
           </h1>
           <p className="hero-desc">
             Encuentra y comparte los "Huariques" más emblemáticos de tu zona. 

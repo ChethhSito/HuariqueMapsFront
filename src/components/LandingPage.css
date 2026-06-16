@@ -6,6 +6,11 @@
   --peru-box-bg: #ede1d7;
   --peru-text: #110906;
   --peru-text-dark: #bd2d2d;
+  
+  /* Flag colors */
+  --flag-red: #bd2d2d;
+  --flag-white: #ffffff;
+  --flag-outline: #110906;
   --peru-navbar-bg: rgba(237, 225, 215, 0.95);
   --peru-border: #110906;
   --peru-border-btn: #110906;
@@ -78,6 +83,11 @@
   --peru-red: #c8272f;
   --peru-red-bright: #d42932;
   --peru-red-dark: #8c161b;
+  
+  /* Flag colors */
+  --flag-red: #d42932;
+  --flag-white: #ffffff;
+  --flag-outline: #0f1016;
   
   /* Button custom styles */
   --btn-primary-bg: linear-gradient(135deg, #c8272f 0%, #d42932 100%);
@@ -396,14 +406,27 @@
   color: var(--peru-text-dark);
 }
 
-.hero-title span {
+.hero-flag-phrase {
   font-family: var(--font-title);
-  color: var(--peru-red-bright);
   font-weight: 400;
   display: block;
   font-size: 68px;
   margin-top: 10px;
-  text-shadow: 0 2px 10px rgba(200, 39, 47, 0.15);
+}
+
+.flag-red {
+  color: var(--flag-red);
+  text-shadow: 0 2px 10px rgba(189, 45, 45, 0.2);
+}
+
+.flag-white {
+  color: var(--flag-white);
+  text-shadow: 
+    -1.5px -1.5px 0 var(--flag-outline),  
+     1.5px -1.5px 0 var(--flag-outline),
+    -1.5px  1.5px 0 var(--flag-outline),
+     1.5px  1.5px 0 var(--flag-outline),
+     0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .hero-desc {
@@ -490,7 +513,7 @@
 /* Concept Section (White background) */
 .concept-section {
   padding: 100px 5%;
-  background: var(--peru-bg);
+  background: var(--peru-white);
   text-align: center;
   color: var(--peru-text);
   box-sizing: border-box;
@@ -525,8 +548,7 @@
   flex: 1;
   min-width: 280px;
   max-width: 360px;
-  background: var(--peru-white);
-  border: 1px solid var(--peru-border);
+  
   border-radius: 16px;
   padding: 35px 25px;
   transition: all 0.3s;
@@ -724,16 +746,16 @@
   width: 100%;
   max-width: 480px;
   height: auto;
-  border-radius: 16px;
+  
   object-fit: cover;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid var(--peru-border);
+  
 }
 
 .suggestions-image:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  
 }
 
 .suggestions-form-column {
