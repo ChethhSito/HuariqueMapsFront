@@ -17,6 +17,7 @@
   width: 100%;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  box-sizing: border-box;
 }
 
 /* Navbar */
@@ -24,13 +25,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 8%;
-  background: rgba(15, 16, 22, 0.8);
+  padding: 20px 5%;
+  background: rgba(15, 16, 22, 0.85);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 100;
   border-bottom: 1px solid rgba(200, 39, 47, 0.15);
+  box-sizing: border-box;
 }
 
 .nav-logo {
@@ -49,7 +52,7 @@
 
 .nav-links {
   display: flex;
-  gap: 30px;
+  gap: 24px;
 }
 
 .nav-link {
@@ -64,6 +67,31 @@
   color: var(--peru-red-bright);
 }
 
+.navbar-auth {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Join button */
+.btn-join {
+  background: transparent;
+  color: var(--peru-white);
+  border: 1.5px solid var(--peru-red-bright);
+  padding: 8px 20px;
+  border-radius: 9999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+
+.btn-join:hover {
+  background: var(--peru-red-bright);
+  box-shadow: 0 0 15px rgba(212, 41, 50, 0.4);
+}
+
 .btn-nav-map {
   background: linear-gradient(135deg, var(--peru-red) 0%, var(--peru-red-bright) 100%);
   color: var(--peru-white);
@@ -72,13 +100,15 @@
   font-weight: 600;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(200, 39, 47, 0.4);
+  box-shadow: 0 4px 15px rgba(200, 39, 47, 0.3);
   transition: transform 0.2s, box-shadow 0.2s;
+  font-family: var(--font-sans);
+  font-size: 14px;
 }
 
 .btn-nav-map:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 39, 47, 0.6);
+  box-shadow: 0 6px 20px rgba(200, 39, 47, 0.5);
 }
 
 /* Hero Section */
@@ -86,11 +116,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 80px 8%;
-  min-height: 85vh;
+  padding: 80px 5%;
+  min-height: 80vh;
   position: relative;
   background: radial-gradient(circle at 10% 20%, rgba(200, 39, 47, 0.12) 0%, transparent 60%);
-  gap: 40px;
+  gap: 60px;
+  box-sizing: border-box;
 }
 
 .hero-content {
@@ -100,12 +131,12 @@
 
 .hero-tagline {
   display: inline-block;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--peru-red-bright);
-  background: rgba(200, 39, 47, 0.1);
+  background: rgba(200, 39, 47, 0.15);
   padding: 6px 16px;
   border-radius: 9999px;
   margin-bottom: 20px;
@@ -113,7 +144,7 @@
 }
 
 .hero-title {
-  font-size: 64px;
+  font-size: 60px;
   font-weight: 800;
   line-height: 1.1;
   margin: 0 0 20px 0;
@@ -125,7 +156,7 @@
   color: var(--peru-red-bright);
   font-weight: 400;
   display: block;
-  font-size: 72px;
+  font-size: 68px;
   margin-top: 10px;
   text-shadow: 0 0 15px rgba(200, 39, 47, 0.3);
 }
@@ -135,7 +166,7 @@
   color: #94a3b8;
   line-height: 1.6;
   margin-bottom: 35px;
-  max-width: 540px;
+  max-width: 580px;
 }
 
 .hero-actions {
@@ -189,7 +220,7 @@
   position: absolute;
   width: 110%;
   height: 110%;
-  background: radial-gradient(circle, rgba(200, 39, 47, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(200, 39, 47, 0.2) 0%, transparent 70%);
   top: -5%;
   left: -5%;
   z-index: 1;
@@ -210,37 +241,30 @@
   transform: translateY(-8px) rotate(1deg);
 }
 
-
+/* Concept Section (White background) */
+.concept-section {
+  padding: 100px 5%;
+  background: #ffffff;
+  text-align: center;
+  color: #1e293b;
+  box-sizing: border-box;
+}
 
 .section-tag {
   color: var(--peru-red-bright);
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 13px;
   margin-bottom: 10px;
   display: block;
 }
 
 .section-title {
-  font-size: 42px;
+  font-size: 40px;
   font-weight: 800;
   margin: 0 0 50px 0;
   color: var(--peru-white);
-}
-
-.concept-grid {
-  display: flex;
-  gap: 30px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.concept-section {
-  padding: 100px 8%;
-  background: #ffffff;
-  text-align: center;
-  color: #1e293b;
 }
 
 .concept-section .section-title {
@@ -270,7 +294,7 @@
   transform: translateY(-10px);
   background: rgba(200, 39, 47, 0.04);
   border-color: rgba(200, 39, 47, 0.3);
-  box-shadow: 0 15px 30px rgba(200, 39, 47, 0.1);
+  box-shadow: 0 15px 30px rgba(200, 39, 47, 0.15);
 }
 
 .concept-card-title {
@@ -287,11 +311,38 @@
   margin: 0;
 }
 
+/* Patriotic banner */
+.patriotic-banner {
+  background: linear-gradient(90deg, var(--peru-red-dark) 0%, var(--peru-red) 50%, var(--peru-red-dark) 100%);
+  padding: 60px 5%;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+}
+
+.banner-title {
+  font-family: var(--font-title);
+  font-size: 38px;
+  color: var(--peru-white);
+  margin: 0 0 10px 0;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.banner-desc {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 780px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
 /* Restaurants Section Container */
 .restaurants-section {
-  padding: 80px 8%;
+  padding: 100px 5%;
   background: #0f1016;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .restaurants-section .section-title {
@@ -370,6 +421,17 @@
   margin: 0;
 }
 
+.huarique-tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(200, 39, 47, 0.15);
+  color: #f87171;
+  font-weight: 600;
+  border: 1px solid rgba(200, 39, 47, 0.3);
+}
+
 .restaurant-card-desc {
   font-size: 14px;
   color: #94a3b8;
@@ -387,84 +449,13 @@
   color: #64748b;
 }
 
-.restaurant-card-footer span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* Patriotic banner */
-.patriotic-banner {
-  background: linear-gradient(90deg, var(--peru-red-dark) 0%, var(--peru-red) 50%, var(--peru-red-dark) 100%);
-  padding: 60px 8%;
-  text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.banner-title {
-  font-family: var(--font-title);
-  font-size: 38px;
-  color: var(--peru-white);
-  margin: 0 0 10px 0;
-  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.banner-desc {
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.5;
-}
-
-/* Auth Buttons in Navbar */
-.navbar-auth {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-
-.btn-login {
-  background: transparent;
-  color: var(--peru-white);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 8px 18px;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-family: var(--font-sans);
-}
-
-.btn-login:hover {
-  border-color: var(--peru-white);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.btn-register {
-  background: var(--peru-white);
-  color: #0f1016;
-  border: 1px solid var(--peru-white);
-  padding: 8px 18px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-family: var(--font-sans);
-}
-
-.btn-register:hover {
-  background: transparent;
-  color: var(--peru-white);
-}
-
 /* Suggestions Box Section */
 .suggestions-section {
-  padding: 80px 8%;
+  padding: 100px 5%;
   background: #0b0c10;
   text-align: center;
   border-top: 1px solid rgba(255, 255, 255, 0.03);
+  box-sizing: border-box;
 }
 
 .suggestions-card {
@@ -476,6 +467,7 @@
   padding: 40px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
   text-align: left;
+  box-sizing: border-box;
 }
 
 .suggestions-title {
@@ -567,9 +559,10 @@
 .footer {
   background: #07080b;
   border-top: 1px solid rgba(200, 39, 47, 0.15);
-  padding: 60px 8% 30px 8%;
+  padding: 60px 5% 30px 5%;
   color: #94a3b8;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 .footer-grid {
@@ -667,34 +660,175 @@
   color: #475569;
 }
 
-@media (max-width: 968px) {
+/* ==========================================================================
+   Media Queries: Tablets and Mobile Devices
+   ========================================================================== */
+
+/* Tablets & Small Desktops (Less than 1024px) */
+@media (max-width: 1024px) {
   .hero-section {
-    flex-direction: column;
-    padding: 60px 6%;
-    text-align: center;
+    padding: 60px 5%;
+    gap: 40px;
   }
-  
+
+  .hero-title {
+    font-size: 46px;
+  }
+
+  .hero-title span {
+    font-size: 52px;
+  }
+
+  .hero-desc {
+    font-size: 16px;
+  }
+
+  .concept-section {
+    padding: 80px 5%;
+  }
+
+  .section-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+  }
+
+  .restaurants-section {
+    padding: 80px 5%;
+  }
+}
+
+/* Tablets (Less than 768px) */
+@media (max-width: 768px) {
+  /* Navbar adjustments */
+  .navbar {
+    padding: 15px 4%;
+  }
+
+  .nav-logo {
+    font-size: 22px;
+  }
+
+  .nav-links {
+    display: none; /* Hide link lists on mobile to save space */
+  }
+
+  /* Hero Section Stack */
+  .hero-section {
+    flex-direction: column-reverse;
+    padding: 40px 4%;
+    text-align: center;
+    gap: 30px;
+  }
+
   .hero-content {
     text-align: center;
   }
-  
+
   .hero-desc {
-    margin: 0 auto 30px auto;
+    margin-left: auto;
+    margin-right: auto;
   }
-  
+
   .hero-actions {
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
   }
-  
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    padding: 12px 24px;
+    font-size: 15px;
+  }
+
+  .hero-image {
+    max-width: 320px;
+  }
+
+  /* concept card flex */
+  .concept-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .concept-card {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* suggestions card */
+  .suggestions-card {
+    padding: 24px 20px;
+  }
+
+  /* Footer layout change */
+  .footer-grid {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .footer-col {
+    min-width: 100%;
+  }
+}
+
+/* Mobiles (Less than 480px) */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px 4%;
+  }
+
+  .navbar-auth {
+    gap: 8px;
+  }
+
+  .btn-join, .btn-nav-map {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
   .hero-title {
-    font-size: 48px;
+    font-size: 34px;
   }
-  
+
   .hero-title span {
-    font-size: 56px;
+    font-size: 38px;
   }
-  
-  .nav-links {
-    display: none; /* simple responsive fallback */
+
+  .hero-desc {
+    font-size: 14px;
+  }
+
+  .section-title {
+    font-size: 26px;
+    margin-bottom: 30px;
+  }
+
+  .banner-title {
+    font-size: 28px;
+  }
+
+  .banner-desc {
+    font-size: 15px;
+  }
+
+  .restaurants-section {
+    padding: 60px 4%;
+  }
+
+  .restaurant-card {
+    width: 100%;
+  }
+
+  .suggestions-section {
+    padding: 60px 4%;
+  }
+
+  .suggestions-title {
+    font-size: 20px;
+  }
+
+  .footer {
+    padding: 40px 4% 20px 4%;
   }
 }

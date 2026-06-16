@@ -25,11 +25,9 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
   const handleSuggestionSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (nombre && correo && descripcion) {
-      // Simular el envío al backend
       console.log('Sugerencia enviada:', { nombre, correo, descripcion });
       setIsSubmitted(true);
       
-      // Limpiar formulario después de unos segundos
       setTimeout(() => {
         setNombre('');
         setCorreo('');
@@ -39,8 +37,8 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
     }
   };
 
-  const handleAuthAction = (action: 'login' | 'register') => {
-    alert(`Funcionalidad de ${action === 'login' ? 'Inicio de Sesión' : 'Registro'} simulada para el cascarón de desarrollo.`);
+  const handleAuthAction = () => {
+    alert('Funcionalidad de registro e inicio de sesión simulada con el botón Únete.');
   };
 
   const popularRestaurants = [
@@ -87,11 +85,8 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
           <span className="nav-link" onClick={() => scrollToSection('sugerencias')}>Sugerencias</span>
         </div>
         <div className="navbar-auth">
-          <button className="btn-login" onClick={() => handleAuthAction('login')}>
-            Iniciar Sesión
-          </button>
-          <button className="btn-register" onClick={() => handleAuthAction('register')}>
-            Registrarse
+          <button className="btn-join" onClick={handleAuthAction}>
+            Únete
           </button>
           <button className="btn-nav-map" onClick={() => onNavigate('map')}>
             Ver Mapa Interactivo
