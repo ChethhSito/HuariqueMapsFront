@@ -2,6 +2,7 @@ import { useState } from 'react';
 import heroImage from '../assets/peruvian_cuisine_hero.png';
 import cevicheImage from '../assets/ceviche_carretilla.png';
 import anticuchosImage from '../assets/anticuchos_lima.png';
+import characterImage from '../assets/character.png';
 import './LandingPage.css';
 
 interface LandingPageProps {
@@ -316,11 +317,13 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
         <h2 className="section-title">Buzón de Sugerencias</h2>
         
         <div className="suggestions-container-grid">
-          {/* Left Column: Styled placeholder for future image */}
+          {/* Left Column: Image for suggestion box */}
           <div className="suggestions-image-column">
-            <div className="suggestions-image-placeholder">
-              <span>Espacio para imagen personalizada</span>
-            </div>
+            <img 
+              src={characterImage} 
+              alt="Buzón de Sugerencias" 
+              className="suggestions-image"
+            />
           </div>
 
           {/* Right Column: Suggestions Card & Form */}
