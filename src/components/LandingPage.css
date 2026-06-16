@@ -1,31 +1,56 @@
 /* apps/frontend/src/components/LandingPage.css */
 
 :root {
-  --peru-red: #c8272f;
-  --peru-red-bright: #d42932;
-  --peru-red-dark: #8c161b;
-  --peru-red-light: #fff1f2;
-  --peru-white: #ffffff;
-  --peru-bg: #f8fafc;
-  --peru-text: #475569;
-  --peru-text-dark: #0f172a;
-  --peru-border: rgba(200, 39, 47, 0.1);
-  --peru-border-btn: rgba(0, 0, 0, 0.12);
-  --peru-navbar-bg: rgba(255, 255, 255, 0.9);
+  --peru-bg: #d25c5a;
+  --peru-white: #2b3990;
+  --peru-text: #ffffff;
+  --peru-text-dark: #ffffff;
+  --peru-navbar-bg: rgba(43, 57, 144, 0.95);
+  --peru-border: rgba(255, 255, 255, 0.15);
+  --peru-border-btn: #fdd701;
+  --peru-red: #2b3990;
+  --peru-red-bright: #fdd701;
+  --peru-red-dark: #1c266b;
+  --peru-red-light: rgba(253, 215, 1, 0.12);
   --font-title: 'Pacifico', cursive;
   --font-sans: 'Outfit', sans-serif;
+
+  /* Button custom styles */
+  --btn-primary-bg: #2b3990;
+  --btn-primary-text: #fdd701;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: #ffffff;
+  --btn-secondary-border: rgba(255, 255, 255, 0.5);
+  --btn-secondary-bg-hover: rgba(255, 255, 255, 0.1);
   
+  /* Form input custom styles */
+  --input-bg: #ffffff;
+  --input-text: #0f172a;
+  --input-border: rgba(0, 0, 0, 0.12);
+  --form-label-color: #fdd701;
+  
+  /* Card tags & details */
+  --tag-bg: #fdd701;
+  --tag-text: #2b3990;
+  --tag-border: #fdd701;
+  --card-footer-text: rgba(255, 255, 255, 0.8);
+
   /* Map variables */
-  --map-bg: #f1f5f9;
+  --map-dashboard-bg: #ffffff;
+  --map-bg: #f8fafc;
   --map-grid: rgba(0, 0, 0, 0.03);
   --map-line: rgba(0, 0, 0, 0.015);
   --map-border: rgba(0, 0, 0, 0.08);
   --map-shadow: rgba(0, 0, 0, 0.06);
-  --map-header: #fff1f2;
-  --map-sidebar: #f8fafc;
-  --map-text: #334155;
+  --map-header: #2b3990;
+  --map-header-text: #ffffff;
+  --map-sidebar: #ffffff;
+  --map-text: #475569;
   --map-text-dark: #0f172a;
   --map-overlay: rgba(255, 255, 255, 0.95);
+  --map-active-item: rgba(43, 57, 144, 0.08);
+  --map-accent: #2b3990;
+  --map-accent-bright: #fdd701;
 }
 
 /* Dark theme overrides */
@@ -38,18 +63,46 @@
   --peru-border-btn: rgba(255, 255, 255, 0.2);
   --peru-navbar-bg: rgba(15, 16, 22, 0.85);
   --peru-red-light: rgba(200, 39, 47, 0.15);
+  --peru-red: #c8272f;
+  --peru-red-bright: #d42932;
+  --peru-red-dark: #8c161b;
+  
+  /* Button custom styles */
+  --btn-primary-bg: linear-gradient(135deg, #c8272f 0%, #d42932 100%);
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: #f8fafc;
+  --btn-secondary-border: rgba(255, 255, 255, 0.2);
+  --btn-secondary-bg-hover: rgba(255, 255, 255, 0.05);
+  
+  /* Form input custom styles */
+  --input-bg: #16171d;
+  --input-text: #f8fafc;
+  --input-border: rgba(255, 255, 255, 0.08);
+  --form-label-color: #94a3b8;
+  
+  /* Card tags & details */
+  --tag-bg: rgba(200, 39, 47, 0.15);
+  --tag-text: #d42932;
+  --tag-border: rgba(200, 39, 47, 0.2);
+  --card-footer-text: #94a3b8;
   
   /* Map variables */
+  --map-dashboard-bg: #16171d;
   --map-bg: #0b0f19;
   --map-grid: rgba(255, 255, 255, 0.03);
   --map-line: rgba(255, 255, 255, 0.01);
   --map-border: rgba(255, 255, 255, 0.08);
   --map-shadow: rgba(0, 0, 0, 0.5);
   --map-header: rgba(30, 41, 59, 0.5);
+  --map-header-text: #ffffff;
   --map-sidebar: rgba(15, 23, 42, 0.4);
   --map-text: #e2e8f0;
   --map-text-dark: #ffffff;
   --map-overlay: rgba(15, 23, 42, 0.85);
+  --map-active-item: rgba(200, 39, 47, 0.15);
+  --map-accent: #c8272f;
+  --map-accent-bright: #d42932;
 }
 
 .landing-container {
@@ -235,14 +288,14 @@
 }
 
 .btn-nav-map {
-  background: linear-gradient(135deg, var(--peru-red) 0%, var(--peru-red-bright) 100%);
-  color: var(--peru-white);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   padding: 8px 20px;
   border-radius: 9999px;
   font-weight: 600;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(200, 39, 47, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   font-family: var(--font-sans);
   font-size: 14px;
@@ -250,18 +303,19 @@
 
 .btn-nav-map:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 39, 47, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.15);
 }
 
 .btn-nav-map-2 {
-  background: linear-gradient(135deg, var(--peru-red) 0%, var(--peru-red-bright) 100%);
-  color: var(--peru-white);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   padding: 8px 20px;
   border-radius: 9999px;
   font-weight: 600;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(200, 39, 47, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   font-family: var(--font-sans);
   font-size: 14px;
@@ -270,7 +324,8 @@
 
 .btn-nav-map-2:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 39, 47, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.15);
 }
 
 
@@ -303,12 +358,12 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--peru-red-bright);
-  background: var(--peru-red-light);
+  color: var(--tag-text);
+  background: var(--tag-bg);
   padding: 6px 16px;
   border-radius: 9999px;
   margin-bottom: 20px;
-  border: 1px solid rgba(200, 39, 47, 0.2);
+  border: 1px solid var(--tag-border);
 }
 
 .hero-title {
@@ -343,38 +398,39 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--peru-red) 0%, var(--peru-red-bright) 100%);
-  color: var(--peru-white);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   padding: 14px 32px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 16px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(200, 39, 47, 0.3);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
   transition: all 0.3s;
 }
 
 .btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 15px 30px rgba(200, 39, 47, 0.5);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.15);
 }
 
 .btn-secondary {
-  background: transparent;
-  color: var(--peru-text-dark);
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
   padding: 14px 32px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 16px;
-  border: 2px solid var(--peru-border-btn);
+  border: 2px solid var(--btn-secondary-border);
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .btn-secondary:hover {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: var(--peru-text-dark);
+  background: var(--btn-secondary-bg-hover);
+  border-color: var(--btn-secondary-text);
 }
 
 .hero-image-wrapper {
@@ -412,7 +468,7 @@
 /* Concept Section (White background) */
 .concept-section {
   padding: 100px 5%;
-  background: var(--peru-white);
+  background: var(--peru-bg);
   text-align: center;
   color: var(--peru-text);
   box-sizing: border-box;
@@ -447,8 +503,8 @@
   flex: 1;
   min-width: 280px;
   max-width: 360px;
-  background: var(--peru-red-light);
-  border: 1px solid rgba(200, 39, 47, 0.12);
+  background: var(--peru-white);
+  border: 1px solid var(--peru-border);
   border-radius: 16px;
   padding: 35px 25px;
   transition: all 0.3s;
@@ -457,9 +513,7 @@
 
 .concept-card:hover {
   transform: translateY(-10px);
-  background: rgba(200, 39, 47, 0.18);
-  border-color: rgba(200, 39, 47, 0.3);
-  box-shadow: 0 15px 30px rgba(200, 39, 47, 0.12);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .concept-card-title {
@@ -544,8 +598,8 @@
 
 .restaurant-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(200, 39, 47, 0.25);
-  box-shadow: 0 20px 40px rgba(200, 39, 47, 0.08);
+  border-color: var(--peru-border-btn);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .restaurant-img-wrapper {
@@ -593,10 +647,10 @@
   font-size: 11px;
   padding: 2px 8px;
   border-radius: 4px;
-  background: var(--peru-red-light);
-  color: var(--peru-red-bright);
+  background: var(--tag-bg);
+  color: var(--tag-text);
   font-weight: 600;
-  border: 1px solid rgba(200, 39, 47, 0.2);
+  border: 1px solid var(--tag-border);
 }
 
 .restaurant-card-desc {
@@ -613,13 +667,13 @@
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #64748b;
+  color: var(--card-footer-text);
 }
 
 /* Suggestions Box Section */
 .suggestions-section {
   padding: 100px 5%;
-  background: var(--peru-white);
+  background: var(--peru-bg);
   text-align: center;
   border-top: 1px solid var(--peru-border);
   box-sizing: border-box;
@@ -657,7 +711,7 @@
 
 .suggestions-image:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(200, 39, 47, 0.15);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .suggestions-form-column {
@@ -670,7 +724,7 @@
 .suggestions-card {
   width: 100%;
   max-width: 540px;
-  background: var(--peru-bg);
+  background: var(--peru-white);
   border: 1.5px solid var(--peru-border);
   border-radius: 16px;
   padding: 40px;
@@ -705,16 +759,16 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #64748b;
+  color: var(--form-label-color);
   margin-bottom: 8px;
 }
 
 .form-input, .form-textarea {
   width: 100%;
-  background: var(--peru-white);
-  border: 1px solid var(--peru-border-btn);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 8px;
-  color: var(--peru-text-dark);
+  color: var(--input-text);
   padding: 12px 16px;
   font-family: var(--font-sans);
   font-size: 14px;
@@ -725,8 +779,8 @@
 .form-input:focus, .form-textarea:focus {
   outline: none;
   border-color: var(--peru-red-bright);
-  box-shadow: 0 0 8px rgba(212, 41, 50, 0.15);
-  background: var(--peru-white);
+  box-shadow: 0 0 8px var(--peru-red-light);
+  background: var(--input-bg);
 }
 
 .form-textarea {
@@ -736,21 +790,22 @@
 
 .btn-submit {
   width: 100%;
-  background: linear-gradient(135deg, var(--peru-red) 0%, var(--peru-red-bright) 100%);
-  color: var(--peru-white);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   border: none;
   border-radius: 8px;
   padding: 14px;
   font-weight: 700;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(200, 39, 47, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s;
 }
 
 .btn-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 39, 47, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.15);
 }
 
 .success-message {
@@ -766,12 +821,13 @@
 
 /* Improved Footer Styling */
 .footer {
-  background: #0f1016;
+  background: #0e122b;
   border-top: 1.5px solid var(--peru-red-bright);
   padding: 60px 5% 30px 5%;
   color: #94a3b8;
   font-size: 14px;
   box-sizing: border-box;
+  transition: background 0.3s ease;
 }
 
 .footer-grid {
