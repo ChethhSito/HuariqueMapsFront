@@ -116,6 +116,64 @@
   align-items: center;
 }
 
+/* Hamburger menu button */
+.btn-hamburger {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--peru-text-dark);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background 0.3s;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-hamburger:hover {
+  background: var(--peru-red-light);
+}
+
+/* Mobile dropdown navigation menu drawer */
+.nav-menu-mobile {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: var(--peru-white);
+  border-bottom: 2px solid var(--peru-red-bright);
+  padding: 20px 5%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+  z-index: 99;
+}
+
+.nav-link-mobile {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--peru-text-dark);
+  cursor: pointer;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--peru-border);
+  transition: color 0.3s;
+  text-align: left;
+}
+
+.nav-link-mobile:hover {
+  color: var(--peru-red-bright);
+}
+
+.navbar-auth-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+  padding-top: 10px;
+}
+
 /* Theme toggle button styling */
 .btn-theme-toggle {
   background: transparent;
@@ -761,8 +819,8 @@
   }
 }
 
-/* Tablets (Less than 768px) */
-@media (max-width: 768px) {
+/* Tablets & Half-Screens (Less than 968px) */
+@media (max-width: 968px) {
   /* Navbar adjustments */
   .navbar {
     padding: 15px 4%;
@@ -773,7 +831,15 @@
   }
 
   .nav-links {
-    display: none; /* Hide link lists on mobile to save space */
+    display: none;
+  }
+
+  .navbar-auth {
+    display: none;
+  }
+
+  .btn-hamburger {
+    display: flex;
   }
 
   /* Hero Section Stack */

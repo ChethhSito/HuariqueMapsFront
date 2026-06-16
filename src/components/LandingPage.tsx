@@ -11,6 +11,9 @@ interface LandingPageProps {
 }
 
 export default function LandingPage({ onNavigate, isDark, onToggleTheme }: LandingPageProps) {
+  // Estado para el menú hamburguesa
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   // Estados para el buzón de sugerencias
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
@@ -77,15 +80,41 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
     <div className="landing-container">
       {/* Navigation Bar */}
       <nav className="navbar">
-        <a href="#" className="nav-logo" onClick={() => scrollToSection('inicio')}>
+        <a href="#" className="nav-logo" onClick={() => { scrollToSection('inicio'); setIsMenuOpen(false); }}>
           Huarique<span>Map</span>
         </a>
+        
+        {/* Hamburger Toggle Button for mobile and tablets */}
+        <button 
+          className="btn-hamburger" 
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle navigation menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {isMenuOpen ? (
+              <>
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </>
+            ) : (
+              <>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </>
+            )}
+          </svg>
+        </button>
+
+        {/* Desktop links */}
         <div className="nav-links">
           <span className="nav-link" onClick={() => scrollToSection('inicio')}>Inicio</span>
           <span className="nav-link" onClick={() => scrollToSection('concepto')}>Identidad</span>
           <span className="nav-link" onClick={() => scrollToSection('restaurantes')}>Restaurantes</span>
           <span className="nav-link" onClick={() => scrollToSection('sugerencias')}>Sugerencias</span>
         </div>
+
+        {/* Desktop auth */}
         <div className="navbar-auth">
           <button 
             className="btn-theme-toggle" 
@@ -118,6 +147,58 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
             Ver Mapa Interactivo
           </button>
         </div>
+
+        {/* Mobile Dropdown Navigation Menu Drawer */}
+        {isMenuOpen && (
+          <div className="nav-menu-mobile">
+            <span className="nav-link-mobile" onClick={() => { scrollToSection('inicio'); setIsMenuOpen(false); }}>
+              Inicio
+            </span>
+            <span className="nav-link-mobile" onClick={() => { scrollToSection('concepto'); setIsMenuOpen(false); }}>
+              Identidad
+            </span>
+            <span className="nav-link-mobile" onClick={() => { scrollToSection('restaurantes'); setIsMenuOpen(false); }}>
+              Restaurantes
+            </span>
+            <span className="nav-link-mobile" onClick={() => { scrollToSection('sugerencias'); setIsMenuOpen(false); }}>
+              Sugerencias
+            </span>
+            <div className="navbar-auth-mobile">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0' }}>
+                <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--peru-text-dark)' }}>Tema</span>
+                <button 
+                  className="btn-theme-toggle" 
+                  onClick={onToggleTheme} 
+                  title={isDark ? 'Modo Claro' : 'Modo Oscuro'}
+                >
+                  {isDark ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                  )}
+                </button>
+              </div>
+              <button className="btn-join" onClick={() => { handleAuthAction(); setIsMenuOpen(false); }}>
+                Únete
+              </button>
+              <button className="btn-nav-map" onClick={() => { onNavigate('map'); setIsMenuOpen(false); }}>
+                Ver Mapa Interactivo
+              </button>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
