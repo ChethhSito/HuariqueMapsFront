@@ -281,23 +281,110 @@
   margin: 0;
 }
 
-/* Map Section Container */
-.map-section {
+/* Restaurants Section Container */
+.restaurants-section {
   padding: 80px 8%;
   background: #0f1016;
   text-align: center;
 }
 
-.map-section .section-title {
+.restaurants-section .section-title {
   margin-bottom: 15px;
 }
 
-.map-section-desc {
+.restaurants-section-desc {
   font-size: 16px;
   color: #94a3b8;
   max-width: 600px;
   margin: 0 auto 50px auto;
   line-height: 1.6;
+}
+
+.restaurants-grid {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.restaurant-card {
+  width: 360px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(200, 39, 47, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.restaurant-img-wrapper {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.restaurant-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.restaurant-card:hover .restaurant-img {
+  transform: scale(1.08);
+}
+
+.restaurant-card-body {
+  padding: 24px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.restaurant-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.restaurant-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--peru-white);
+  margin: 0;
+}
+
+.restaurant-card-desc {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  flex: 1;
+}
+
+.restaurant-card-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.restaurant-card-footer span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* Patriotic banner */

@@ -1,8 +1,13 @@
-import MapShell from './MapShell';
 import heroImage from '../assets/peruvian_cuisine_hero.png';
+import cevicheImage from '../assets/ceviche_carretilla.png';
+import anticuchosImage from '../assets/anticuchos_lima.png';
 import './LandingPage.css';
 
-export default function LandingPage() {
+interface LandingPageProps {
+  onNavigate: (view: 'landing' | 'map') => void;
+}
+
+export default function LandingPage({ onNavigate }: LandingPageProps) {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -10,20 +15,50 @@ export default function LandingPage() {
     }
   };
 
+  const popularRestaurants = [
+    {
+      id: 1,
+      nombre: 'El Ceviche de Pedro',
+      tipoComida: 'Marina',
+      descripcion: 'Ceviche clásico de carretilla preparado al momento con pesca fresca del día, abundante limón piurano y choclo desgranado.',
+      imagen: cevicheImage,
+      horario: 'Mar - Dom: 11:00 AM - 4:30 PM',
+      ubicacion: 'Chorrillos, Lima',
+    },
+    {
+      id: 2,
+      nombre: 'Anticuchos del Puente',
+      tipoComida: 'Criolla',
+      descripcion: 'Tradicionales brochetas de corazón a la parrilla marinados en ají panca y especias, acompañados de papas doradas y choclo tierno.',
+      imagen: anticuchosImage,
+      horario: 'Lun - Sáb: 6:00 PM - 11:30 PM',
+      ubicacion: 'Barranco, Lima',
+    },
+    {
+      id: 3,
+      nombre: 'El Rinconcito Lomeño',
+      tipoComida: 'Fusión / Criolla',
+      descripcion: 'Especialistas en lomo saltado ahumado al wok con cebolla crujiente, tomates jugosos y papas nativas amarillas fritas al instante.',
+      imagen: heroImage,
+      horario: 'Lun - Dom: 12:00 PM - 10:00 PM',
+      ubicacion: 'Centro de Lima',
+    },
+  ];
+
   return (
     <div className="landing-container">
       {/* Navigation Bar */}
       <nav className="navbar">
-        <a href="#" className="nav-logo">
+        <a href="#" className="nav-logo" onClick={() => scrollToSection('inicio')}>
           🇵🇪 Huarique<span>Map</span>
         </a>
         <div className="nav-links">
           <span className="nav-link" onClick={() => scrollToSection('inicio')}>Inicio</span>
           <span className="nav-link" onClick={() => scrollToSection('concepto')}>Identidad</span>
-          <span className="nav-link" onClick={() => scrollToSection('explorador')}>El Mapa</span>
+          <span className="nav-link" onClick={() => scrollToSection('restaurantes')}>Restaurantes</span>
         </div>
-        <button className="btn-nav-map" onClick={() => scrollToSection('explorador')}>
-          Explorar Mapa
+        <button className="btn-nav-map" onClick={() => onNavigate('map')}>
+          Ver Mapa Interactivo
         </button>
       </nav>
 
@@ -41,8 +76,8 @@ export default function LandingPage() {
             que une a todo el Perú en una sola mesa.
           </p>
           <div className="hero-actions">
-            <button className="btn-primary" onClick={() => scrollToSection('explorador')}>
-              Ver Mapa de Huariques
+            <button className="btn-primary" onClick={() => onNavigate('map')}>
+              Explorar Mapa Interactivo
             </button>
             <button className="btn-secondary" onClick={() => scrollToSection('concepto')}>
               Conocer el Proyecto
@@ -106,17 +141,35 @@ export default function LandingPage() {
         </p>
       </section>
 
-      {/* Interactive Map Explorer Section */}
-      <section id="explorador" className="map-section">
-        <span className="section-tag">Explorador Interactivo</span>
-        <h2 className="section-title">Localiza tu Siguiente Huarique</h2>
-        <p className="map-section-desc">
-          Explora la distribución de restaurantes y huariques en tiempo real. 
-          Haz clic en los marcadores interactivos para ver las especialidades de cada rincón.
+      {/* Popular Restaurants Section */}
+      <section id="restaurantes" className="restaurants-section">
+        <span className="section-tag">Recomendaciones</span>
+        <h2 className="section-title">Restaurantes Populares</h2>
+        <p className="restaurants-section-desc">
+          Una selección de huariques tradicionales muy queridos por la comunidad. 
+          Explora su sabor único antes de ver su ubicación geoespacial en el mapa.
         </p>
         
-        {/* Render our custom MapShell inside the section */}
-        <MapShell />
+        <div className="restaurants-grid">
+          {popularRestaurants.map((res) => (
+            <div key={res.id} className="restaurant-card">
+              <div className="restaurant-img-wrapper">
+                <img src={res.imagen} alt={res.nombre} className="restaurant-img" />
+              </div>
+              <div className="restaurant-card-body">
+                <div className="restaurant-card-header">
+                  <h3 className="restaurant-card-title">{res.nombre}</h3>
+                  <span className="huarique-tag" style={{ margin: 0 }}>{res.tipoComida}</span>
+                </div>
+                <p className="restaurant-card-desc">{res.descripcion}</p>
+                <div className="restaurant-card-footer">
+                  <span>⏰ {res.horario}</span>
+                  <span>📍 {res.ubicacion}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Footer */}
