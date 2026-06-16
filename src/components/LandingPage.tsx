@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import heroImage from '../assets/peruvian_cuisine_hero.png';
 import cevicheImage from '../assets/ceviche_carretilla.png';
 import anticuchosImage from '../assets/anticuchos_lima.png';
@@ -8,11 +9,38 @@ interface LandingPageProps {
 }
 
 export default function LandingPage({ onNavigate }: LandingPageProps) {
+  // Estados para el buzón de sugerencias
+  const [nombre, setNombre] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleSuggestionSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (nombre && correo && descripcion) {
+      // Simular el envío al backend
+      console.log('Sugerencia enviada:', { nombre, correo, descripcion });
+      setIsSubmitted(true);
+      
+      // Limpiar formulario después de unos segundos
+      setTimeout(() => {
+        setNombre('');
+        setCorreo('');
+        setDescripcion('');
+        setIsSubmitted(false);
+      }, 5000);
+    }
+  };
+
+  const handleAuthAction = (action: 'login' | 'register') => {
+    alert(`Funcionalidad de ${action === 'login' ? 'Inicio de Sesión' : 'Registro'} simulada para el cascarón de desarrollo.`);
   };
 
   const popularRestaurants = [
@@ -56,10 +84,19 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
           <span className="nav-link" onClick={() => scrollToSection('inicio')}>Inicio</span>
           <span className="nav-link" onClick={() => scrollToSection('concepto')}>Identidad</span>
           <span className="nav-link" onClick={() => scrollToSection('restaurantes')}>Restaurantes</span>
+          <span className="nav-link" onClick={() => scrollToSection('sugerencias')}>Sugerencias</span>
         </div>
-        <button className="btn-nav-map" onClick={() => onNavigate('map')}>
-          Ver Mapa Interactivo
-        </button>
+        <div className="navbar-auth">
+          <button className="btn-login" onClick={() => handleAuthAction('login')}>
+            Iniciar Sesión
+          </button>
+          <button className="btn-register" onClick={() => handleAuthAction('register')}>
+            Registrarse
+          </button>
+          <button className="btn-nav-map" onClick={() => onNavigate('map')}>
+            Ver Mapa Interactivo
+          </button>
+        </div>
       </nav>
 
       {/* Hero Section */}
@@ -94,7 +131,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Concept / Identity Section */}
+      {/* Concept / Identity Section (White Themed - Peruvian Flag concept) */}
       <section id="concepto" className="concept-section">
         <span className="section-tag">Nuestra Identidad</span>
         <h2 className="section-title">¿Qué nos une como Peruanos?</h2>
@@ -169,10 +206,126 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Suggestions Box Section */}
+      <section id="sugerencias" className="suggestions-section">
+        <span className="section-tag">Participa</span>
+        <h2 className="section-title">Buzón de Sugerencias</h2>
+        
+        <div className="suggestions-card">
+          <h3 className="suggestions-title">Recomienda un Huarique</h3>
+          <p className="suggestions-desc">
+            ¿Conoces algún rincón culinario secreto que merezca estar en el mapa? 
+            Escríbenos y ayúdanos a expandir nuestra comunidad de sabor.
+          </p>
+
+          {isSubmitted ? (
+            <div className="success-message">
+              ¡Gracias por tu recomendación! Analizaremos el huarique sugerido para agregarlo pronto al mapa interactivo.
+            </div>
+          ) : (
+            <form onSubmit={handleSuggestionSubmit}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="nombre">Nombre Completo</label>
+                <input 
+                  type="text" 
+                  id="nombre" 
+                  className="form-input" 
+                  value={nombre} 
+                  onChange={(e) => setNombre(e.target.value)} 
+                  required 
+                  placeholder="Ej. Juan Pérez"
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="correo">Correo Electrónico</label>
+                <input 
+                  type="email" 
+                  id="correo" 
+                  className="form-input" 
+                  value={correo} 
+                  onChange={(e) => setCorreo(e.target.value)} 
+                  required 
+                  placeholder="Ej. juan@correo.com"
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="descripcion">Detalles del Huarique (Nombre, especialidad, dirección)</label>
+                <textarea 
+                  id="descripcion" 
+                  className="form-textarea" 
+                  value={descripcion} 
+                  onChange={(e) => setDescripcion(e.target.value)} 
+                  required 
+                  placeholder="Ej. Cevichería El Primo en Surquillo, Jr. Dante 420. Recomiendo el ceviche de pota."
+                ></textarea>
+              </div>
+
+              <button type="submit" className="btn-submit">
+                Enviar Sugerencia
+              </button>
+            </form>
+          )}
+        </div>
+      </section>
+
+      {/* Improved 3-Column Footer */}
       <footer className="footer">
-        <p>© 2026 HuariqueMap. Creado con orgullo en Perú</p>
-        <p>Hecho para celebrar nuestra diversidad gastronómica y conectar sabores</p>
+        <div className="footer-grid">
+          {/* Left Column: Logo and Info */}
+          <div className="footer-col">
+            <a href="#" className="footer-logo" onClick={() => scrollToSection('inicio')}>
+              Huarique<span>Map</span>
+            </a>
+            <p className="footer-info-text">
+              Conectando a los amantes de la buena comida con los rincones culinarios más emblemáticos 
+              y tradicionales del Perú. Promovemos el turismo gastronómico local de forma gratuita.
+            </p>
+          </div>
+
+          {/* Middle Column: Site Map */}
+          <div className="footer-col">
+            <h3 className="footer-col-title">Mapa del Sitio</h3>
+            <ul className="footer-links">
+              <li>
+                <span className="footer-link-item" onClick={() => scrollToSection('inicio')}>
+                  Inicio
+                </span>
+              </li>
+              <li>
+                <span className="footer-link-item" onClick={() => scrollToSection('concepto')}>
+                  Nuestra historia
+                </span>
+              </li>
+              <li>
+                <span className="footer-link-item" onClick={() => scrollToSection('restaurantes')}>
+                  Te brindamos
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Right Column: Contact Details */}
+          <div className="footer-col">
+            <h3 className="footer-col-title">Contacto</h3>
+            <div className="footer-contact-info">
+              <div className="footer-contact-item">
+                <span className="footer-contact-label">Línea de Atención</span>
+                <span className="footer-contact-value">+51 999 888 777</span>
+              </div>
+              <div className="footer-contact-item">
+                <span className="footer-contact-label">Correo de Soporte</span>
+                <span className="footer-contact-value">contacto@huariquemap.pe</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Bottom copyright */}
+        <div className="footer-bottom">
+          <p>© 2026 HuariqueMap. Creado con orgullo en Perú. Todos los derechos reservados.</p>
+        </div>
       </footer>
     </div>
   );
