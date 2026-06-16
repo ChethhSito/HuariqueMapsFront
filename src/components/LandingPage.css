@@ -4,15 +4,20 @@
   --peru-red: #c8272f;
   --peru-red-bright: #d42932;
   --peru-red-dark: #8c161b;
+  --peru-red-light: #fff1f2;
   --peru-white: #ffffff;
+  --peru-bg: #f8fafc;
+  --peru-text: #475569;
+  --peru-text-dark: #0f172a;
+  --peru-border: rgba(200, 39, 47, 0.1);
   --font-title: 'Pacifico', cursive;
   --font-sans: 'Outfit', sans-serif;
 }
 
 .landing-container {
   font-family: var(--font-sans);
-  background: #0f1016;
-  color: #f8fafc;
+  background: var(--peru-bg);
+  color: var(--peru-text);
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
@@ -26,20 +31,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 5%;
-  background: rgba(15, 16, 22, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid rgba(200, 39, 47, 0.15);
+  border-bottom: 1px solid var(--peru-border);
   box-sizing: border-box;
 }
 
 .nav-logo {
   font-family: var(--font-title);
   font-size: 26px;
-  color: var(--peru-white);
+  color: var(--peru-text-dark);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -56,7 +61,7 @@
 }
 
 .nav-link {
-  color: #cbd5e1;
+  color: var(--peru-text);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
@@ -76,7 +81,7 @@
 /* Join button */
 .btn-join {
   background: transparent;
-  color: var(--peru-white);
+  color: var(--peru-red-bright);
   border: 1.5px solid var(--peru-red-bright);
   padding: 8px 20px;
   border-radius: 9999px;
@@ -89,7 +94,8 @@
 
 .btn-join:hover {
   background: var(--peru-red-bright);
-  box-shadow: 0 0 15px rgba(212, 41, 50, 0.4);
+  color: var(--peru-white);
+  box-shadow: 0 0 15px rgba(212, 41, 50, 0.2);
 }
 
 .btn-nav-map {
@@ -100,7 +106,7 @@
   font-weight: 600;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(200, 39, 47, 0.3);
+  box-shadow: 0 4px 15px rgba(200, 39, 47, 0.2);
   transition: transform 0.2s, box-shadow 0.2s;
   font-family: var(--font-sans);
   font-size: 14px;
@@ -108,7 +114,7 @@
 
 .btn-nav-map:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 39, 47, 0.5);
+  box-shadow: 0 6px 20px rgba(200, 39, 47, 0.4);
 }
 
 /* Hero Section */
@@ -119,7 +125,7 @@
   padding: 80px 5%;
   min-height: 80vh;
   position: relative;
-  background: radial-gradient(circle at 10% 20%, rgba(200, 39, 47, 0.12) 0%, transparent 60%);
+  background: radial-gradient(circle at 10% 20%, rgba(200, 39, 47, 0.05) 0%, transparent 60%);
   gap: 60px;
   box-sizing: border-box;
 }
@@ -136,11 +142,11 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--peru-red-bright);
-  background: rgba(200, 39, 47, 0.15);
+  background: var(--peru-red-light);
   padding: 6px 16px;
   border-radius: 9999px;
   margin-bottom: 20px;
-  border: 1px solid rgba(200, 39, 47, 0.25);
+  border: 1px solid rgba(200, 39, 47, 0.2);
 }
 
 .hero-title {
@@ -148,7 +154,7 @@
   font-weight: 800;
   line-height: 1.1;
   margin: 0 0 20px 0;
-  color: var(--peru-white);
+  color: var(--peru-text-dark);
 }
 
 .hero-title span {
@@ -158,12 +164,12 @@
   display: block;
   font-size: 68px;
   margin-top: 10px;
-  text-shadow: 0 0 15px rgba(200, 39, 47, 0.3);
+  text-shadow: 0 2px 10px rgba(200, 39, 47, 0.15);
 }
 
 .hero-desc {
   font-size: 18px;
-  color: #94a3b8;
+  color: var(--peru-text);
   line-height: 1.6;
   margin-bottom: 35px;
   max-width: 580px;
@@ -183,30 +189,30 @@
   font-size: 16px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(200, 39, 47, 0.4);
+  box-shadow: 0 10px 25px rgba(200, 39, 47, 0.3);
   transition: all 0.3s;
 }
 
 .btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 15px 30px rgba(200, 39, 47, 0.6);
+  box-shadow: 0 15px 30px rgba(200, 39, 47, 0.5);
 }
 
 .btn-secondary {
   background: transparent;
-  color: var(--peru-white);
+  color: var(--peru-text-dark);
   padding: 14px 32px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(0, 0, 0, 0.12);
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--peru-white);
+  background: rgba(0, 0, 0, 0.03);
+  border-color: var(--peru-text-dark);
 }
 
 .hero-image-wrapper {
@@ -220,7 +226,7 @@
   position: absolute;
   width: 110%;
   height: 110%;
-  background: radial-gradient(circle, rgba(200, 39, 47, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(200, 39, 47, 0.12) 0%, transparent 70%);
   top: -5%;
   left: -5%;
   z-index: 1;
@@ -230,8 +236,8 @@
   width: 100%;
   max-width: 420px;
   border-radius: 24px;
-  border: 2px solid rgba(250, 250, 250, 0.1);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  border: 1.5px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
   position: relative;
   z-index: 2;
   transition: transform 0.5s ease;
@@ -244,9 +250,9 @@
 /* Concept Section (White background) */
 .concept-section {
   padding: 100px 5%;
-  background: #ffffff;
+  background: var(--peru-white);
   text-align: center;
-  color: #1e293b;
+  color: var(--peru-text);
   box-sizing: border-box;
 }
 
@@ -264,11 +270,7 @@
   font-size: 40px;
   font-weight: 800;
   margin: 0 0 50px 0;
-  color: var(--peru-white);
-}
-
-.concept-section .section-title {
-  color: #0f172a;
+  color: var(--peru-text-dark);
 }
 
 .concept-grid {
@@ -282,8 +284,8 @@
   flex: 1;
   min-width: 280px;
   max-width: 360px;
-  background: #f8fafc;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--peru-red-light);
+  border: 1px solid rgba(200, 39, 47, 0.12);
   border-radius: 16px;
   padding: 35px 25px;
   transition: all 0.3s;
@@ -292,21 +294,21 @@
 
 .concept-card:hover {
   transform: translateY(-10px);
-  background: rgba(200, 39, 47, 0.04);
+  background: #ffe4e6;
   border-color: rgba(200, 39, 47, 0.3);
-  box-shadow: 0 15px 30px rgba(200, 39, 47, 0.15);
+  box-shadow: 0 15px 30px rgba(200, 39, 47, 0.12);
 }
 
 .concept-card-title {
   font-size: 20px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--peru-text-dark);
   margin: 0 0 12px 0;
 }
 
 .concept-card-desc {
   font-size: 15px;
-  color: #475569;
+  color: var(--peru-text);
   line-height: 1.6;
   margin: 0;
 }
@@ -326,12 +328,12 @@
   font-size: 38px;
   color: var(--peru-white);
   margin: 0 0 10px 0;
-  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .banner-desc {
   font-size: 18px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   max-width: 780px;
   margin: 0 auto;
   line-height: 1.6;
@@ -340,7 +342,7 @@
 /* Restaurants Section Container */
 .restaurants-section {
   padding: 100px 5%;
-  background: #0f1016;
+  background: var(--peru-bg);
   text-align: center;
   box-sizing: border-box;
 }
@@ -351,7 +353,7 @@
 
 .restaurants-section-desc {
   font-size: 16px;
-  color: #94a3b8;
+  color: var(--peru-text);
   max-width: 600px;
   margin: 0 auto 50px auto;
   line-height: 1.6;
@@ -366,19 +368,20 @@
 
 .restaurant-card {
   width: 360px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--peru-white);
+  border: 1.5px solid rgba(0, 0, 0, 0.05);
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
 }
 
 .restaurant-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(200, 39, 47, 0.3);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border-color: rgba(200, 39, 47, 0.25);
+  box-shadow: 0 20px 40px rgba(200, 39, 47, 0.08);
 }
 
 .restaurant-img-wrapper {
@@ -417,7 +420,7 @@
 .restaurant-card-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--peru-white);
+  color: var(--peru-text-dark);
   margin: 0;
 }
 
@@ -426,22 +429,22 @@
   font-size: 11px;
   padding: 2px 8px;
   border-radius: 4px;
-  background: rgba(200, 39, 47, 0.15);
-  color: #f87171;
+  background: var(--peru-red-light);
+  color: var(--peru-red-bright);
   font-weight: 600;
-  border: 1px solid rgba(200, 39, 47, 0.3);
+  border: 1px solid rgba(200, 39, 47, 0.2);
 }
 
 .restaurant-card-desc {
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--peru-text);
   line-height: 1.6;
   margin: 0 0 20px 0;
   flex: 1;
 }
 
 .restaurant-card-footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   padding-top: 14px;
   display: flex;
   justify-content: space-between;
@@ -452,20 +455,20 @@
 /* Suggestions Box Section */
 .suggestions-section {
   padding: 100px 5%;
-  background: #0b0c10;
+  background: var(--peru-white);
   text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  border-top: 1px solid var(--peru-border);
   box-sizing: border-box;
 }
 
 .suggestions-card {
   max-width: 580px;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(200, 39, 47, 0.15);
+  background: var(--peru-bg);
+  border: 1.5px solid var(--peru-border);
   border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   text-align: left;
   box-sizing: border-box;
 }
@@ -473,14 +476,14 @@
 .suggestions-title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--peru-white);
+  color: var(--peru-text-dark);
   margin: 0 0 10px 0;
   text-align: center;
 }
 
 .suggestions-desc {
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--peru-text);
   text-align: center;
   margin-bottom: 30px;
   line-height: 1.5;
@@ -496,16 +499,16 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #94a3b8;
+  color: #64748b;
   margin-bottom: 8px;
 }
 
 .form-input, .form-textarea {
   width: 100%;
-  background: rgba(15, 16, 22, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--peru-white);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 8px;
-  color: var(--peru-white);
+  color: var(--peru-text-dark);
   padding: 12px 16px;
   font-family: var(--font-sans);
   font-size: 14px;
@@ -516,8 +519,8 @@
 .form-input:focus, .form-textarea:focus {
   outline: none;
   border-color: var(--peru-red-bright);
-  box-shadow: 0 0 8px rgba(212, 41, 50, 0.2);
-  background: rgba(15, 16, 22, 0.9);
+  box-shadow: 0 0 8px rgba(212, 41, 50, 0.15);
+  background: var(--peru-white);
 }
 
 .form-textarea {
@@ -535,19 +538,19 @@
   font-weight: 700;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(200, 39, 47, 0.3);
+  box-shadow: 0 4px 15px rgba(200, 39, 47, 0.2);
   transition: all 0.3s;
 }
 
 .btn-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 39, 47, 0.5);
+  box-shadow: 0 6px 20px rgba(200, 39, 47, 0.4);
 }
 
 .success-message {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #34d399;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #059669;
   padding: 16px;
   border-radius: 8px;
   text-align: center;
@@ -555,10 +558,10 @@
   font-size: 15px;
 }
 
-/* Improved Footer Styling */
+/* Improved Footer Styling (grounding dark look, representing flag contrast at bottom) */
 .footer {
-  background: #07080b;
-  border-top: 1px solid rgba(200, 39, 47, 0.15);
+  background: #0f1016;
+  border-top: 1.5px solid var(--peru-red-bright);
   padding: 60px 5% 30px 5%;
   color: #94a3b8;
   font-size: 14px;
