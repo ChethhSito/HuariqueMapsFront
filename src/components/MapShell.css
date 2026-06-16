@@ -9,13 +9,12 @@
   margin: 0;
   border-radius: 16px;
   overflow: hidden;
-  background: #ffffff;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+  background: var(--peru-white);
+  border: 1px solid var(--peru-border);
+  box-shadow: 0 20px 40px var(--map-shadow);
   font-family: system-ui, -apple-system, sans-serif;
-  color: #334155;
+  color: var(--map-text);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .dashboard-header {
@@ -23,8 +22,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background: #fff1f2;
-  border-bottom: 1px solid rgba(200, 39, 47, 0.12);
+  background: var(--map-header);
+  border-bottom: 1px solid var(--peru-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .brand {
@@ -51,6 +51,10 @@
   padding: 6px 12px;
   border-radius: 9999px;
   background: rgba(0, 0, 0, 0.03);
+}
+
+:root.dark-theme .status-badge {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .status-dot {
@@ -81,20 +85,21 @@
 /* Sidebar Styling */
 .sidebar {
   width: 380px;
-  background: #f8fafc;
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--map-sidebar);
+  border-right: 1px solid var(--peru-border);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .sidebar-title {
   padding: 16px 20px;
   font-size: 16px;
   font-weight: 600;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--peru-border);
   margin: 0;
-  color: #475569;
+  color: var(--map-text-dark);
 }
 
 .huariques-list {
@@ -107,7 +112,7 @@
 
 .huarique-item {
   padding: 18px 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--peru-border);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -117,18 +122,19 @@
 }
 
 .huarique-item:hover {
-  background: rgba(200, 39, 47, 0.02);
+  background: var(--peru-red-light);
+  opacity: 0.85;
 }
 
 .huarique-item.active {
-  background: rgba(200, 39, 47, 0.06);
+  background: var(--peru-red-light);
   border-left: 4px solid #c8272f;
 }
 
 .huarique-name {
   font-size: 16px;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--map-text-dark);
   margin: 0;
 }
 
@@ -137,15 +143,16 @@
   font-size: 11px;
   padding: 2px 8px;
   border-radius: 4px;
-  background: rgba(200, 39, 47, 0.1);
+  background: var(--peru-red-light);
   color: #c8272f;
   align-self: flex-start;
-  font-weight: 500;
+  font-weight: 600;
+  border: 1px solid rgba(200, 39, 47, 0.2);
 }
 
 .huarique-desc {
   font-size: 13px;
-  color: #475569;
+  color: var(--map-text);
   line-height: 1.4;
   margin: 4px 0;
 }
@@ -158,20 +165,21 @@
   margin-top: 4px;
 }
 
-/* Map Shell Styling (Light Theme) */
+/* Map Shell Styling (Light/Dark Theme via Variables) */
 .map-shell {
   flex: 1;
-  background-color: #f1f5f9;
+  background-color: var(--map-bg);
   background-image: 
-    radial-gradient(rgba(0, 0, 0, 0.03) 1.5px, transparent 0),
-    linear-gradient(to right, rgba(0, 0, 0, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+    radial-gradient(var(--map-grid) 1.5px, transparent 0),
+    linear-gradient(to right, var(--map-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--map-line) 1px, transparent 1px);
   background-size: 24px 24px, 48px 48px, 48px 48px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.3s ease;
 }
 
 .map-grid-overlay {
@@ -192,13 +200,13 @@
   position: absolute;
   bottom: 15px;
   right: 15px;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--map-overlay);
   padding: 6px 12px;
   border-radius: 6px;
   font-family: monospace;
   font-size: 12px;
   color: #c8272f;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--peru-border);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
 }
 
@@ -281,11 +289,11 @@
   left: 50%;
   transform: translateX(-50%);
   width: 220px;
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--peru-white);
+  border: 1px solid var(--peru-border);
   border-radius: 10px;
   padding: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px var(--map-shadow);
   pointer-events: auto;
   z-index: 30;
   animation: fadeIn 0.25s ease-out;
@@ -295,7 +303,7 @@
 .map-popup-title {
   font-size: 14px;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--map-text-dark);
   margin: 0 0 4px 0;
 }
 
@@ -344,26 +352,27 @@
   top: 20px;
   right: 20px;
   width: 320px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(200, 39, 47, 0.15);
+  background: var(--map-overlay);
+  border: 1px solid var(--peru-border);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px var(--map-shadow);
   z-index: 25;
   text-align: left;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .detail-overlay h3 {
   margin: 0 0 6px 0;
-  color: #0f172a;
+  color: var(--map-text-dark);
   font-size: 18px;
 }
 
 .detail-overlay p {
   font-size: 13px;
-  color: #475569;
+  color: var(--map-text);
   line-height: 1.5;
   margin: 8px 0;
 }
@@ -373,7 +382,7 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: #334155;
+  color: var(--map-text);
   margin-top: 10px;
 }
 

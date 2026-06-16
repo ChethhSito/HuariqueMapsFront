@@ -10,8 +10,46 @@
   --peru-text: #475569;
   --peru-text-dark: #0f172a;
   --peru-border: rgba(200, 39, 47, 0.1);
+  --peru-border-btn: rgba(0, 0, 0, 0.12);
+  --peru-navbar-bg: rgba(255, 255, 255, 0.9);
   --font-title: 'Pacifico', cursive;
   --font-sans: 'Outfit', sans-serif;
+  
+  /* Map variables */
+  --map-bg: #f1f5f9;
+  --map-grid: rgba(0, 0, 0, 0.03);
+  --map-line: rgba(0, 0, 0, 0.015);
+  --map-border: rgba(0, 0, 0, 0.08);
+  --map-shadow: rgba(0, 0, 0, 0.06);
+  --map-header: #fff1f2;
+  --map-sidebar: #f8fafc;
+  --map-text: #334155;
+  --map-text-dark: #0f172a;
+  --map-overlay: rgba(255, 255, 255, 0.95);
+}
+
+/* Dark theme overrides */
+:root.dark-theme {
+  --peru-bg: #0f1016;
+  --peru-white: #16171d;
+  --peru-text: #94a3b8;
+  --peru-text-dark: #f8fafc;
+  --peru-border: rgba(255, 255, 255, 0.08);
+  --peru-border-btn: rgba(255, 255, 255, 0.2);
+  --peru-navbar-bg: rgba(15, 16, 22, 0.85);
+  --peru-red-light: rgba(200, 39, 47, 0.15);
+  
+  /* Map variables */
+  --map-bg: #0b0f19;
+  --map-grid: rgba(255, 255, 255, 0.03);
+  --map-line: rgba(255, 255, 255, 0.01);
+  --map-border: rgba(255, 255, 255, 0.08);
+  --map-shadow: rgba(0, 0, 0, 0.5);
+  --map-header: rgba(30, 41, 59, 0.5);
+  --map-sidebar: rgba(15, 23, 42, 0.4);
+  --map-text: #e2e8f0;
+  --map-text-dark: #ffffff;
+  --map-overlay: rgba(15, 23, 42, 0.85);
 }
 
 .landing-container {
@@ -31,7 +69,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 5%;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--peru-navbar-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   position: sticky;
@@ -76,6 +114,26 @@
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+/* Theme toggle button styling */
+.btn-theme-toggle {
+  background: transparent;
+  border: 1.5px solid var(--peru-border-btn);
+  color: var(--peru-text-dark);
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.btn-theme-toggle:hover {
+  background: var(--peru-red-light);
+  border-color: var(--peru-red-bright);
+  color: var(--peru-red-bright);
 }
 
 /* Join button */
@@ -205,7 +263,7 @@
   border-radius: 8px;
   font-weight: 700;
   font-size: 16px;
-  border: 2px solid rgba(0, 0, 0, 0.12);
+  border: 2px solid var(--peru-border-btn);
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -254,6 +312,7 @@
   text-align: center;
   color: var(--peru-text);
   box-sizing: border-box;
+  transition: background 0.3s ease;
 }
 
 .section-tag {
@@ -294,7 +353,7 @@
 
 .concept-card:hover {
   transform: translateY(-10px);
-  background: #ffe4e6;
+  background: rgba(200, 39, 47, 0.18);
   border-color: rgba(200, 39, 47, 0.3);
   box-shadow: 0 15px 30px rgba(200, 39, 47, 0.12);
 }
@@ -345,6 +404,7 @@
   background: var(--peru-bg);
   text-align: center;
   box-sizing: border-box;
+  transition: background 0.3s ease;
 }
 
 .restaurants-section .section-title {
@@ -369,7 +429,7 @@
 .restaurant-card {
   width: 360px;
   background: var(--peru-white);
-  border: 1.5px solid rgba(0, 0, 0, 0.05);
+  border: 1.5px solid var(--peru-border);
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -444,7 +504,7 @@
 }
 
 .restaurant-card-footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid var(--peru-border);
   padding-top: 14px;
   display: flex;
   justify-content: space-between;
@@ -459,6 +519,7 @@
   text-align: center;
   border-top: 1px solid var(--peru-border);
   box-sizing: border-box;
+  transition: background 0.3s ease;
 }
 
 .suggestions-card {
@@ -506,7 +567,7 @@
 .form-input, .form-textarea {
   width: 100%;
   background: var(--peru-white);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--peru-border-btn);
   border-radius: 8px;
   color: var(--peru-text-dark);
   padding: 12px 16px;
@@ -558,7 +619,7 @@
   font-size: 15px;
 }
 
-/* Improved Footer Styling (grounding dark look, representing flag contrast at bottom) */
+/* Improved Footer Styling */
 .footer {
   background: #0f1016;
   border-top: 1.5px solid var(--peru-red-bright);
