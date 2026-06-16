@@ -1,17 +1,17 @@
 /* apps/frontend/src/components/LandingPage.css */
 
 :root {
-  --peru-bg: #d25c5a;
+  --peru-bg: #ffffff;
   --peru-white: #2b3990;
-  --peru-text: #ffffff;
-  --peru-text-dark: #ffffff;
+  --peru-text: #d25c5a;
+  --peru-text-dark: #d25c5a;
   --peru-navbar-bg: rgba(43, 57, 144, 0.95);
-  --peru-border: rgba(255, 255, 255, 0.15);
+  --peru-border: rgba(43, 57, 144, 0.15);
   --peru-border-btn: #fdd701;
   --peru-red: #2b3990;
-  --peru-red-bright: #fdd701;
+  --peru-red-bright: #2b3990;
   --peru-red-dark: #1c266b;
-  --peru-red-light: rgba(253, 215, 1, 0.12);
+  --peru-red-light: rgba(43, 57, 144, 0.1);
   --font-title: 'Pacifico', cursive;
   --font-sans: 'Outfit', sans-serif;
 
@@ -19,10 +19,14 @@
   --btn-primary-bg: #2b3990;
   --btn-primary-text: #fdd701;
   --btn-secondary-bg: transparent;
-  --btn-secondary-text: #ffffff;
-  --btn-secondary-border: rgba(255, 255, 255, 0.5);
-  --btn-secondary-bg-hover: rgba(255, 255, 255, 0.1);
+  --btn-secondary-text: #d25c5a;
+  --btn-secondary-border: #d25c5a;
+  --btn-secondary-bg-hover: rgba(210, 92, 90, 0.08);
   
+  /* Outline button join styles */
+  --btn-join-text: #fdd701;
+  --btn-join-border: #fdd701;
+
   /* Form input custom styles */
   --input-bg: #ffffff;
   --input-text: #0f172a;
@@ -34,6 +38,12 @@
   --tag-text: #2b3990;
   --tag-border: #fdd701;
   --card-footer-text: rgba(255, 255, 255, 0.8);
+  --card-title-color: #ffffff;
+  --card-desc-color: rgba(255, 255, 255, 0.85);
+
+  /* Navbar custom styles */
+  --navbar-text: #ffffff;
+  --navbar-text-hover: #fdd701;
 
   /* Map variables */
   --map-dashboard-bg: #ffffff;
@@ -75,6 +85,10 @@
   --btn-secondary-border: rgba(255, 255, 255, 0.2);
   --btn-secondary-bg-hover: rgba(255, 255, 255, 0.05);
   
+  /* Outline button join styles */
+  --btn-join-text: var(--peru-red-bright);
+  --btn-join-border: var(--peru-red-bright);
+
   /* Form input custom styles */
   --input-bg: #16171d;
   --input-text: #f8fafc;
@@ -86,6 +100,12 @@
   --tag-text: #d42932;
   --tag-border: rgba(200, 39, 47, 0.2);
   --card-footer-text: #94a3b8;
+  --card-title-color: var(--peru-text-dark);
+  --card-desc-color: var(--peru-text);
+
+  /* Navbar custom styles */
+  --navbar-text: var(--peru-text-dark);
+  --navbar-text-hover: var(--peru-red-bright);
   
   /* Map variables */
   --map-dashboard-bg: #16171d;
@@ -135,7 +155,7 @@
 .nav-logo {
   font-family: var(--font-title);
   font-size: 26px;
-  color: var(--peru-text-dark);
+  color: var(--navbar-text, var(--peru-text-dark));
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -143,7 +163,7 @@
 }
 
 .nav-logo span {
-  color: var(--peru-red-bright);
+  color: var(--navbar-text-hover, var(--peru-red-bright));
 }
 
 .nav-links {
@@ -152,7 +172,7 @@
 }
 
 .nav-link {
-  color: var(--peru-text);
+  color: var(--navbar-text, var(--peru-text));
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
@@ -160,7 +180,7 @@
 }
 
 .nav-link:hover {
-  color: var(--peru-red-bright);
+  color: var(--navbar-text-hover, var(--peru-red-bright));
 }
 
 .navbar-auth {
@@ -174,7 +194,7 @@
   display: none;
   background: transparent;
   border: none;
-  color: var(--peru-text-dark);
+  color: var(--navbar-text, var(--peru-text-dark));
   cursor: pointer;
   padding: 8px;
   border-radius: 6px;
@@ -184,7 +204,7 @@
 }
 
 .btn-hamburger:hover {
-  background: var(--peru-red-light);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* Mobile dropdown navigation menu drawer */
@@ -207,7 +227,7 @@
 .nav-link-mobile {
   font-size: 16px;
   font-weight: 600;
-  color: var(--peru-text-dark);
+  color: var(--card-title-color, var(--peru-text-dark));
   cursor: pointer;
   padding: 12px 0;
   border-bottom: 1px solid var(--peru-border);
@@ -216,7 +236,7 @@
 }
 
 .nav-link-mobile:hover {
-  color: var(--peru-red-bright);
+  color: var(--navbar-text-hover, var(--peru-red-bright));
 }
 
 .navbar-auth-mobile {
@@ -231,7 +251,7 @@
 .btn-theme-toggle {
   background: transparent;
   border: 1.5px solid var(--peru-border-btn);
-  color: var(--peru-text-dark);
+  color: var(--navbar-text, var(--peru-text-dark));
   padding: 8px;
   border-radius: 50%;
   cursor: pointer;
@@ -243,15 +263,15 @@
 
 .btn-theme-toggle:hover {
   background: var(--peru-red-light);
-  border-color: var(--peru-red-bright);
-  color: var(--peru-red-bright);
+  border-color: var(--navbar-text-hover, var(--peru-red-bright));
+  color: var(--navbar-text-hover, var(--peru-red-bright));
 }
 
 /* Join button */
 .btn-join {
   background: transparent;
-  color: var(--peru-red-bright);
-  border: 1.5px solid var(--peru-red-bright);
+  color: var(--btn-join-text);
+  border: 1.5px solid var(--btn-join-border);
   padding: 8px 20px;
   border-radius: 9999px;
   font-weight: 600;
@@ -262,15 +282,15 @@
 }
 
 .btn-join:hover {
-  background: var(--peru-red-bright);
+  background: var(--btn-join-text);
   color: var(--peru-white);
-  box-shadow: 0 0 15px rgba(212, 41, 50, 0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
 }
 
 .btn-join-2 {
   background: transparent;
-  color: var(--peru-red-bright);
-  border: 1.5px solid var(--peru-red-bright);
+  color: var(--btn-join-text);
+  border: 1.5px solid var(--btn-join-border);
   padding: 8px 20px;
   border-radius: 9999px;
   font-weight: 600;
@@ -282,9 +302,9 @@
 }
 
 .btn-join-2:hover {
-  background: var(--peru-red-bright);
+  background: var(--btn-join-text);
   color: var(--peru-white);
-  box-shadow: 0 0 15px rgba(212, 41, 50, 0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
 }
 
 .btn-nav-map {
@@ -519,13 +539,13 @@
 .concept-card-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--peru-text-dark);
+  color: var(--card-title-color, var(--peru-text-dark));
   margin: 0 0 12px 0;
 }
 
 .concept-card-desc {
   font-size: 15px;
-  color: var(--peru-text);
+  color: var(--card-desc-color, var(--peru-text));
   line-height: 1.6;
   margin: 0;
 }
@@ -543,7 +563,7 @@
 .banner-title {
   font-family: var(--font-title);
   font-size: 38px;
-  color: var(--peru-white);
+  color: #ffffff;
   margin: 0 0 10px 0;
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -638,7 +658,7 @@
 .restaurant-card-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--peru-text-dark);
+  color: var(--card-title-color, var(--peru-text-dark));
   margin: 0;
 }
 
@@ -655,7 +675,7 @@
 
 .restaurant-card-desc {
   font-size: 14px;
-  color: var(--peru-text);
+  color: var(--card-desc-color, var(--peru-text));
   line-height: 1.6;
   margin: 0 0 20px 0;
   flex: 1;
@@ -736,14 +756,14 @@
 .suggestions-title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--peru-text-dark);
+  color: var(--card-title-color, var(--peru-text-dark));
   margin: 0 0 10px 0;
   text-align: center;
 }
 
 .suggestions-desc {
   font-size: 14px;
-  color: var(--peru-text);
+  color: var(--card-desc-color, var(--peru-text));
   text-align: center;
   margin-bottom: 30px;
   line-height: 1.5;
