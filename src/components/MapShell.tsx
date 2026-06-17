@@ -114,7 +114,7 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
   // Cargar huariques desde API o datos de respaldo
   useEffect(() => {
     const fetchHuariques = async () => {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = import.meta.env.VITE_API_URL as string;
       try {
         setLoading(true);
         const response = await fetch(`${apiUrl}/huariques`);
