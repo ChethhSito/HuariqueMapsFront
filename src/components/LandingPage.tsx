@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import heroImage from '../assets/peruvian_cuisine_hero.png';
 import cevicheImage from '../assets/ceviche_carretilla.png';
 import anticuchosImage from '../assets/anticuchos_lima.png';
-import characterImage from '../assets/character.png';
+import characterImage from '../assets/ContactoHuarique.png';
+import logoImage from '../assets/HuariqueMap.png';
 import './LandingPage.css';
 
 interface LandingPageProps {
@@ -26,6 +27,28 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
   const [correo, setCorreo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [activeSection, setActiveSection] = useState('inicio');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    const sections = ['inicio', 'concepto', 'restaurantes', 'sugerencias'];
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -84,7 +107,8 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
       {/* Navigation Bar */}
       <nav className="navbar">
         <div className="navbar-container">
-          <a href="#" className="nav-logo" onClick={() => { scrollToSection('inicio'); setIsMenuOpen(false); }}>
+          <a href="#" className="nav-logo" onClick={(e) => { e.preventDefault(); scrollToSection('inicio'); setIsMenuOpen(false); }}>
+            <img src={logoImage} alt="HuariqueMap Logo" style={{ height: '60px', objectFit: 'contain' }} />
             Huarique<span>Map</span>
           </a>
 
@@ -112,9 +136,9 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
 
           {/* Desktop links */}
           <div className="nav-links">
-            <span className="nav-link" onClick={() => scrollToSection('concepto')}>Identidad</span>
-            <span className="nav-link" onClick={() => scrollToSection('restaurantes')}>Restaurantes</span>
-            <span className="nav-link" onClick={() => scrollToSection('sugerencias')}>Sugerencias</span>
+            <span className={`nav-link ${activeSection === 'concepto' ? 'active' : ''}`} onClick={() => scrollToSection('concepto')}>Identidad</span>
+            <span className={`nav-link ${activeSection === 'restaurantes' ? 'active' : ''}`} onClick={() => scrollToSection('restaurantes')}>Restaurantes</span>
+            <span className={`nav-link ${activeSection === 'sugerencias' ? 'active' : ''}`} onClick={() => scrollToSection('sugerencias')}>Sugerencias</span>
           </div>
 
           {/* Desktop auth */}
@@ -246,16 +270,16 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
         {isMenuOpen && (
           <div className="nav-menu-mobile">
             <div className="section-container" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <span className="nav-link-mobile" onClick={() => { scrollToSection('inicio'); setIsMenuOpen(false); }}>
+              <span className={`nav-link-mobile ${activeSection === 'inicio' ? 'active' : ''}`} onClick={() => { scrollToSection('inicio'); setIsMenuOpen(false); }}>
                 Inicio
               </span>
-              <span className="nav-link-mobile" onClick={() => { scrollToSection('concepto'); setIsMenuOpen(false); }}>
+              <span className={`nav-link-mobile ${activeSection === 'concepto' ? 'active' : ''}`} onClick={() => { scrollToSection('concepto'); setIsMenuOpen(false); }}>
                 Identidad
               </span>
-              <span className="nav-link-mobile" onClick={() => { scrollToSection('restaurantes'); setIsMenuOpen(false); }}>
+              <span className={`nav-link-mobile ${activeSection === 'restaurantes' ? 'active' : ''}`} onClick={() => { scrollToSection('restaurantes'); setIsMenuOpen(false); }}>
                 Restaurantes
               </span>
-              <span className="nav-link-mobile" onClick={() => { scrollToSection('sugerencias'); setIsMenuOpen(false); }}>
+              <span className={`nav-link-mobile ${activeSection === 'sugerencias' ? 'active' : ''}`} onClick={() => { scrollToSection('sugerencias'); setIsMenuOpen(false); }}>
                 Sugerencias
               </span>
               <div className="navbar-auth-mobile">
@@ -359,35 +383,52 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
       {/* Concept / Identity Section (White Themed - Peruvian Flag concept) */}
       <section id="concepto" className="concept-section">
         <div className="section-container">
-          <span className="section-tag">Nuestra Identidad</span>
-          <h2 className="section-title">¿Qué nos une como Peruanos?</h2>
+          {/* Centered Headings */}
+          <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+            <span className="section-tag" style={{ margin: '0 auto 20px auto' }}>Nuestra Identidad</span>
+            <h2 className="section-title" style={{ border: 'none', margin: '0' }}>
+              <span className="hero-flag-phrase" style={{ fontSize: 'clamp(35px, 5vw, 55px)', marginTop: '0' }}>
+                <span className="flag-red">¿Qué nos</span>{' '}
+                <span className="flag-white">une como</span>{' '}
+                <span className="flag-red">Peruanos?</span>
+              </span>
+            </h2>
+          </div>
 
-          <div className="concept-grid">
-            <div className="concept-card">
-              <h3 className="concept-card-title">El Concepto de "Huarique"</h3>
-              <p className="concept-card-desc">
-                Un huarique no es solo un restaurante; es un templo del sabor. Son lugares
-                tradicionales, a menudo discretos y familiares, reconocidos de boca en boca por
-                servir porciones generosas y una sazón inigualable.
-              </p>
+          <div className="concept-layout">
+            <div className="concept-left">
+              <div className="concept-grid">
+                <div className="concept-card">
+                  <h3 className="concept-card-title">El Concepto de "Huarique"</h3>
+                  <p className="concept-card-desc">
+                    Un huarique no es solo un restaurante; es un templo del sabor. Son lugares
+                    tradicionales, a menudo discretos y familiares, reconocidos de boca en boca por
+                    servir porciones generosas y una sazón inigualable.
+                  </p>
+                </div>
+
+                <div className="concept-card concept-card-middle">
+                  <h3 className="concept-card-title">Identidad Patriótica</h3>
+                  <p className="concept-card-desc">
+                    La gastronomía es el hilo conductor de nuestra historia. Costa, Sierra y Selva
+                    se entrelazan a través de ingredientes autóctonos como el ají amarillo, el limón
+                    y el maíz, creando platos que representan nuestra bandera y orgullo.
+                  </p>
+                </div>
+
+                <div className="concept-card">
+                  <h3 className="concept-card-title">Comunidad y Cultura</h3>
+                  <p className="concept-card-desc">
+                    Este mapa interactivo está diseñado para registrar, valorar y mantener viva la
+                    cultura de la carretilla, el huarique marino y la picantería. Un espacio hecho
+                    por peruanos, para el mundo.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="concept-card concept-card-middle">
-              <h3 className="concept-card-title">Identidad Patriótica</h3>
-              <p className="concept-card-desc">
-                La gastronomía es el hilo conductor de nuestra historia. Costa, Sierra y Selva
-                se entrelazan a través de ingredientes autóctonos como el ají amarillo, el limón
-                y el maíz, creando platos que representan nuestra bandera y orgullo.
-              </p>
-            </div>
-
-            <div className="concept-card">
-              <h3 className="concept-card-title">Comunidad y Cultura</h3>
-              <p className="concept-card-desc">
-                Este mapa interactivo está diseñado para registrar, valorar y mantener viva la
-                cultura de la carretilla, el huarique marino y la picantería. Un espacio hecho
-                por peruanos, para el mundo.
-              </p>
+            <div className="concept-right">
+              <img src={logoImage} alt="HuariqueMap Gran Logo" className="concept-logo-large" />
             </div>
           </div>
         </div>
@@ -448,7 +489,7 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
             <div className="suggestions-image-column">
               <img
                 src={characterImage}
-                alt="Buzón de Sugerencias"
+                alt="Contacto Huarique"
                 className="suggestions-image"
               />
             </div>
@@ -523,7 +564,8 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
           <div className="footer-grid">
             {/* Left Column: Logo and Info */}
             <div className="footer-col">
-              <a href="#" className="footer-logo" onClick={() => scrollToSection('inicio')}>
+              <a href="#" className="footer-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={(e) => { e.preventDefault(); scrollToSection('inicio'); }}>
+                <img src={logoImage} alt="HuariqueMap Logo" style={{ height: '65px', objectFit: 'contain', marginBottom: '15px' }} />
                 Huarique<span>Map</span>
               </a>
               <p className="footer-info-text">

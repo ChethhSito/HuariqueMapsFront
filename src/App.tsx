@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
 import MapShell from './components/MapShell';
+import logoImage from './assets/HuariqueMap.png';
+import loginImage from './assets/IniciasesionHuarique.png';
+import registerImage from './assets/RegistrateHuariqueR.png';
 import './App.css';
 
 interface User {
@@ -17,7 +20,7 @@ function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
 
-  // User Dropdown state
+  // User Dropdown state for Map view
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   // Auth Modal tabs & state
@@ -198,7 +201,30 @@ function App() {
         <div className="auth-modal-card" onClick={(e) => e.stopPropagation()}>
           <button className="auth-modal-close" onClick={() => setShowAuthModal(false)}>✕</button>
 
-          {/* Tabs */}
+          <div className="auth-modal-image-container">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '30px' }}>
+              <img src={logoImage} alt="Huarique Logo" style={{ height: '40px' }} />
+              <h1 style={{ 
+                margin: 0, 
+                fontSize: '32px', 
+                color: 'var(--peru-text)', 
+                fontFamily: 'Pacifico, cursive', 
+                fontWeight: 'normal',
+                textAlign: 'center'
+              }}>
+                Huarique <span style={{ color: 'var(--peru-red)' }}>Map</span>
+              </h1>
+            </div>
+            <img 
+              key={isLoginMode ? 'login' : 'register'}
+              className="fade-in-scale"
+              src={isLoginMode ? loginImage : registerImage} 
+              alt={isLoginMode ? "Iniciar Sesión" : "Registrarse"} 
+            />
+          </div>
+
+          <div className="auth-modal-form-container">
+            {/* Tabs */}
           <div style={{ display: 'flex', borderBottom: '1px solid var(--peru-border)', marginBottom: '20px' }}>
             <button
               onClick={() => { setIsLoginMode(false); setAuthError(null); }}
@@ -234,11 +260,12 @@ function App() {
             </button>
           </div>
 
-          <h3 style={{ fontFamily: 'Outfit, sans-serif', color: 'var(--peru-text-dark)', marginBottom: '15px' }}>
-            {isLoginMode ? 'Ingresa a tu cuenta' : 'Crea tu cuenta gratis'}
-          </h3>
+          <div key={isLoginMode ? 'login-form' : 'register-form'} className="fade-in-slide">
+            <h3 style={{ fontFamily: 'Outfit, sans-serif', color: 'var(--peru-text-dark)', marginBottom: '15px' }}>
+              {isLoginMode ? 'Ingresa a tu cuenta' : 'Crea tu cuenta gratis'}
+            </h3>
 
-          {authError && (
+            {authError && (
             <div style={{
               backgroundColor: 'rgba(239, 68, 68, 0.1)',
               color: '#ef4444',
@@ -340,6 +367,8 @@ function App() {
               {isLoginMode ? '¿No tienes cuenta? Regístrate aquí' : '¿Ya tienes cuenta? Inicia sesión aquí'}
             </span>
           </div>
+          </div>
+          </div>
         </div>
       </div>
     );
@@ -359,78 +388,66 @@ function App() {
       ) : (
         <div style={{
           background: 'var(--map-bg)',
-          height: '100vh',
+          height: 'calc(100vh / 0.85)',
           display: 'flex',
           flexDirection: 'column',
-          overflow: 'hidden',
-          transition: 'background 0.3s ease'
+          overflow: 'hidden'
         }}>
+          {/* Componente MapShell con su Navbar Propia */}
           <header style={{
             display: 'flex',
-            justifyContent: 'space-between',
             alignItems: 'center',
+            justifyContent: 'space-between',
             padding: '12px 24px',
-            background: 'var(--map-header)',
-            color: 'var(--map-header-text)',
-            borderBottom: '1px solid var(--map-border)',
-            transition: 'background 0.3s ease, border-color 0.3s ease'
+            background: 'var(--peru-bg)',
+            borderBottom: '1px solid var(--peru-border)',
+            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+            zIndex: 1000
           }}>
-            {/* Left side: Back Button & API Status */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <button
                 onClick={() => navigateTo('landing')}
                 style={{
                   background: 'var(--peru-white)',
-                  border: '1.5px solid var(--peru-border-btn)',
+                  border: '1px solid var(--peru-border-btn)',
                   color: 'var(--peru-text-dark)',
                   padding: '8px 18px',
-                  borderRadius: '8px',
+                  borderRadius: '20px',
                   fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s',
-                  fontFamily: 'Outfit, sans-serif'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--peru-red-bright)';
-                  e.currentTarget.style.color = '#ffffff';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--peru-white)';
-                  e.currentTarget.style.color = 'var(--peru-text-dark)';
-                }}
-              >
-                ← Volver al Inicio
-              </button>
-
-
-            </div>
-
-            {/* Center Brand */}
-            <span style={{
-              fontFamily: 'Pacifico, cursive',
-              fontSize: '26px',
-              color: 'var(--map-header-text)',
-              cursor: 'pointer'
-            }} onClick={() => navigateTo('landing')}>
-              Huarique<span style={{ color: 'var(--peru-red-bright)' }}>Map</span>
-            </span>
-
-            {/* Right side: Theme & Auth */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <button
-                onClick={toggleTheme}
-                className="btn-theme-toggle"
-                style={{
-                  border: '1.5px solid var(--peru-border-btn)',
-                  padding: '8px',
-                  borderRadius: '50%',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
+                  gap: '8px',
+                  fontFamily: 'Outfit, sans-serif'
+                }}
+              >
+                <span style={{ color: 'var(--peru-red)', fontSize: '18px' }}>←</span> Volver al Inicio
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <img src={logoImage} alt="Huarique Logo" style={{ height: '32px' }} />
+              <h1 style={{ margin: 0, fontSize: '28px', color: 'var(--peru-text)', fontFamily: 'Pacifico, cursive', fontWeight: 'normal' }}>
+                Huarique <span style={{ color: 'var(--peru-red)' }}>Map</span>
+              </h1>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              <button
+                className="btn-theme-toggle"
+                onClick={toggleTheme}
+                title={isDark ? 'Modo Claro' : 'Modo Oscuro'}
+                style={{
                   background: 'var(--peru-white)',
+                  border: '1px solid var(--peru-border-btn)',
+                  borderRadius: '50%',
+                  width: '36px',
+                  height: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   color: 'var(--peru-text-dark)',
-                  transition: 'all 0.3s ease'
+                  cursor: 'pointer'
                 }}
               >
                 {isDark ? (
@@ -459,7 +476,7 @@ function App() {
                     style={{
                       fontSize: '14px',
                       fontWeight: '600',
-                      color: 'var(--map-header-text)',
+                      color: 'var(--peru-text)',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
@@ -467,75 +484,43 @@ function App() {
                       userSelect: 'none',
                       padding: '6px 12px',
                       borderRadius: '6px',
-                      background: showUserDropdown ? 'rgba(255,255,255,0.1)' : 'transparent',
-                      transition: 'background 0.2s'
+                      background: showUserDropdown ? 'rgba(255,255,255,0.1)' : 'transparent'
                     }}
-                    onMouseEnter={(e) => { if (!showUserDropdown) e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
-                    onMouseLeave={(e) => { if (!showUserDropdown) e.currentTarget.style.background = 'transparent'; }}
                   >
-                    Hola, {user.nombre} <span style={{ fontSize: '10px' }}>▼</span>
+                    Hola, {user.nombre} ▼
                   </span>
 
                   {showUserDropdown && (
-                    <>
-                      {/* Backdrop invisible para cerrar el menú al hacer clic fuera */}
-                      <div
-                        onClick={() => setShowUserDropdown(false)}
-                        style={{
-                          position: 'fixed',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          zIndex: 999,
-                          background: 'transparent'
+                    <div style={{
+                      position: 'absolute',
+                      top: '100%',
+                      right: 0,
+                      marginTop: '8px',
+                      backgroundColor: 'var(--peru-white)',
+                      border: '1.5px solid var(--peru-border)',
+                      borderRadius: '8px',
+                      padding: '6px 0',
+                      minWidth: '130px',
+                      zIndex: 1000
+                    }}>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setShowUserDropdown(false);
                         }}
-                      />
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        right: 0,
-                        marginTop: '8px',
-                        backgroundColor: 'var(--peru-white)',
-                        border: '1.5px solid var(--peru-border)',
-                        borderRadius: '8px',
-                        boxShadow: '0 8px 16px rgba(0,0,0,0.15)',
-                        padding: '6px 0',
-                        minWidth: '130px',
-                        zIndex: 1000,
-                        display: 'flex',
-                        flexDirection: 'column'
-                      }}>
-                        <button
-                          onClick={() => {
-                            handleLogout();
-                            setShowUserDropdown(false);
-                          }}
-                          style={{
-                            padding: '8px 16px',
-                            background: 'transparent',
-                            border: 'none',
-                            color: 'var(--peru-text)',
-                            textAlign: 'left',
-                            fontSize: '13px',
-                            cursor: 'pointer',
-                            fontFamily: 'Outfit, sans-serif',
-                            width: '100%',
-                            transition: 'background 0.2s'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = 'var(--peru-red-light)';
-                            e.currentTarget.style.color = 'var(--peru-red-bright)';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = 'transparent';
-                            e.currentTarget.style.color = 'var(--peru-text)';
-                          }}
-                        >
-                          Cerrar Sesión
-                        </button>
-                      </div>
-                    </>
+                        style={{
+                          padding: '8px 16px',
+                          background: 'transparent',
+                          border: 'none',
+                          color: 'var(--peru-text)',
+                          textAlign: 'left',
+                          width: '100%',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Cerrar Sesión
+                      </button>
+                    </div>
                   )}
                 </div>
               ) : (
@@ -545,15 +530,12 @@ function App() {
                     background: 'var(--peru-red-bright)',
                     border: 'none',
                     color: '#ffffff',
-                    padding: '8px 18px',
+                    padding: '8px 20px',
                     borderRadius: '8px',
                     fontWeight: '600',
                     cursor: 'pointer',
-                    fontFamily: 'Outfit, sans-serif',
-                    transition: 'all 0.3s'
+                    fontFamily: 'Outfit, sans-serif'
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.filter = 'brightness(1.15)'}
-                  onMouseLeave={(e) => e.currentTarget.style.filter = 'none'}
                 >
                   Únete
                 </button>
