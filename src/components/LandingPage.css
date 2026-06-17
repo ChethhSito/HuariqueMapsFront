@@ -6,7 +6,7 @@
   --peru-box-bg: #ede1d7;
   --peru-text: #110906;
   --peru-text-dark: #bd2d2d;
-  
+
   /* Flag colors */
   --flag-red: #bd2d2d;
   --flag-white: #ffffff;
@@ -28,7 +28,7 @@
   --btn-secondary-text: #110906;
   --btn-secondary-border: #110906;
   --btn-secondary-bg-hover: rgba(17, 9, 6, 0.08);
-  
+
   /* Outline button join styles */
   --btn-join-text: #110906;
   --btn-join-border: #110906;
@@ -38,7 +38,7 @@
   --input-text: #110906;
   --input-border: #110906;
   --form-label-color: #bd2d2d;
-  
+
   /* Card tags & details */
   --tag-bg: #bd2d2d;
   --tag-text: #ffffff;
@@ -83,12 +83,12 @@
   --peru-red: #c8272f;
   --peru-red-bright: #d42932;
   --peru-red-dark: #8c161b;
-  
+
   /* Flag colors */
   --flag-red: #d42932;
   --flag-white: #ffffff;
   --flag-outline: #0f1016;
-  
+
   /* Button custom styles */
   --btn-primary-bg: linear-gradient(135deg, #c8272f 0%, #d42932 100%);
   --btn-primary-text: #ffffff;
@@ -96,7 +96,7 @@
   --btn-secondary-text: #f8fafc;
   --btn-secondary-border: rgba(255, 255, 255, 0.2);
   --btn-secondary-bg-hover: rgba(255, 255, 255, 0.05);
-  
+
   /* Outline button join styles */
   --btn-join-text: var(--peru-red-bright);
   --btn-join-border: var(--peru-red-bright);
@@ -106,7 +106,7 @@
   --input-text: #f8fafc;
   --input-border: rgba(255, 255, 255, 0.08);
   --form-label-color: #94a3b8;
-  
+
   /* Card tags & details */
   --tag-bg: rgba(200, 39, 47, 0.15);
   --tag-text: #d42932;
@@ -118,7 +118,7 @@
   /* Navbar custom styles */
   --navbar-text: var(--peru-text-dark);
   --navbar-text-hover: var(--peru-red-bright);
-  
+
   /* Map variables */
   --map-dashboard-bg: #16171d;
   --map-bg: #0b0f19;
@@ -378,11 +378,12 @@
 }
 
 
-.mobile-auth-buttons{
+.mobile-auth-buttons {
   display: flex;
   gap: 12px;
   justify-content: center;
 }
+
 /* Hero Section */
 .hero-section {
   padding: 80px 0;
@@ -416,7 +417,7 @@
   font-weight: 800;
   line-height: 1.1;
   margin: 0 0 20px 0;
-  color: var(--peru-text-dark);
+  color: #110906;
 }
 
 .hero-flag-phrase {
@@ -429,22 +430,22 @@
 
 .flag-red {
   color: var(--flag-red);
-  text-shadow: 
-    -1px -1px 0 var(--flag-outline),  
-     1px -1px 0 var(--flag-outline),
-    -1px  1px 0 var(--flag-outline),
-     1px  1px 0 var(--flag-outline),
-     0 4px 15px rgba(0, 0, 0, 0.15);
+  text-shadow:
+    -1px -1px 0 var(--flag-outline),
+    1px -1px 0 var(--flag-outline),
+    -1px 1px 0 var(--flag-outline),
+    1px 1px 0 var(--flag-outline),
+    0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .flag-white {
   color: var(--flag-white);
-  text-shadow: 
-    -1px -1px 0 var(--flag-outline),  
-     1px -1px 0 var(--flag-outline),
-    -1px  1px 0 var(--flag-outline),
-     1px  1px 0 var(--flag-outline),
-     0 4px 15px rgba(0, 0, 0, 0.15);
+  text-shadow:
+    -1px -1px 0 var(--flag-outline),
+    1px -1px 0 var(--flag-outline),
+    -1px 1px 0 var(--flag-outline),
+    1px 1px 0 var(--flag-outline),
+    0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .hero-desc {
@@ -566,7 +567,7 @@
   flex: 1;
   min-width: 280px;
   max-width: 360px;
-  
+
   border-radius: 16px;
   padding: 35px 25px;
   transition: all 0.3s;
@@ -766,16 +767,16 @@
   width: 100%;
   max-width: 480px;
   height: auto;
-  
+
   object-fit: cover;
-  
+
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
+
 }
 
 .suggestions-image:hover {
   transform: translateY(-5px);
-  
+
 }
 
 .suggestions-form-column {
@@ -827,7 +828,8 @@
   margin-bottom: 8px;
 }
 
-.form-input, .form-textarea {
+.form-input,
+.form-textarea {
   width: 100%;
   background: var(--input-bg);
   border: 1px solid var(--input-border);
@@ -840,7 +842,8 @@
   transition: all 0.3s;
 }
 
-.form-input:focus, .form-textarea:focus {
+.form-input:focus,
+.form-textarea:focus {
   outline: none;
   border-color: var(--peru-red-bright);
   box-shadow: 0 0 8px var(--peru-red-light);
@@ -995,6 +998,7 @@
 
 /* Tablets & Small Desktops (Less than 1200px) */
 @media (max-width: 1200px) {
+
   .section-container,
   .navbar-container {
     width: 80%;
@@ -1044,6 +1048,7 @@
 
 /* Tablets & Half-Screens (Less than 968px) */
 @media (max-width: 968px) {
+
   .section-container,
   .navbar-container {
     width: 90%;
@@ -1096,7 +1101,8 @@
     gap: 12px;
   }
 
-  .btn-primary, .btn-secondary {
+  .btn-primary,
+  .btn-secondary {
     width: 100%;
     padding: 12px 24px;
     font-size: 15px;
@@ -1149,7 +1155,8 @@
     gap: 8px;
   }
 
-  .btn-join, .btn-nav-map {
+  .btn-join,
+  .btn-nav-map {
     padding: 6px 12px;
     font-size: 12px;
   }

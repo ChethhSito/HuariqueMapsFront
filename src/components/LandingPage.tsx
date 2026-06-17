@@ -9,11 +9,17 @@ interface LandingPageProps {
   onNavigate: (view: 'landing' | 'map') => void;
   isDark: boolean;
   onToggleTheme: () => void;
+  user: { nombre: string } | null;
+  onAuthClick: () => void;
+  onLogout: () => void;
 }
 
-export default function LandingPage({ onNavigate, isDark, onToggleTheme }: LandingPageProps) {
+export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, onAuthClick, onLogout }: LandingPageProps) {
   // Estado para el menú hamburguesa
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Estado para el menú desplegable del perfil del usuario
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   // Estados para el buzón de sugerencias
   const [nombre, setNombre] = useState('');
@@ -33,7 +39,7 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
     if (nombre && correo && descripcion) {
       console.log('Sugerencia enviada:', { nombre, correo, descripcion });
       setIsSubmitted(true);
-      
+
       setTimeout(() => {
         setNombre('');
         setCorreo('');
@@ -41,10 +47,6 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
         setIsSubmitted(false);
       }, 5000);
     }
-  };
-
-  const handleAuthAction = () => {
-    alert('Funcionalidad de registro e inicio de sesión simulada con el botón Únete.');
   };
 
   const popularRestaurants = [
@@ -85,10 +87,10 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
           <a href="#" className="nav-logo" onClick={() => { scrollToSection('inicio'); setIsMenuOpen(false); }}>
             Huarique<span>Map</span>
           </a>
-          
+
           {/* Hamburger Toggle Button for mobile and tablets */}
-          <button 
-            className="btn-hamburger" 
+          <button
+            className="btn-hamburger"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle navigation menu"
           >
@@ -110,7 +112,6 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
 
           {/* Desktop links */}
           <div className="nav-links">
-            <span className="nav-link" onClick={() => scrollToSection('inicio')}>Inicio</span>
             <span className="nav-link" onClick={() => scrollToSection('concepto')}>Identidad</span>
             <span className="nav-link" onClick={() => scrollToSection('restaurantes')}>Restaurantes</span>
             <span className="nav-link" onClick={() => scrollToSection('sugerencias')}>Sugerencias</span>
@@ -118,9 +119,9 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
 
           {/* Desktop auth */}
           <div className="navbar-auth">
-            <button 
-              className="btn-theme-toggle" 
-              onClick={onToggleTheme} 
+            <button
+              className="btn-theme-toggle"
+              onClick={onToggleTheme}
               title={isDark ? 'Modo Claro' : 'Modo Oscuro'}
             >
               {isDark ? (
@@ -141,10 +142,100 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
                 </svg>
               )}
             </button>
-            
-            <button className="btn-join" onClick={handleAuthAction}>
-              Únete
-            </button>
+
+            {user ? (
+              <div style={{ position: 'relative' }}>
+                <span
+                  onClick={() => setShowUserDropdown(!showUserDropdown)}
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: 'var(--peru-text)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    userSelect: 'none',
+                    padding: '8px 14px',
+                    borderRadius: '8px',
+                    background: showUserDropdown ? 'var(--peru-red-light)' : 'transparent',
+                    transition: 'all 0.2s',
+                    fontFamily: 'var(--font-sans)'
+                  }}
+                  onMouseEnter={(e) => { if (!showUserDropdown) e.currentTarget.style.background = 'var(--peru-red-light)'; }}
+                  onMouseLeave={(e) => { if (!showUserDropdown) e.currentTarget.style.background = 'transparent'; }}
+                >
+                  Hola, {user.nombre} <span style={{ fontSize: '10px' }}>▼</span>
+                </span>
+
+                {showUserDropdown && (
+                  <>
+                    {/* Backdrop to close dropdown */}
+                    <div
+                      onClick={() => setShowUserDropdown(false)}
+                      style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        zIndex: 999,
+                        background: 'transparent'
+                      }}
+                    />
+                    <div style={{
+                      position: 'absolute',
+                      top: '100%',
+                      right: 0,
+                      marginTop: '8px',
+                      backgroundColor: 'var(--peru-white)',
+                      border: '1.5px solid var(--peru-border)',
+                      borderRadius: '8px',
+                      boxShadow: '0 8px 16px rgba(0,0,0,0.1)',
+                      padding: '6px 0',
+                      minWidth: '130px',
+                      zIndex: 1000,
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}>
+                      <button
+                        onClick={() => {
+                          onLogout();
+                          setShowUserDropdown(false);
+                        }}
+                        style={{
+                          padding: '8px 16px',
+                          background: 'transparent',
+                          border: 'none',
+                          color: 'var(--peru-text)',
+                          textAlign: 'left',
+                          fontSize: '13px',
+                          cursor: 'pointer',
+                          fontFamily: 'var(--font-sans)',
+                          width: '100%',
+                          transition: 'background 0.2s'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = 'var(--peru-red-light)';
+                          e.currentTarget.style.color = 'var(--peru-red-bright)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.color = 'var(--peru-text)';
+                        }}
+                      >
+                        Cerrar Sesión
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <button className="btn-join" onClick={onAuthClick}>
+                Únete
+              </button>
+            )}
+
             <button className="btn-nav-map" onClick={() => onNavigate('map')}>
               Ver Mapa Interactivo
             </button>
@@ -170,9 +261,9 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
               <div className="navbar-auth-mobile">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0' }}>
                   <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--peru-text-dark)' }}>Tema</span>
-                  <button 
-                    className="btn-theme-toggle" 
-                    onClick={onToggleTheme} 
+                  <button
+                    className="btn-theme-toggle"
+                    onClick={onToggleTheme}
                     title={isDark ? 'Modo Claro' : 'Modo Oscuro'}
                   >
                     {isDark ? (
@@ -195,9 +286,28 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
                   </button>
                 </div>
                 <div className="mobile-auth-buttons">
-                  <button className="btn-join-2" onClick={() => { handleAuthAction(); setIsMenuOpen(false); }}>
-                    Únete
-                  </button>
+                  {user ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', marginBottom: '10px' }}>
+                      <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--peru-text-dark)', textAlign: 'center', fontFamily: 'var(--font-sans)' }}>
+                        Hola, {user.nombre}
+                      </span>
+                      <button
+                        className="btn-join-2"
+                        style={{
+                          backgroundColor: 'transparent',
+                          border: '1.5px solid var(--peru-red-bright)',
+                          color: 'var(--peru-red-bright)'
+                        }}
+                        onClick={() => { onLogout(); setIsMenuOpen(false); }}
+                      >
+                        Cerrar Sesión
+                      </button>
+                    </div>
+                  ) : (
+                    <button className="btn-join-2" onClick={() => { onAuthClick(); setIsMenuOpen(false); }}>
+                      Únete
+                    </button>
+                  )}
                   <button className="btn-nav-map-2" onClick={() => { onNavigate('map'); setIsMenuOpen(false); }}>
                     Ver Mapa Interactivo
                   </button>
@@ -222,8 +332,8 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
               </span>
             </h1>
             <p className="hero-desc">
-              Encuentra y comparte los "Huariques" más emblemáticos de tu zona. 
-              Esos rincones ocultos cargados de historia, tradición, sazón y la pasión 
+              Encuentra y comparte los "Huariques" más emblemáticos de tu zona.
+              Esos rincones ocultos cargados de historia, tradición, sazón y la pasión
               que une a todo el Perú en una sola mesa.
             </p>
             <div className="hero-actions">
@@ -237,9 +347,9 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
           </div>
           <div className="hero-image-wrapper">
             <div className="hero-image-glow"></div>
-            <img 
-              src={heroImage} 
-              alt="Deliciosa comida peruana: Ceviche y Lomo Saltado" 
+            <img
+              src={heroImage}
+              alt="Deliciosa comida peruana: Ceviche y Lomo Saltado"
               className="hero-image"
             />
           </div>
@@ -251,13 +361,13 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
         <div className="section-container">
           <span className="section-tag">Nuestra Identidad</span>
           <h2 className="section-title">¿Qué nos une como Peruanos?</h2>
-          
+
           <div className="concept-grid">
             <div className="concept-card">
               <h3 className="concept-card-title">El Concepto de "Huarique"</h3>
               <p className="concept-card-desc">
-                Un huarique no es solo un restaurante; es un templo del sabor. Son lugares 
-                tradicionales, a menudo discretos y familiares, reconocidos de boca en boca por 
+                Un huarique no es solo un restaurante; es un templo del sabor. Son lugares
+                tradicionales, a menudo discretos y familiares, reconocidos de boca en boca por
                 servir porciones generosas y una sazón inigualable.
               </p>
             </div>
@@ -265,8 +375,8 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
             <div className="concept-card">
               <h3 className="concept-card-title">Identidad Patriótica</h3>
               <p className="concept-card-desc">
-                La gastronomía es el hilo conductor de nuestra historia. Costa, Sierra y Selva 
-                se entrelazan a través de ingredientes autóctonos como el ají amarillo, el limón 
+                La gastronomía es el hilo conductor de nuestra historia. Costa, Sierra y Selva
+                se entrelazan a través de ingredientes autóctonos como el ají amarillo, el limón
                 y el maíz, creando platos que representan nuestra bandera y orgullo.
               </p>
             </div>
@@ -274,8 +384,8 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
             <div className="concept-card">
               <h3 className="concept-card-title">Comunidad y Cultura</h3>
               <p className="concept-card-desc">
-                Este mapa interactivo está diseñado para registrar, valorar y mantener viva la 
-                cultura de la carretilla, el huarique marino y la picantería. Un espacio hecho 
+                Este mapa interactivo está diseñado para registrar, valorar y mantener viva la
+                cultura de la carretilla, el huarique marino y la picantería. Un espacio hecho
                 por peruanos, para el mundo.
               </p>
             </div>
@@ -288,7 +398,7 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
         <div className="section-container">
           <h2 className="banner-title">La comida que nos une</h2>
           <p className="banner-desc">
-            Desde un ceviche al paso en una carretilla hasta el lomo saltado más tradicional del centro histórico, 
+            Desde un ceviche al paso en una carretilla hasta el lomo saltado más tradicional del centro histórico,
             cada huarique cuenta una historia de esfuerzo, unión y amor por nuestra tierra.
           </p>
         </div>
@@ -300,10 +410,10 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
           <span className="section-tag">Recomendaciones</span>
           <h2 className="section-title">Restaurantes Populares</h2>
           <p className="restaurants-section-desc">
-            Una selección de huariques tradicionales muy queridos por la comunidad. 
+            Una selección de huariques tradicionales muy queridos por la comunidad.
             Explora su sabor único antes de ver su ubicación geoespacial en el mapa.
           </p>
-          
+
           <div className="restaurants-grid">
             {popularRestaurants.map((res) => (
               <div key={res.id} className="restaurant-card">
@@ -332,13 +442,13 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
         <div className="section-container">
           <span className="section-tag">Participa</span>
           <h2 className="section-title">Buzón de Sugerencias</h2>
-          
+
           <div className="suggestions-container-grid">
             {/* Left Column: Image for suggestion box */}
             <div className="suggestions-image-column">
-              <img 
-                src={characterImage} 
-                alt="Buzón de Sugerencias" 
+              <img
+                src={characterImage}
+                alt="Buzón de Sugerencias"
                 className="suggestions-image"
               />
             </div>
@@ -348,7 +458,7 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
               <div className="suggestions-card">
                 <h3 className="suggestions-title">Recomienda un Huarique</h3>
                 <p className="suggestions-desc">
-                  ¿Conoces algún rincón culinario secreto que merezca estar en el mapa? 
+                  ¿Conoces algún rincón culinario secreto que merezca estar en el mapa?
                   Escríbenos y ayúdanos a expandir nuestra comunidad de sabor.
                 </p>
 
@@ -360,38 +470,38 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
                   <form onSubmit={handleSuggestionSubmit}>
                     <div className="form-group">
                       <label className="form-label" htmlFor="nombre">Nombre Completo</label>
-                      <input 
-                        type="text" 
-                        id="nombre" 
-                        className="form-input" 
-                        value={nombre} 
-                        onChange={(e) => setNombre(e.target.value)} 
-                        required 
+                      <input
+                        type="text"
+                        id="nombre"
+                        className="form-input"
+                        value={nombre}
+                        onChange={(e) => setNombre(e.target.value)}
+                        required
                         placeholder="Ej. Juan Pérez"
                       />
                     </div>
 
                     <div className="form-group">
                       <label className="form-label" htmlFor="correo">Correo Electrónico</label>
-                      <input 
-                        type="email" 
-                        id="correo" 
-                        className="form-input" 
-                        value={correo} 
-                        onChange={(e) => setCorreo(e.target.value)} 
-                        required 
+                      <input
+                        type="email"
+                        id="correo"
+                        className="form-input"
+                        value={correo}
+                        onChange={(e) => setCorreo(e.target.value)}
+                        required
                         placeholder="Ej. juan@correo.com"
                       />
                     </div>
 
                     <div className="form-group">
                       <label className="form-label" htmlFor="descripcion">Detalles del Huarique (Nombre, especialidad, dirección)</label>
-                      <textarea 
-                        id="descripcion" 
-                        className="form-textarea" 
-                        value={descripcion} 
-                        onChange={(e) => setDescripcion(e.target.value)} 
-                        required 
+                      <textarea
+                        id="descripcion"
+                        className="form-textarea"
+                        value={descripcion}
+                        onChange={(e) => setDescripcion(e.target.value)}
+                        required
                         placeholder="Ej. Cevichería El Primo en Surquillo, Jr. Dante 420. Recomiendo el ceviche de pota."
                       ></textarea>
                     </div>
@@ -417,8 +527,8 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme }: Landi
                 Huarique<span>Map</span>
               </a>
               <p className="footer-info-text">
-                Conectando a los amantes de la buena comida con los rincones culinarios más emblemáticos 
-                y tradicionales del Perú. Promovemos el turismo gastronómico local de forma gratuita.
+                Conectando a los amantes de la buena comida con los rincones culinarios más emblemáticos
+                y tradicionales del Perú. Promovemos el turismo gastronomómico local de forma gratuita.
               </p>
             </div>
 

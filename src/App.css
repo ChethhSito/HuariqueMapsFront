@@ -1,7 +1,70 @@
 /* apps/frontend/src/App.css */
 body {
-  background-color: #0f172a;
-  color: #f8fafc;
+  background-color: #ede1d7;
+  color: #110906;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:root.dark-theme body {
+  background-color: #0f1016;
+  color: #94a3b8;
+}
+
+/* Auth Modal Styling */
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeInModal 0.25s ease-out;
+}
+
+.auth-modal-card {
+  background: var(--peru-white);
+  border: 2px solid var(--peru-border);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 420px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  position: relative;
+  text-align: left;
+  animation: scaleInModal 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleInModal {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.auth-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--peru-text);
+  opacity: 0.7;
+}
+
+.auth-modal-close:hover {
+  opacity: 1;
+  color: var(--peru-red-bright);
 }

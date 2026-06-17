@@ -3,76 +3,19 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  height: 85vh;
+  height: 100%;
   width: 100%;
   max-width: 100%;
   margin: 0;
-  border-radius: 16px;
   overflow: hidden;
   background: var(--map-dashboard-bg);
-  border: 1px solid var(--map-border);
-  box-shadow: 0 20px 40px var(--map-shadow);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Outfit', sans-serif;
   color: var(--map-text);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: background 0.3s ease;
 }
 
 .dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  background: var(--map-header);
-  color: var(--map-header-text);
-  border-bottom: 1px solid var(--map-border);
-  transition: background 0.3s ease, border-color 0.3s ease;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--map-header-text);
-  margin: 0;
-}
-
-.status-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 6px 12px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--map-header-text);
-}
-
-:root.dark-theme .status-badge {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.status-dot.connected {
-  background-color: #10b981;
-  box-shadow: 0 0 10px #10b981;
-  animation: blink 1.5s infinite;
-}
-
-.status-dot.disconnected {
-  background-color: #f59e0b;
-  box-shadow: 0 0 10px #f59e0b;
-  animation: blink 1.5s infinite;
+  display: none; /* Oculto ya que usamos el header unificado en App.tsx */
 }
 
 .dashboard-content {
@@ -89,7 +32,7 @@
   border-right: 1px solid var(--map-border);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow: hidden; /* Fija la estructura para habilitar scroll interno en la lista */
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
@@ -102,12 +45,98 @@
   color: var(--map-text-dark);
 }
 
+/* Filter Bar Styling */
+.filter-bar-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  background: var(--map-sidebar);
+  border-bottom: 1px solid var(--map-border);
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  flex: 1;
+  scroll-behavior: smooth;
+}
+
+.filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-arrow {
+  background: var(--peru-white);
+  border: 1.5px solid var(--peru-border-btn);
+  color: var(--peru-text);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  user-select: none;
+  z-index: 5;
+  transition: all 0.2s ease;
+  margin: 0 4px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.scroll-arrow:hover {
+  background: var(--map-active-item);
+  color: var(--peru-red-bright);
+  border-color: var(--peru-red-bright);
+}
+
+.scroll-arrow:active {
+  transform: scale(0.9);
+}
+
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--peru-border-btn);
+  background: var(--peru-white);
+  color: var(--peru-text);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Outfit', sans-serif;
+}
+
+.filter-btn:hover {
+  background: var(--map-active-item);
+  color: var(--peru-red-bright);
+  border-color: var(--peru-red-bright);
+}
+
+.filter-btn.active {
+  background: var(--peru-red-bright);
+  color: #ffffff;
+  border-color: var(--peru-red-bright);
+  box-shadow: 0 2px 6px rgba(189, 45, 45, 0.2);
+}
+
 .huariques-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  overflow-y: auto; /* Permite scroll solo en la lista de huariques */
 }
 
 .huarique-item {
@@ -131,6 +160,13 @@
   border-left: 4px solid var(--map-accent);
 }
 
+.huarique-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
 .huarique-name {
   font-size: 16px;
   font-weight: 600;
@@ -138,9 +174,29 @@
   margin: 0;
 }
 
+.huarique-likes-badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--peru-white);
+  border: 1px solid var(--peru-border-btn);
+  color: var(--peru-text);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.25s ease;
+}
+
+.huarique-likes-badge:hover {
+  background: var(--map-active-item);
+  border-color: var(--peru-red-bright);
+  transform: scale(1.05);
+}
+
 .huarique-tag {
   display: inline-block;
-  font-size: 11px;
+  font-size: 10px;
   padding: 2px 8px;
   border-radius: 4px;
   background: var(--tag-bg);
@@ -169,11 +225,6 @@
 .map-shell {
   flex: 1;
   background-color: var(--map-bg);
-  background-image: 
-    radial-gradient(var(--map-grid) 1.5px, transparent 0),
-    linear-gradient(to right, var(--map-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--map-line) 1px, transparent 1px);
-  background-size: 24px 24px, 48px 48px, 48px 48px;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -184,11 +235,11 @@
 
 .map-grid-overlay {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 15px;
+  left: 15px;
   font-family: monospace;
   font-size: 11px;
-  color: #94a3b8;
+  color: #64748b;
   pointer-events: none;
   display: flex;
   flex-direction: column;
@@ -207,144 +258,134 @@
   font-size: 12px;
   color: var(--map-accent);
   border: 1px solid var(--map-border);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-.map-placeholder-title {
-  position: absolute;
-  top: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  color: #94a3b8;
-  text-transform: uppercase;
-  pointer-events: none;
-}
-
-/* Map Vector Shape Simulation */
-.map-vector-graphic {
-  position: absolute;
-  width: 80%;
-  height: 80%;
-  opacity: 0.15;
-  stroke: var(--map-accent);
-  stroke-width: 1.5;
-  fill: none;
-  pointer-events: none;
-}
-
-/* Glowing Pin Pinpoint on Map */
-.map-pin {
+/* Custom Leaflet Marker Styling */
+.custom-marker-container {
   position: absolute;
   cursor: pointer;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: auto;
 }
 
-.map-pin:hover .pin-marker {
-  transform: scale(1.2);
-  filter: brightness(1.1);
+.marker-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 42px;
 }
 
-.map-pin.active {
-  z-index: 20;
+/* Outer Pin Head shape */
+.marker-pin-head {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--map-accent-bright) 0%, var(--map-accent) 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.25s ease;
 }
 
-.pin-pulse {
+/* Inner Dot */
+.marker-pin-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+}
+
+/* Pin Tip pointing downwards */
+.marker-pin-tip {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid var(--map-accent);
+  margin-top: -3px;
+  z-index: 1;
+  filter: drop-shadow(0 3px 2px rgba(0,0,0,0.3));
+  transition: border-top-color 0.25s ease;
+}
+
+/* Pulsing effect behind active marker */
+.marker-pulse {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: var(--map-active-item);
-  animation: pulse 1.8s infinite ease-out;
+  background-color: var(--map-active-item);
+  box-shadow: 0 0 15px var(--map-accent);
+  animation: markerPulse 1.8s infinite ease-out;
   pointer-events: none;
+  z-index: 0;
 }
 
-.pin-marker {
-  position: relative;
-  width: 16px;
-  height: 16px;
-  background: radial-gradient(circle, var(--map-accent-bright) 0%, var(--map-accent) 100%);
-  border: 2px solid #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--map-active-item);
-  transition: transform 0.2s ease;
-}
-
-.map-pin.active .pin-marker {
-  background: radial-gradient(circle, var(--map-accent-bright) 0%, var(--map-accent) 100%);
-  transform: scale(1.3);
-  box-shadow: 0 0 16px var(--map-active-item);
-  border-color: var(--map-accent-bright);
-}
-
-/* Tooltip/Popup on Map */
-.map-popup {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 220px;
-  background: var(--map-dashboard-bg);
-  border: 1px solid var(--map-border);
-  border-radius: 10px;
-  padding: 12px;
-  box-shadow: 0 10px 25px var(--map-shadow);
-  pointer-events: auto;
-  z-index: 30;
-  animation: fadeIn 0.25s ease-out;
-  text-align: left;
-}
-
-.map-popup-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--map-text-dark);
-  margin: 0 0 4px 0;
-}
-
-.map-popup-type {
-  font-size: 11px;
-  color: var(--map-accent);
-  margin-bottom: 6px;
-}
-
-.map-popup-coords {
-  font-family: monospace;
-  font-size: 10px;
-  color: #64748b;
-  margin: 0;
-}
-
-/* Animations */
-@keyframes pulse {
+@keyframes markerPulse {
   0% {
     transform: translate(-50%, -50%) scale(0.3);
     opacity: 0.8;
   }
   100% {
-    transform: translate(-50%, -50%) scale(2.2);
+    transform: translate(-50%, -50%) scale(2.0);
     opacity: 0;
   }
 }
 
+/* Hover effects */
+.custom-marker-container:hover .marker-pin-head {
+  transform: scale(1.15) translateY(-2px);
+  background: radial-gradient(circle, var(--map-accent-bright) 0%, var(--map-accent) 100%);
+  filter: brightness(1.1);
+}
+
+/* Active State */
+.active-marker .marker-pin-head {
+  transform: scale(1.2) translateY(-4px);
+  background: radial-gradient(circle, var(--map-accent-bright) 0%, var(--map-accent) 100%);
+  border-color: #ffffff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), 0 0 12px var(--map-accent);
+}
+.active-marker .marker-pin-tip {
+  border-top-color: var(--map-accent);
+  transform: translateY(-4px);
+}
+
+/* Custom Leaflet Popup Overrides */
+.leaflet-popup-content-wrapper {
+  background: var(--map-overlay) !important;
+  color: var(--map-text) !important;
+  border: 1px solid var(--map-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px var(--map-shadow) !important;
+  padding: 4px 6px;
+}
+
+.leaflet-popup-tip {
+  background: var(--map-overlay) !important;
+  border-left: 1px solid var(--map-border) !important;
+  border-top: 1px solid var(--map-border) !important;
+  box-shadow: none !important;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--map-text) !important;
+}
+
+/* Animations */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 .detail-overlay {
@@ -359,7 +400,7 @@
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 10px 30px var(--map-shadow);
-  z-index: 25;
+  z-index: 1010;
   text-align: left;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
@@ -388,7 +429,49 @@
 
 .detail-label {
   color: #64748b;
-  min-width: 65px;
+  min-width: 85px;
+}
+
+/* Interactive Likes Button */
+.like-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1.5px solid var(--peru-border-btn);
+  background: var(--peru-white);
+  color: var(--map-text-dark);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: 'Outfit', sans-serif;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.like-button:hover {
+  background: var(--map-active-item);
+  border-color: var(--peru-red-bright);
+  color: var(--peru-red-bright);
+}
+
+.like-button.liked {
+  background: var(--peru-red-bright);
+  color: #ffffff;
+  border-color: var(--peru-red-bright);
+  box-shadow: 0 4px 10px rgba(189, 45, 45, 0.25);
+}
+
+.like-button .heart-icon {
+  fill: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.like-button:active .heart-icon {
+  transform: scale(1.4);
 }
 
 .no-data-msg {
