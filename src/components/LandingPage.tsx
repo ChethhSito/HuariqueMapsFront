@@ -372,7 +372,7 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
               </p>
             </div>
 
-            <div className="concept-card">
+            <div className="concept-card concept-card-middle">
               <h3 className="concept-card-title">Identidad Patriótica</h3>
               <p className="concept-card-desc">
                 La gastronomía es el hilo conductor de nuestra historia. Costa, Sierra y Selva

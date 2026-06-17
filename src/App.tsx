@@ -49,12 +49,25 @@ function App() {
 
   const toggleTheme = () => {
     const nextDark = !isDark;
-    setIsDark(nextDark);
-    if (nextDark) {
-      document.documentElement.classList.add('dark-theme');
-    } else {
-      document.documentElement.classList.remove('dark-theme');
+
+    if (!document.startViewTransition) {
+      setIsDark(nextDark);
+      if (nextDark) {
+        document.documentElement.classList.add('dark-theme');
+      } else {
+        document.documentElement.classList.remove('dark-theme');
+      }
+      return;
     }
+
+    document.startViewTransition(() => {
+      setIsDark(nextDark);
+      if (nextDark) {
+        document.documentElement.classList.add('dark-theme');
+      } else {
+        document.documentElement.classList.remove('dark-theme');
+      }
+    });
   };
 
   const handleAuthSubmit = async (e: React.FormEvent) => {
