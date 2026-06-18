@@ -862,7 +862,7 @@ const selectedHuarique = huariques.find((h) => h._id === selectedId);
                     let badgeColor = '#94a3b8'; // gray
                     let badgeText = 'Sin votos';
                     if (totalVotes > 0) {
-                      if (percentage >= 70) { badgeColor = '#10b981'; badgeText = 'Verificado'; } // green
+                      if (percentage >= 70) { badgeColor = '#059669'; badgeText = 'Verificado'; } // dark green
                       else if (percentage >= 40) { badgeColor = '#f59e0b'; badgeText = 'Dudoso'; } // yellow
                       else { badgeColor = '#ef4444'; badgeText = 'Reportado Cerrado'; } // red
                     }
@@ -884,7 +884,7 @@ const selectedHuarique = huariques.find((h) => h._id === selectedId);
                   return (
                     <>
                       <div className="validation-bar-container" style={{ height: '6px', background: 'var(--peru-border-btn)', borderRadius: '3px', overflow: 'hidden', marginBottom: '6px' }}>
-                        <div className="validation-bar" style={{ height: '100%', borderRadius: '3px', transition: 'width 0.4s ease', width: `${percentage}%`, background: percentage >= 50 || totalVotes === 0 ? '#10b981' : '#ef4444' }}></div>
+                        <div className="validation-bar" style={{ height: '100%', borderRadius: '3px', transition: 'width 0.4s ease', width: `${percentage}%`, background: percentage >= 50 || totalVotes === 0 ? '#059669' : '#ef4444' }}></div>
                       </div>
                       <div className="validation-info-row" style={{ fontSize: '11px', color: '#64748b', textAlign: 'right', marginBottom: '10px', fontWeight: 500 }}>
                         {yesVotes} confirman • {noVotes} niegan
@@ -897,7 +897,7 @@ const selectedHuarique = huariques.find((h) => h._id === selectedId);
                   <button 
                     className={`val-btn val-btn-yes ${(selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? 'active' : ''}`}
                     onClick={() => handleVoteExistence(selectedHuarique._id, true)}
-                    style={{ flex: 1, padding: '8px 10px', borderRadius: '8px', border: '1px solid #10b981', background: (selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? '#10b981' : 'transparent', color: (selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? '#fff' : '#10b981', cursor: 'pointer', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transition: 'all 0.2s' }}
+                    style={{ flex: 1, padding: '8px 10px', borderRadius: '8px', border: '1px solid #059669', background: (selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? '#059669' : 'transparent', color: (selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? '#fff' : '#059669', cursor: 'pointer', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transition: 'all 0.2s' }}
                   >
                     <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
                     Sí existe
