@@ -122,16 +122,7 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
 
       <ConceptSection />
 
-      {/* Patriotic Banner */}
-      <section className="patriotic-banner">
-        <div className="section-container">
-          <h2 className="banner-title">La comida que nos une</h2>
-          <p className="banner-desc">
-            Desde un ceviche al paso en una carretilla hasta el lomo saltado más tradicional del centro histórico,
-            cada huarique cuenta una historia de esfuerzo, unión y amor por nuestra tierra.
-          </p>
-        </div>
-      </section>
+
 
       {/* Popular Restaurants Section */}
       <UsoSection />
