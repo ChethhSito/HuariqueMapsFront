@@ -4,6 +4,7 @@ import cevicheImage from '../assets/ceviche_carretilla.png';
 import anticuchosImage from '../assets/anticuchos_lima.png';
 import characterImage from '../assets/ContactoHuarique.png';
 import logoImage from '../assets/HuariqueMap.png';
+import usoHuariqueImg from '../assets/usoHuarique.png';
 import './LandingPage.css';
 
 interface LandingPageProps {
@@ -41,7 +42,7 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
       { threshold: 0.3 }
     );
 
-    const sections = ['inicio', 'concepto', 'restaurantes', 'sugerencias'];
+    const sections = ['inicio', 'concepto', 'uso', 'restaurantes', 'sugerencias'];
     sections.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
@@ -137,6 +138,7 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
           {/* Desktop links */}
           <div className="nav-links">
             <span className={`nav-link ${activeSection === 'concepto' ? 'active' : ''}`} onClick={() => scrollToSection('concepto')}>Identidad</span>
+            <span className={`nav-link ${activeSection === 'uso' ? 'active' : ''}`} onClick={() => scrollToSection('uso')}>¿Cómo funciona?</span>
             <span className={`nav-link ${activeSection === 'restaurantes' ? 'active' : ''}`} onClick={() => scrollToSection('restaurantes')}>Restaurantes</span>
             <span className={`nav-link ${activeSection === 'sugerencias' ? 'active' : ''}`} onClick={() => scrollToSection('sugerencias')}>Sugerencias</span>
           </div>
@@ -275,6 +277,9 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
               </span>
               <span className={`nav-link-mobile ${activeSection === 'concepto' ? 'active' : ''}`} onClick={() => { scrollToSection('concepto'); setIsMenuOpen(false); }}>
                 Identidad
+              </span>
+              <span className={`nav-link-mobile ${activeSection === 'uso' ? 'active' : ''}`} onClick={() => { scrollToSection('uso'); setIsMenuOpen(false); }}>
+                ¿Cómo funciona?
               </span>
               <span className={`nav-link-mobile ${activeSection === 'restaurantes' ? 'active' : ''}`} onClick={() => { scrollToSection('restaurantes'); setIsMenuOpen(false); }}>
                 Restaurantes
@@ -446,6 +451,80 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
       </section>
 
       {/* Popular Restaurants Section */}
+      {/* How it works Section */}
+      <section id="uso" className="uso-section" style={{ backgroundColor: 'var(--peru-white)', padding: '80px 0' }}>
+        <div className="section-container">
+          <div className="uso-layout" style={{ display: 'flex', gap: '60px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div className="uso-content" style={{ flex: '1 1 500px' }}>
+              <span className="section-tag">¿Cómo funciona?</span>
+              <h2 className="section-title" style={{ marginTop: '10px', marginBottom: '40px' }}>Tu guía para usar HuariqueMap</h2>
+              
+              <div className="uso-steps" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                {/* Step 1 */}
+                <div className="uso-step" style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                  <div className="step-icon-wrapper" style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--peru-red-light)', color: 'var(--peru-red-bright)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--peru-text-dark)', marginBottom: '4px' }}>1. Explora el mapa</h3>
+                    <p style={{ fontSize: '15px', color: 'var(--peru-text)', lineHeight: '1.5', margin: 0 }}>Navega y encuentra los huariques mejor calificados cerca de ti de forma rápida e intuitiva.</p>
+                  </div>
+                </div>
+
+                {/* Step 2 */}
+                <div className="uso-step" style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                  <div className="step-icon-wrapper" style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--peru-text-dark)', marginBottom: '4px' }}>2. Conoce los detalles</h3>
+                    <p style={{ fontSize: '15px', color: 'var(--peru-text)', lineHeight: '1.5', margin: 0 }}>Descubre horarios, platos estrella, ubicación exacta y las reseñas de otros comensales.</p>
+                  </div>
+                </div>
+
+                {/* Step 3 */}
+                <div className="uso-step" style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                  <div className="step-icon-wrapper" style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--peru-text-dark)', marginBottom: '4px' }}>3. Únete a la comunidad</h3>
+                    <p style={{ fontSize: '15px', color: 'var(--peru-text)', lineHeight: '1.5', margin: 0 }}>Crea tu cuenta para guardar tus lugares favoritos, dejar comentarios y dar likes.</p>
+                  </div>
+                </div>
+
+                {/* Step 4 */}
+                <div className="uso-step" style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                  <div className="step-icon-wrapper" style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--peru-text-dark)', marginBottom: '4px' }}>4. Valida su existencia</h3>
+                    <p style={{ fontSize: '15px', color: 'var(--peru-text)', lineHeight: '1.5', margin: 0 }}>Ayuda a mantener el mapa actualizado confirmando si un huarique sigue operando o ya cerró.</p>
+                  </div>
+                </div>
+
+                {/* Step 5 */}
+                <div className="uso-step" style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                  <div className="step-icon-wrapper" style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--peru-red-light)', color: 'var(--peru-red-bright)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--peru-text-dark)', marginBottom: '4px' }}>5. Registra nuevos puntos</h3>
+                    <p style={{ fontSize: '15px', color: 'var(--peru-text)', lineHeight: '1.5', margin: 0 }}>¿Conoces una joya oculta? Haz clic en el mapa y agrégala para que todos puedan disfrutarla.</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div className="uso-image-container" style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
+              <img src={usoHuariqueImg} alt="Uso de HuariqueMap" style={{ width: '100%', maxWidth: '400px', objectFit: 'contain', filter: 'drop-shadow(0 20px 25px rgba(0,0,0,0.15))' }} />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="restaurantes" className="restaurants-section">
         <div className="section-container">
           <span className="section-tag">Recomendaciones</span>
