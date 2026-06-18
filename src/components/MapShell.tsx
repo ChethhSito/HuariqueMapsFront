@@ -853,7 +853,7 @@ const selectedHuarique = huariques.find((h) => h._id === selectedId);
               {/* 1. Sistema de Validación de Existencia */}
               <div className="validation-container" style={{ background: 'rgba(100, 116, 139, 0.03)', borderRadius: '8px', padding: '12px', marginBottom: '16px', border: '1px solid var(--map-border)' }}>
                 <div className="validation-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <span className="validation-title" style={{ fontSize: '12px', fontWeight: 600, color: 'var(--map-text-dark)' }}>Comunidad: ¿Sigue existiendo?</span>
+                  <span className="validation-title" style={{ fontSize: '13px', fontWeight: 700, color: 'var(--peru-text-dark)' }}>Comunidad: ¿Sigue existiendo?</span>
                   {(() => {
                     const totalVotes = (selectedHuarique.votosExiste?.length || 0) + (selectedHuarique.votosNoExiste?.length || 0);
                     const yesVotes = selectedHuarique.votosExiste?.length || 0;
@@ -886,7 +886,7 @@ const selectedHuarique = huariques.find((h) => h._id === selectedId);
                       <div className="validation-bar-container" style={{ height: '6px', background: 'var(--peru-border-btn)', borderRadius: '3px', overflow: 'hidden', marginBottom: '6px' }}>
                         <div className="validation-bar" style={{ height: '100%', borderRadius: '3px', transition: 'width 0.4s ease', width: `${percentage}%`, background: percentage >= 50 || totalVotes === 0 ? '#10b981' : '#ef4444' }}></div>
                       </div>
-                      <div className="validation-info-row" style={{ fontSize: '10px', color: '#64748b', textAlign: 'right', marginBottom: '10px' }}>
+                      <div className="validation-info-row" style={{ fontSize: '11px', color: '#64748b', textAlign: 'right', marginBottom: '10px', fontWeight: 500 }}>
                         {yesVotes} confirman • {noVotes} niegan
                       </div>
                     </>
@@ -897,16 +897,18 @@ const selectedHuarique = huariques.find((h) => h._id === selectedId);
                   <button 
                     className={`val-btn val-btn-yes ${(selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? 'active' : ''}`}
                     onClick={() => handleVoteExistence(selectedHuarique._id, true)}
-                    style={{ flex: 1, padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--peru-border-btn)', background: 'var(--peru-white)', cursor: 'pointer', fontSize: '11px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    style={{ flex: 1, padding: '8px 10px', borderRadius: '8px', border: '1px solid #10b981', background: (selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? '#10b981' : 'transparent', color: (selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? '#fff' : '#10b981', cursor: 'pointer', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transition: 'all 0.2s' }}
                   >
-                    👍 Sí existe
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                    Sí existe
                   </button>
                   <button 
                     className={`val-btn val-btn-no ${(selectedHuarique.votosNoExiste || []).includes(user?.email || user?.nombre || '') ? 'active' : ''}`}
                     onClick={() => handleVoteExistence(selectedHuarique._id, false)}
-                    style={{ flex: 1, padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--peru-border-btn)', background: 'var(--peru-white)', cursor: 'pointer', fontSize: '11px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    style={{ flex: 1, padding: '8px 10px', borderRadius: '8px', border: '1px solid #ef4444', background: (selectedHuarique.votosNoExiste || []).includes(user?.email || user?.nombre || '') ? '#ef4444' : 'transparent', color: (selectedHuarique.votosNoExiste || []).includes(user?.email || user?.nombre || '') ? '#fff' : '#ef4444', cursor: 'pointer', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transition: 'all 0.2s' }}
                   >
-                    👎 Ya cerró
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
+                    Ya cerró
                   </button>
                 </div>
               </div>
