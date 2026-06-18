@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
 import MapShell from './components/MapShell';
+import HuariqueDetail from './components/HuariqueDetail';
 import logoImage from './assets/HuariqueMap.png';
 import loginImage from './assets/IniciasesionHuarique.png';
 import registerImage from './assets/RegistrateHuariqueR.png';
@@ -14,7 +15,8 @@ interface User {
 }
 
 function App() {
-  const [currentView, setCurrentView] = useState<'landing' | 'map'>('landing');
+  const [currentView, setCurrentView] = useState<'landing' | 'map' | 'detail'>('landing');
+  const [activeDetailHuarique, setActiveDetailHuarique] = useState<any | null>(null);
   const [isDark, setIsDark] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -45,9 +47,14 @@ function App() {
     }
   }, []);
 
-  const navigateTo = (view: 'landing' | 'map') => {
+  const navigateTo = (view: 'landing' | 'map' | 'detail') => {
     setCurrentView(view);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleViewDetail = (huarique: any) => {
+    setActiveDetailHuarique(huarique);
+    navigateTo('detail');
   };
 
   const toggleTheme = () => {
@@ -543,12 +550,25 @@ function App() {
             </div>
           </header>
 
-          <MapShell
-            isConnected={isConnected}
-            setIsConnected={setIsConnected}
-            user={user}
-            onAuthClick={() => setShowAuthModal(true)}
-          />
+          {currentView === 'map' ? (
+            <MapShell
+              isConnected={isConnected}
+              setIsConnected={setIsConnected}
+              user={user}
+              onAuthClick={() => setShowAuthModal(true)}
+              onViewDetail={handleViewDetail}
+            />
+          ) : (
+            activeDetailHuarique && (
+              <HuariqueDetail
+                huarique={activeDetailHuarique}
+                onBack={() => navigateTo('map')}
+                likesCount={15} // En el futuro se puede pasar el contador real de likes
+                user={user}
+                onAuthClick={() => setShowAuthModal(true)}
+              />
+            )
+          )}
         </div>
       )}
       {renderAuthModal()}

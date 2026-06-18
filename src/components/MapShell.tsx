@@ -1,7 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-routing-machine';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import './MapShell.css';
+import mapahuariqueImg from '../assets/mapahuarique.png';
 
 interface PointGeometry {
   type: 'Point';
@@ -82,9 +85,10 @@ interface MapShellProps {
   setIsConnected: (connected: boolean) => void;
   user: { nombre: string } | null;
   onAuthClick: () => void;
+  onViewDetail?: (huarique: Huarique) => void;
 }
 
-export default function MapShell({ isConnected, setIsConnected, user, onAuthClick }: MapShellProps) {
+export default function MapShell({ isConnected, setIsConnected, user, onAuthClick, onViewDetail }: MapShellProps) {
   const [huariques, setHuariques] = useState<Huarique[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -93,6 +97,18 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
   // Estados de filtros y likes
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [likesMap, setLikesMap] = useState<{ [id: string]: number }>({});
+  const [characterMessage, setCharacterMessage] = useState<string | null>(null);
+  const characterMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showCharacterMessage = (msg: string) => {
+    setCharacterMessage(msg);
+    if (characterMessageTimeoutRef.current) {
+      clearTimeout(characterMessageTimeoutRef.current);
+    }
+    characterMessageTimeoutRef.current = setTimeout(() => {
+      setCharacterMessage(null);
+    }, 4000);
+  };
 
   const filterBarRef = useRef<HTMLDivElement>(null);
 
@@ -110,6 +126,7 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersGroupRef = useRef<L.LayerGroup | null>(null);
+  const routingControlRef = useRef<any>(null);
 
   // Cargar huariques desde API o datos de respaldo
   useEffect(() => {
@@ -204,14 +221,24 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
     markersGroupRef.current = markersGroup;
     mapInstanceRef.current = map;
 
+    const handleOpenDetailEvent = (e: any) => {
+      const hId = e.detail;
+      const hq = huariques.find(h => h._id === hId);
+      if (hq && onViewDetail) {
+        onViewDetail(hq);
+      }
+    };
+    window.addEventListener('openHuariqueDetail', handleOpenDetailEvent);
+
     return () => {
+      window.removeEventListener('openHuariqueDetail', handleOpenDetailEvent);
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
         markersGroupRef.current = null;
       }
     };
-  }, []);
+  }, [huariques, onViewDetail]);
 
   // Filtrado de restaurantes
   const filteredHuariques = huariques.filter((h) => {
@@ -271,9 +298,16 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
         <div class="leaflet-popup-content-inner" style="font-family: 'Outfit', sans-serif; min-width: 140px;">
           <strong style="color: #110906; font-size: 14px; display: block; margin-bottom: 2px;">${h.nombre}</strong>
           <span style="font-size: 11px; color: #bd2d2d; font-weight: 600; display: block;">${h.tipoComida}</span>
-          <div style="font-size: 11px; margin-top: 6px; display: flex; align-items: center; gap: 4px; color: #64748b;">
-            <span>❤️ ${likesCount} likes</span>
-            ${hasUserLiked ? '<strong style="color: #bd2d2d; font-size: 10px;">(Liked)</strong>' : ''}
+          <div style="font-size: 11px; margin-top: 6px; display: flex; align-items: center; justify-content: space-between; gap: 4px; color: #64748b;">
+            <div>
+              <span>❤️ ${likesCount} likes</span>
+              ${hasUserLiked ? '<strong style="color: #bd2d2d; font-size: 10px;">(Liked)</strong>' : ''}
+            </div>
+            <button 
+              onclick="window.dispatchEvent(new CustomEvent('openHuariqueDetail', { detail: '${h._id}' }))"
+              style="background: var(--peru-red, #bd2d2d); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-family: Outfit; font-size: 10px;"
+              title="Más información"
+            >!</button>
           </div>
         </div>
       `, {
@@ -323,11 +357,66 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
     const newMyLikes = { ...myLikesMap, [id]: !isLiked };
     const newLikes = { ...likesMap, [id]: (likesMap[id] || 0) + (isLiked ? -1 : 1) };
 
+    if (!isLiked) {
+      showCharacterMessage("¡Buenazo! Gracias por tu like, causa.");
+    } else {
+      showCharacterMessage("¡Uy! Le quitaste el like.");
+    }
+
     setMyLikesMap(newMyLikes);
     setLikesMap(newLikes);
 
     localStorage.setItem('huariques_my_likes_map', JSON.stringify(newMyLikes));
     localStorage.setItem('huariques_likes_map', JSON.stringify(newLikes));
+  };
+
+  const handleGuideMe = (targetHuarique: Huarique) => {
+    if (!mapInstanceRef.current) return;
+    
+    showCharacterMessage("¡Trazando ruta rápida en el mapa!");
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          const [targetLng, targetLat] = targetHuarique.coordenadas.coordinates;
+
+          // Limpiar ruta anterior si existe
+          if (routingControlRef.current) {
+            mapInstanceRef.current?.removeControl(routingControlRef.current);
+          }
+
+          // Crear nueva ruta usando L.Routing
+          routingControlRef.current = (L as any).Routing.control({
+            waypoints: [
+              L.latLng(userLat, userLng),
+              L.latLng(targetLat, targetLng)
+            ],
+            routeWhileDragging: false,
+            addWaypoints: false,
+            draggableWaypoints: false,
+            language: 'es',
+            showAlternatives: false,
+            fitSelectedRoutes: true,
+            show: false, // Ocultar el panel de instrucciones para que no tape el mapa
+            createMarker: function(i: number, waypoint: any) {
+              if (i === 0) {
+                 return L.marker(waypoint.latLng, { draggable: false }).bindPopup('Tu ubicación actual');
+              } else {
+                 return null; // No crear marcador extra para el destino porque ya hay uno
+              }
+            }
+          }).addTo(mapInstanceRef.current);
+        },
+        (error) => {
+          console.error("Error obteniendo ubicación: ", error);
+          alert("No se pudo obtener tu ubicación. Por favor, permite el acceso a tu ubicación en el navegador.");
+        }
+      );
+    } else {
+      alert("Tu navegador no soporta geolocalización.");
+    }
   };
 
   const selectedHuarique = huariques.find((h) => h._id === selectedId);
@@ -436,25 +525,122 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
 
 
 
-              {/* Heart Likes Interactive Button */}
+              {/* Acción rápida: Likes y Detalles */}
+              <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                <button
+                  className={`like-button ${myLikesMap[selectedHuarique._id] ? 'liked' : ''}`}
+                  onClick={() => handleToggleLike(selectedHuarique._id)}
+                  style={{ flex: 1, marginTop: 0 }}
+                >
+                  <svg className="heart-icon" viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                  <span>
+                    {myLikesMap[selectedHuarique._id] ? '¡Te gusta!' : 'Me Gusta'} ({likesMap[selectedHuarique._id] || 0})
+                  </span>
+                </button>
+
+                <button
+                  className="guide-button"
+                  style={{ flex: 1, marginTop: 0, background: '#ea580c', color: 'white', border: 'none', animation: 'none' }}
+                  onClick={() => onViewDetail && onViewDetail(selectedHuarique)}
+                  title="Ver toda la información y comentarios de este Huarique"
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" style={{ fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }}>
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                  Más información
+                </button>
+              </div>
+
+              {/* Guíame al lugar Button */}
               <button
-                className={`like-button ${myLikesMap[selectedHuarique._id] ? 'liked' : ''}`}
-                onClick={() => handleToggleLike(selectedHuarique._id)}
+                className="guide-button"
+                onClick={() => handleGuideMe(selectedHuarique)}
+                title="Ver rutas en este mapa"
               >
-                <svg className="heart-icon" viewBox="0 0 24 24" width="16" height="16">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                <svg viewBox="0 0 24 24" width="16" height="16" style={{ fill: 'currentColor' }}>
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                 </svg>
-                <span>
-                  {myLikesMap[selectedHuarique._id] ? '¡Te gusta!' : 'Dar Me Gusta'} ({likesMap[selectedHuarique._id] || 0})
-                </span>
+                Ver rutas
+              </button>
+
+              {/* Google Maps Button for Buses and Navigation */}
+              <button
+                className="guide-button"
+                style={{ marginTop: '8px', background: '#f8fafc', borderColor: '#cbd5e1', color: '#334155' }}
+                onClick={() => {
+                  showCharacterMessage("¡Abriendo Google Maps, fíjate qué bus tomar!");
+                  const [lng, lat] = selectedHuarique.coordenadas.coordinates;
+                  window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=transit`, '_blank');
+                }}
+                title="Abrir en Google Maps para ver buses e indicaciones paso a paso"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" style={{ fill: 'currentColor' }}>
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" />
+                </svg>
+                Navegar y ver buses (G. Maps)
               </button>
             </div>
           )}
 
-          {/* Coordinates indicator at bottom-right */}
+          {/* Coordinates indicator at bottom-right with large image next to it */}
           {selectedHuarique && selectedHuarique.coordenadas && (
-            <div className="map-center-coordinates" style={{ zIndex: 1010 }}>
-              Ubicación: {selectedHuarique.coordenadas.coordinates[1].toFixed(6)}° N, {selectedHuarique.coordenadas.coordinates[0].toFixed(6)}° W
+            <div style={{ position: 'absolute', bottom: '15px', right: '15px', zIndex: 1010, display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
+              
+              <div style={{ position: 'relative' }}>
+                {characterMessage && (
+                  <div key={characterMessage} className="fade-in" style={{
+                    position: 'absolute',
+                    bottom: '100%',
+                    right: '0',
+                    transform: 'translateY(-10px)',
+                    background: 'white',
+                    border: '2px solid var(--peru-red-bright, #bd2d2d)',
+                    borderRadius: '12px',
+                    borderBottomRightRadius: '0',
+                    padding: '10px 14px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: 'var(--map-text-dark, #110906)',
+                    width: 'max-content',
+                    maxWidth: '180px',
+                    textAlign: 'center',
+                    boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
+                    zIndex: 1011,
+                    fontFamily: "'Outfit', sans-serif"
+                  }}>
+                    {characterMessage}
+                    <div style={{
+                      position: 'absolute',
+                      top: '100%',
+                      right: '15px',
+                      width: '0',
+                      height: '0',
+                      borderLeft: '8px solid transparent',
+                      borderRight: '8px solid transparent',
+                      borderTop: '10px solid var(--peru-red-bright, #bd2d2d)'
+                    }} />
+                    <div style={{
+                      position: 'absolute',
+                      top: '100%',
+                      right: '17px',
+                      width: '0',
+                      height: '0',
+                      borderLeft: '6px solid transparent',
+                      borderRight: '6px solid transparent',
+                      borderTop: '8px solid white'
+                    }} />
+                  </div>
+                )}
+                <img src={mapahuariqueImg} alt="Mapa Huarique" style={{ height: '140px', width: 'auto', marginBottom: '-5px', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.2))' }} />
+              </div>
+
+              <div className="map-center-coordinates" style={{ position: 'relative', bottom: 'auto', right: 'auto' }}>
+                Ubicación: {selectedHuarique.coordenadas.coordinates[1].toFixed(6)}° N, {selectedHuarique.coordenadas.coordinates[0].toFixed(6)}° W
+              </div>
             </div>
           )}
         </section>
