@@ -6,6 +6,14 @@ import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import './MapShell.css';
 import mapahuariqueImg from '../assets/mapahuarique.png';
 
+interface Resena {
+  usuarioId: string;
+  usuarioNombre: string;
+  comentario: string;
+  calificacion: number;
+  fecha: string | Date;
+}
+
 interface PointGeometry {
   type: 'Point';
   coordinates: number[]; // [longitud, latitud]
@@ -18,6 +26,12 @@ interface Huarique {
   tipoComida: string;
   coordenadas: PointGeometry;
   horario: string;
+  creadoPor?: string;
+  votosExiste?: string[];
+  votosNoExiste?: string[];
+  resenas?: Resena[];
+  ratingPromedio?: number;
+  numResenas?: number;
 }
 
 const FALLBACK_HUARIQUES: Huarique[] = [
@@ -98,6 +112,15 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [likesMap, setLikesMap] = useState<{ [id: string]: number }>({});
   const [characterMessage, setCharacterMessage] = useState<string | null>(null);
+
+  // Estados de Registro Crowdsourcing
+  const [isRegisterMode, setIsRegisterMode] = useState(false);
+  const [regNombre, setRegNombre] = useState('');
+  const [regDescripcion, setRegDescripcion] = useState('');
+  const [regTipoComida, setRegTipoComida] = useState('Marina');
+  const [regHorario, setRegHorario] = useState('');
+  const [regCoordinates, setRegCoordinates] = useState<[number, number] | null>(null); // [lat, lng]
+
   const characterMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const showCharacterMessage = (msg: string) => {
@@ -127,6 +150,7 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersGroupRef = useRef<L.LayerGroup | null>(null);
   const routingControlRef = useRef<any>(null);
+  const regMarkerRef = useRef<L.Marker | null>(null);
 
   // Cargar huariques desde API o datos de respaldo
   useEffect(() => {
@@ -230,7 +254,19 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
     };
     window.addEventListener('openHuariqueDetail', handleOpenDetailEvent);
 
-    return () => {
+
+      // Manejar clics en el mapa para el registro
+      const handleMapClick = (e: L.LeafletMouseEvent) => {
+        if (!isRegisterMode) return;
+        const { lat, lng } = e.latlng;
+        setRegCoordinates([lat, lng]);
+      };
+
+      map.on('click', handleMapClick);
+
+      return () => {
+        map.off('click', handleMapClick);
+
       window.removeEventListener('openHuariqueDetail', handleOpenDetailEvent);
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
@@ -238,7 +274,48 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
         markersGroupRef.current = null;
       }
     };
-  }, [huariques, onViewDetail]);
+  }, [huariques, onViewDetail, isRegisterMode]);
+
+  
+  // Dibujar/actualizar el marcador draggable de registro
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map || !isRegisterMode) return;
+
+    if (regMarkerRef.current) {
+      regMarkerRef.current.remove();
+      regMarkerRef.current = null;
+    }
+
+    if (regCoordinates) {
+      const [lat, lng] = regCoordinates;
+
+      const regIcon = L.divIcon({
+        className: 'custom-marker-container reg-marker-active',
+        html: `
+          <div class="marker-wrapper reg-wrapper">
+            <div class="marker-pulse reg-pulse"></div>
+            <div class="marker-pin-head reg-head">
+              <div class="marker-pin-dot"></div>
+            </div>
+            <div class="marker-pin-tip reg-tip"></div>
+          </div>
+        `,
+      });
+
+      const marker = L.marker([lat, lng], { icon: regIcon, draggable: true });
+      
+      marker.on('dragend', (e) => {
+        const m = e.target;
+        const position = m.getLatLng();
+        setRegCoordinates([position.lat, position.lng]);
+      });
+
+      regMarkerRef.current = marker;
+      marker.addTo(map);
+      map.panTo([lat, lng]);
+    }
+  }, [regCoordinates, isRegisterMode]);
 
   // Filtrado de restaurantes
   const filteredHuariques = huariques.filter((h) => {
@@ -419,6 +496,250 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
     }
   };
 
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!regNombre || !regTipoComida || !regCoordinates) {
+      alert('Por favor, completa los campos obligatorios y marca la ubicaci├│n exacta en el mapa.');
+      return;
+    }
+
+    const newHuariqueData = {
+      nombre: regNombre,
+      descripcion: regDescripcion,
+      tipoComida: regTipoComida,
+      coordenadas: {
+        type: 'Point' as const,
+        coordinates: [regCoordinates[1], regCoordinates[0]] // [longitud, latitud]
+      },
+      horario: regHorario
+    };
+
+    if (isConnected && user?.token && !user.isLocal) {
+      // Enviar al API backend (NestJS)
+      const apiUrl = import.meta.env.VITE_API_URL as string;
+      try {
+        const response = await fetch(`${apiUrl}/huariques`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          },
+          body: JSON.stringify(newHuariqueData)
+        });
+
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.message || 'Error al registrar el huarique');
+        }
+
+        const registeredHuarique = await response.json();
+        
+        // Agregar valores iniciales por defecto si no vienen
+        const fullHuarique: Huarique = {
+          ...registeredHuarique,
+          votosExiste: registeredHuarique.votosExiste || [],
+          votosNoExiste: registeredHuarique.votosNoExiste || [],
+          resenas: registeredHuarique.resenas || [],
+          ratingPromedio: registeredHuarique.ratingPromedio || 0,
+          numResenas: registeredHuarique.numResenas || 0
+        };
+
+        const updatedHuariques = [fullHuarique, ...huariques];
+        setHuariques(updatedHuariques);
+        setSelectedId(fullHuarique._id);
+        setIsRegisterMode(false);
+        resetRegisterForm();
+      } catch (err: any) {
+        alert(`Error al registrar en servidor remoto: ${err.message}`);
+      }
+    } else {
+      // Guardado local (modo local/respaldo)
+      const localId = `local-${Date.now()}`;
+      const userIdentifier = user?.email || user?.nombre || 'usuario_local';
+      
+      const newLocalHuarique: Huarique = {
+        _id: localId,
+        ...newHuariqueData,
+        creadoPor: user?.nombre || 'Usuario Local',
+        votosExiste: [userIdentifier],
+        votosNoExiste: [],
+        resenas: [],
+        ratingPromedio: 0,
+        numResenas: 0
+      };
+
+      const updatedList = [newLocalHuarique, ...huariques];
+      setHuariques(updatedList);
+      localStorage.setItem('local_huariques', JSON.stringify(updatedList));
+      setSelectedId(localId);
+      setIsRegisterMode(false);
+      resetRegisterForm();
+      alert('┬íHuarique registrado con ├®xito de forma local!');
+    }
+  };
+
+  const resetRegisterForm = () => {
+    setRegNombre('');
+    setRegDescripcion('');
+    setRegTipoComida('Marina');
+    setRegHorario('');
+    setRegCoordinates(null);
+  };
+
+  // Manejar el Voto de Existencia (Validaci├│n)
+  const handleVoteExistence = async (huariqueId: string, existe: boolean) => {
+    if (!user) {
+      onAuthClick();
+      return;
+    }
+
+    const userIdentifier = user.email || user.nombre;
+
+    if (isConnected && user.token && !user.isLocal) {
+      // Votar en backend
+      const apiUrl = import.meta.env.VITE_API_URL as string;
+      try {
+        const response = await fetch(`${apiUrl}/huariques/${huariqueId}/validar`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          },
+          body: JSON.stringify({ existe })
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al enviar el voto al servidor.');
+        }
+
+        const updatedHuarique = await response.json();
+        setHuariques(prev => prev.map(h => h._id === huariqueId ? updatedHuarique : h));
+      } catch (err: any) {
+        alert(`Error al guardar validaci├│n: ${err.message}`);
+      }
+    } else {
+      // Votar de forma local (Offline/Local)
+      const updatedList = huariques.map(h => {
+        if (h._id !== huariqueId) return h;
+
+        let votosExiste = h.votosExiste || [];
+        let votosNoExiste = h.votosNoExiste || [];
+
+        // Limpiar votos anteriores de este usuario
+        votosExiste = votosExiste.filter(uid => uid !== userIdentifier);
+        votosNoExiste = votosNoExiste.filter(uid => uid !== userIdentifier);
+
+        if (existe) {
+          votosExiste.push(userIdentifier);
+        } else {
+          votosNoExiste.push(userIdentifier);
+        }
+
+        return { ...h, votosExiste, votosNoExiste };
+      });
+
+      setHuariques(updatedList);
+      localStorage.setItem('local_huariques', JSON.stringify(updatedList));
+    }
+  };
+
+  // Manejar el Env├¡o de Rese├▒a
+  const handleAddReviewSubmit = async (e: React.FormEvent, huariqueId: string) => {
+    e.preventDefault();
+    if (!newReviewComment.trim()) return;
+
+    if (isConnected && user?.token && !user.isLocal) {
+      // Enviar rese├▒a a API
+      const apiUrl = import.meta.env.VITE_API_URL as string;
+      try {
+        const response = await fetch(`${apiUrl}/huariques/${huariqueId}/resenas`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          },
+          body: JSON.stringify({
+            comentario: newReviewComment,
+            calificacion: newReviewRating
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al guardar la rese├▒a en el servidor.');
+        }
+
+        const updatedHuarique = await response.json();
+        setHuariques(prev => prev.map(h => h._id === huariqueId ? updatedHuarique : h));
+        setNewReviewComment('');
+        setNewReviewRating(5);
+      } catch (err: any) {
+        alert(`Error al guardar rese├▒a: ${err.message}`);
+      }
+    } else {
+      // Guardar rese├▒a localmente
+      const userIdentifier = user?.email || user?.nombre || 'local_user';
+      const userDisplayName = user?.nombre || 'Usuario Local';
+
+      const updatedList = huariques.map(h => {
+        if (h._id !== huariqueId) return h;
+
+        const resenas = h.resenas || [];
+        const nuevaRes: Resena = {
+          usuarioId: userIdentifier,
+          usuarioNombre: userDisplayName,
+          comentario: newReviewComment,
+          calificacion: newReviewRating,
+          fecha: new Date().toISOString()
+        };
+
+        const updatedResenas = [...resenas, nuevaRes];
+        const totalCalificacion = updatedResenas.reduce((sum, r) => sum + r.calificacion, 0);
+        const numResenas = updatedResenas.length;
+        const ratingPromedio = Math.round((totalCalificacion / numResenas) * 10) / 10;
+
+        return {
+          ...h,
+          resenas: updatedResenas,
+          numResenas,
+          ratingPromedio
+        };
+      });
+
+      setHuariques(updatedList);
+      localStorage.setItem('local_huariques', JSON.stringify(updatedList));
+      setNewReviewComment('');
+      setNewReviewRating(5);
+      alert('┬íRese├▒a guardada localmente!');
+    }
+  };
+
+  // Helper para renderizar estrellas fijas
+  const renderStars = (rating: number) => {
+    const stars = [];
+    const rounded = Math.round(rating);
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span key={i} className={`star-icon ${i <= rounded ? 'filled' : 'empty'}`}>
+          Ôÿà
+        </span>
+      );
+    }
+    return stars;
+  };
+
+  const selectedHuarique = huariques.find((h) => h._id === selectedId);
+
+  // Calcular m├®tricas de validaci├│n
+  const votosExisteCount = selectedHuarique?.votosExiste?.length || 0;
+  const votosNoExisteCount = selectedHuarique?.votosNoExiste?.length || 0;
+  const votosTotales = votosExisteCount + votosNoExisteCount;
+  const existenciaPercent = votosTotales > 0 ? Math.round((votosExisteCount / votosTotales) * 100) : 100;
+
+  const currentUserId = user ? (user.email || user.nombre) : null;
+  const haVotadoExiste = currentUserId && selectedHuarique?.votosExiste ? selectedHuarique.votosExiste.includes(currentUserId) : false;
+  const haVotadoNoExiste = currentUserId && selectedHuarique?.votosNoExiste ? selectedHuarique.votosNoExiste.includes(currentUserId) : false;
+
+  
   const selectedHuarique = huariques.find((h) => h._id === selectedId);
 
   return (
@@ -427,7 +748,108 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
       <div className="dashboard-content">
         {/* Sidebar */}
         <aside className="sidebar">
-          <h2 className="sidebar-title">Huariques Registrados</h2>
+          {isRegisterMode ? (
+            <div className="registration-container">
+              <div className="registration-header-row">
+                <h3 className="registration-title">Nuevo Huarique</h3>
+                <button className="registration-close-btn" onClick={() => setIsRegisterMode(false)}>✕</button>
+              </div>
+
+              <form onSubmit={handleRegisterSubmit} className="registration-form">
+                <div className="form-group">
+                  <label className="form-label">Nombre del Huarique *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Ej. El Tío Lucho"
+                    value={regNombre}
+                    onChange={(e) => setRegNombre(e.target.value)}
+                    className="form-input"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Descripción</label>
+                  <textarea
+                    placeholder="Cuéntanos qué lo hace tan especial..."
+                    value={regDescripcion}
+                    onChange={(e) => setRegDescripcion(e.target.value)}
+                    className="form-textarea"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label className="form-label">Tipo de Comida *</label>
+                    <select
+                      value={regTipoComida}
+                      onChange={(e) => setRegTipoComida(e.target.value)}
+                      className="form-select"
+                    >
+                      {CATEGORIES.filter(cat => cat !== 'Todos').map(cat => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label className="form-label">Horario</label>
+                    <input
+                      type="text"
+                      placeholder="Ej. Lun-Sab: 12-5pm"
+                      value={regHorario}
+                      onChange={(e) => setRegHorario(e.target.value)}
+                      className="form-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Ubicación Geográfica *</label>
+                  <div className={`coordinates-status-box ${regCoordinates ? 'success' : 'pending'}`}>
+                    {regCoordinates ? (
+                      <div className="coords-display">
+                        <span>Lat: {regCoordinates[0].toFixed(6)}</span>
+                        <span>Lng: {regCoordinates[1].toFixed(6)}</span>
+                      </div>
+                    ) : (
+                      <div className="coords-helper">
+                        <span className="pulse-icon">📍</span>
+                        <span>Haz clic en el mapa para marcar el huarique</span>
+                      </div>
+                    )}
+                  </div>
+                  {regCoordinates && (
+                    <small style={{ color: 'var(--peru-text)', display: 'block', marginTop: '4px' }}>
+                      (Puedes arrastrar el marcador rojo en el mapa para ajustar)
+                    </small>
+                  )}
+                </div>
+
+                <button type="submit" className="form-submit-btn">
+                  Registrar Huarique
+                </button>
+              </form>
+            </div>
+          ) : (
+            <>
+              <div className="sidebar-header-row">
+                <h2 className="sidebar-title">Huariques Registrados</h2>
+                <button
+                  className="add-huarique-btn"
+                  onClick={() => {
+                    if (!user) {
+                      onAuthClick();
+                    } else {
+                      setIsRegisterMode(true);
+                    }
+                  }}
+                  title="Registrar nuevo huarique colaborativo"
+                >
+                  + Registrar
+                </button>
+              </div>
 
           {/* Category Filter Bar with Scroll Arrows */}
           <div className="filter-bar-wrapper">
@@ -496,6 +918,8 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
               </li>
             ))}
           </ul>
+            </>
+          )}
         </aside>
 
         {/* Real Leaflet Map Viewport */}
@@ -510,7 +934,7 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
           </div>
 
           {/* Detailed Overlay Card for selected Huarique */}
-          {selectedHuarique && (
+          {selectedHuarique && !isRegisterMode && (
             <div className="detail-overlay" style={{ zIndex: 1010 }}>
               <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '10px' }}>
                 <span>{selectedHuarique.nombre}</span>
@@ -522,6 +946,68 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
                 <span className="detail-label">Horario:</span>
                 <span>{selectedHuarique.horario || 'No especificado'}</span>
               </div>
+
+              {/* 1. Sistema de Validación de Existencia */}
+              <div className="validation-container" style={{ background: 'rgba(100, 116, 139, 0.03)', borderRadius: '8px', padding: '12px', marginBottom: '16px', border: '1px solid var(--map-border)' }}>
+                <div className="validation-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span className="validation-title" style={{ fontSize: '12px', fontWeight: 600, color: 'var(--map-text-dark)' }}>Comunidad: ¿Sigue existiendo?</span>
+                  {(() => {
+                    const totalVotes = (selectedHuarique.votosExiste?.length || 0) + (selectedHuarique.votosNoExiste?.length || 0);
+                    const yesVotes = selectedHuarique.votosExiste?.length || 0;
+                    const percentage = totalVotes === 0 ? 0 : Math.round((yesVotes / totalVotes) * 100);
+                    
+                    let badgeColor = '#94a3b8'; // gray
+                    let badgeText = 'Sin votos';
+                    if (totalVotes > 0) {
+                      if (percentage >= 70) { badgeColor = '#10b981'; badgeText = 'Verificado'; } // green
+                      else if (percentage >= 40) { badgeColor = '#f59e0b'; badgeText = 'Dudoso'; } // yellow
+                      else { badgeColor = '#ef4444'; badgeText = 'Reportado Cerrado'; } // red
+                    }
+
+                    return (
+                      <span className="validation-badge" style={{ fontSize: '10px', color: '#fff', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', background: badgeColor }}>
+                        {badgeText}
+                      </span>
+                    );
+                  })()}
+                </div>
+
+                {(() => {
+                  const totalVotes = (selectedHuarique.votosExiste?.length || 0) + (selectedHuarique.votosNoExiste?.length || 0);
+                  const yesVotes = selectedHuarique.votosExiste?.length || 0;
+                  const noVotes = selectedHuarique.votosNoExiste?.length || 0;
+                  const percentage = totalVotes === 0 ? 0 : (yesVotes / totalVotes) * 100;
+                  
+                  return (
+                    <>
+                      <div className="validation-bar-container" style={{ height: '6px', background: 'var(--peru-border-btn)', borderRadius: '3px', overflow: 'hidden', marginBottom: '6px' }}>
+                        <div className="validation-bar" style={{ height: '100%', borderRadius: '3px', transition: 'width 0.4s ease', width: `${percentage}%`, background: percentage >= 50 || totalVotes === 0 ? '#10b981' : '#ef4444' }}></div>
+                      </div>
+                      <div className="validation-info-row" style={{ fontSize: '10px', color: '#64748b', textAlign: 'right', marginBottom: '10px' }}>
+                        {yesVotes} confirman • {noVotes} niegan
+                      </div>
+                    </>
+                  );
+                })()}
+
+                <div className="validation-buttons" style={{ display: 'flex', gap: '8px' }}>
+                  <button 
+                    className={`val-btn val-btn-yes ${(selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? 'active' : ''}`}
+                    onClick={() => handleVoteExistence(selectedHuarique._id, true)}
+                    style={{ flex: 1, padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--peru-border-btn)', background: 'var(--peru-white)', cursor: 'pointer', fontSize: '11px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    👍 Sí existe
+                  </button>
+                  <button 
+                    className={`val-btn val-btn-no ${(selectedHuarique.votosNoExiste || []).includes(user?.email || user?.nombre || '') ? 'active' : ''}`}
+                    onClick={() => handleVoteExistence(selectedHuarique._id, false)}
+                    style={{ flex: 1, padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--peru-border-btn)', background: 'var(--peru-white)', cursor: 'pointer', fontSize: '11px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    👎 Ya cerró
+                  </button>
+                </div>
+              </div>
+
 
 
 
@@ -587,7 +1073,7 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
           )}
 
           {/* Coordinates indicator at bottom-right with large image next to it */}
-          {selectedHuarique && selectedHuarique.coordenadas && (
+          {selectedHuarique && selectedHuarique.coordenadas && !isRegisterMode && (
             <div style={{ position: 'absolute', bottom: '15px', right: '15px', zIndex: 1010, display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
               
               <div style={{ position: 'relative' }}>
@@ -641,6 +1127,16 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
               <div className="map-center-coordinates" style={{ position: 'relative', bottom: 'auto', right: 'auto' }}>
                 Ubicación: {selectedHuarique.coordenadas.coordinates[1].toFixed(6)}° N, {selectedHuarique.coordenadas.coordinates[0].toFixed(6)}° W
               </div>
+            </div>
+          )}
+        
+          {/* Coordinates indicator at bottom-right */}
+          {isRegisterMode && (
+            <div className="map-center-coordinates register-help-banner" style={{ zIndex: 1010 }}>
+              {regCoordinates 
+                ? '📍 Ubicación seleccionada. Arrastra el pin rojo si necesitas reajustarlo.' 
+                : '👈 Haz clic en cualquier lugar del mapa para fijar el huarique.'
+              }
             </div>
           )}
         </section>

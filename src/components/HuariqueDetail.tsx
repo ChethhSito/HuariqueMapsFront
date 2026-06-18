@@ -17,6 +17,13 @@ export interface Huarique {
   coordenadas: PointGeometry;
   horario: string;
   direccion?: string;
+  resenas?: Array<{
+    usuarioId: string;
+    usuarioNombre: string;
+    comentario: string;
+    calificacion: number;
+    fecha: string | Date;
+  }>;
 }
 
 interface User {
@@ -89,7 +96,20 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
   const mapInstanceRef = useRef<L.Map | null>(null);
 
   const [newComment, setNewComment] = useState('');
-  const [comments, setComments] = useState(FAKE_COMMENTS);
+  const [comments, setComments] = useState<any[]>(() => {
+    if (huarique.resenas && huarique.resenas.length > 0) {
+      return huarique.resenas.map((r, i) => ({
+        id: i,
+        user: r.usuarioNombre,
+        text: r.comentario,
+        rating: r.calificacion,
+        date: new Date(r.fecha).toLocaleDateString(),
+        likes: 0,
+        likedByMe: false
+      })).reverse();
+    }
+    return FAKE_COMMENTS;
+  });
   const [showAllComments, setShowAllComments] = useState(false);
   const [isCommentDrawerOpen, setIsCommentDrawerOpen] = useState(false);
   const [address, setAddress] = useState<string>('Cargando dirección...');
@@ -185,9 +205,29 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
     };
   }, [huarique]);
 
-  const handleAddComment = (e: React.FormEvent) => {
+  const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newComment.trim()) return;
+
+    if (user?.token && !user.isLocal) {
+      const apiUrl = import.meta.env.VITE_API_URL as string;
+      try {
+        const res = await fetch(`${apiUrl}/huariques/${huarique._id}/resenas`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          },
+          body: JSON.stringify({
+            comentario: newComment,
+            calificacion: 5
+          })
+        });
+        if (!res.ok) throw new Error("Error en servidor al guardar comentario");
+      } catch (err) {
+        console.error("Error submitting comment to backend", err);
+      }
+    }
 
     const added = {
       id: Date.now(),
