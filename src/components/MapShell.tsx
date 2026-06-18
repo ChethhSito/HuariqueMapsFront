@@ -4,6 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import './MapShell.css';
+import AddHuariqueForm from './Map/AddHuariqueForm';
+import MapSidebarList from './Map/MapSidebarList';
 import mapahuariqueImg from '../assets/mapahuarique.png';
 
 interface Resena {
@@ -652,89 +654,20 @@ const selectedHuarique = huariques.find((h) => h._id === selectedId);
         {/* Sidebar */}
         <aside className="sidebar">
           {isRegisterMode ? (
-            <div className="registration-container">
-              <div className="registration-header-row">
-                <h3 className="registration-title">Nuevo Huarique</h3>
-                <button className="registration-close-btn" onClick={() => setIsRegisterMode(false)}>✕</button>
-              </div>
-
-              <form onSubmit={handleRegisterSubmit} className="registration-form">
-                <div className="form-group">
-                  <label className="form-label">Nombre del Huarique *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Ej. El Tío Lucho"
-                    value={regNombre}
-                    onChange={(e) => setRegNombre(e.target.value)}
-                    className="form-input"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Descripción</label>
-                  <textarea
-                    placeholder="Cuéntanos qué lo hace tan especial..."
-                    value={regDescripcion}
-                    onChange={(e) => setRegDescripcion(e.target.value)}
-                    className="form-textarea"
-                    rows={3}
-                  />
-                </div>
-
-                <div className="form-row">
-                  <div className="form-group" style={{ flex: 1 }}>
-                    <label className="form-label">Tipo de Comida *</label>
-                    <select
-                      value={regTipoComida}
-                      onChange={(e) => setRegTipoComida(e.target.value)}
-                      className="form-select"
-                    >
-                      {CATEGORIES.filter(cat => cat !== 'Todos').map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="form-group" style={{ flex: 1 }}>
-                    <label className="form-label">Horario</label>
-                    <input
-                      type="text"
-                      placeholder="Ej. Lun-Sab: 12-5pm"
-                      value={regHorario}
-                      onChange={(e) => setRegHorario(e.target.value)}
-                      className="form-input"
-                    />
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Ubicación Geográfica *</label>
-                  <div className={`coordinates-status-box ${regCoordinates ? 'success' : 'pending'}`}>
-                    {regCoordinates ? (
-                      <div className="coords-display">
-                        <span>Lat: {regCoordinates[0].toFixed(6)}</span>
-                        <span>Lng: {regCoordinates[1].toFixed(6)}</span>
-                      </div>
-                    ) : (
-                      <div className="coords-helper">
-                        <span className="pulse-icon">📍</span>
-                        <span>Haz clic en el mapa para marcar el huarique</span>
-                      </div>
-                    )}
-                  </div>
-                  {regCoordinates && (
-                    <small style={{ color: 'var(--peru-text)', display: 'block', marginTop: '4px' }}>
-                      (Puedes arrastrar el marcador rojo en el mapa para ajustar)
-                    </small>
-                  )}
-                </div>
-
-                <button type="submit" className="form-submit-btn">
-                  Registrar Huarique
-                </button>
-              </form>
-            </div>
+            <AddHuariqueForm
+              setIsRegisterMode={setIsRegisterMode}
+              handleRegisterSubmit={handleRegisterSubmit}
+              regNombre={regNombre}
+              setRegNombre={setRegNombre}
+              regDescripcion={regDescripcion}
+              setRegDescripcion={setRegDescripcion}
+              regTipoComida={regTipoComida}
+              setRegTipoComida={setRegTipoComida}
+              CATEGORIES={CATEGORIES}
+              regHorario={regHorario}
+              setRegHorario={setRegHorario}
+              regCoordinates={regCoordinates}
+            />
           ) : (
             <>
               <div className="sidebar-header-row">
@@ -797,30 +730,15 @@ const selectedHuarique = huariques.find((h) => h._id === selectedId);
             <div className="no-data-msg">No se encontraron huariques de este tipo.</div>
           )}
 
-          <ul className="huariques-list">
-            {filteredHuariques.map((h) => (
-              <li
-                key={h._id}
-                className={`huarique-item ${selectedId === h._id ? 'active' : ''}`}
-                onClick={() => setSelectedId(h._id)}
-              >
-                <div className="huarique-item-header">
-                  <h3 className="huarique-name">{h.nombre}</h3>
-                  <span className="huarique-likes-badge" onClick={(e) => {
-                    e.stopPropagation();
-                    handleToggleLike(h._id);
-                  }} style={{ cursor: 'pointer' }} title={user ? 'Dar Me gusta' : 'Inicia sesión para dar like'}>
-                    {myLikesMap[h._id] ? '❤️' : '🤍'} {likesMap[h._id] || 0}
-                  </span>
-                </div>
-                <span className="huarique-tag">{h.tipoComida}</span>
-                <p className="huarique-desc">{h.descripcion}</p>
-                <div className="huarique-meta">
-                  <span>Horario: {h.horario || 'No especificado'}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <MapSidebarList
+            filteredHuariques={filteredHuariques}
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+            handleToggleLike={handleToggleLike}
+            myLikesMap={myLikesMap}
+            likesMap={likesMap}
+            user={user}
+          />
             </>
           )}
         </aside>
