@@ -551,3 +551,38 @@
   from { opacity: 0; transform: translateY(0) scale(0.8); }
   to { opacity: 1; transform: translateY(-10px) scale(1); }
 }
+
+.add-huarique-btn {
+  background-color: var(--peru-red-bright, #d43b3b);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(212, 59, 59, 0.25);
+}
+
+.add-huarique-btn:hover {
+  background-color: var(--peru-red-dark, #b91c1c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 59, 59, 0.3);
+}
+
+.add-huarique-btn:active {
+  transform: translateY(0);
+}
+
+
+.sidebar-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--peru-border, #ccc);
+  margin-bottom: 15px;
+}
+
