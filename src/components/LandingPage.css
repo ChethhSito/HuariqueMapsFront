@@ -183,7 +183,8 @@
 
 .section-container,
 .navbar-container {
-  width: 60%;
+  width: 90%;
+  max-width: 1280px;
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -230,7 +231,7 @@
 
 .nav-links {
   display: flex;
-  gap: 24px;
+  gap: 16px;
 }
 
 .nav-link {
@@ -241,6 +242,7 @@
   cursor: pointer;
   position: relative;
   padding-bottom: 4px;
+  white-space: nowrap;
 }
 
 .nav-link::after {
@@ -1122,7 +1124,7 @@
 
   .section-container,
   .navbar-container {
-    width: 80%;
+    width: 90%;
   }
 
   .hero-section {
