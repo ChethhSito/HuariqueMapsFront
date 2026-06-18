@@ -97,7 +97,7 @@ const CATEGORIES = ['Todos', 'Marina', 'Criolla', 'Fusión', 'Comida Rápida', '
 interface MapShellProps {
   isConnected: boolean;
   setIsConnected: (connected: boolean) => void;
-  user: { nombre: string } | null;
+  user: { nombre: string; email?: string; token?: string | null; isLocal?: boolean } | null;
   onAuthClick: () => void;
   onViewDetail?: (huarique: Huarique) => void;
 }
@@ -643,104 +643,7 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
     }
   };
 
-  // Manejar el Env├¡o de Rese├▒a
-  const handleAddReviewSubmit = async (e: React.FormEvent, huariqueId: string) => {
-    e.preventDefault();
-    if (!newReviewComment.trim()) return;
-
-    if (isConnected && user?.token && !user.isLocal) {
-      // Enviar rese├▒a a API
-      const apiUrl = import.meta.env.VITE_API_URL as string;
-      try {
-        const response = await fetch(`${apiUrl}/huariques/${huariqueId}/resenas`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}`
-          },
-          body: JSON.stringify({
-            comentario: newReviewComment,
-            calificacion: newReviewRating
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error('Error al guardar la rese├▒a en el servidor.');
-        }
-
-        const updatedHuarique = await response.json();
-        setHuariques(prev => prev.map(h => h._id === huariqueId ? updatedHuarique : h));
-        setNewReviewComment('');
-        setNewReviewRating(5);
-      } catch (err: any) {
-        alert(`Error al guardar rese├▒a: ${err.message}`);
-      }
-    } else {
-      // Guardar rese├▒a localmente
-      const userIdentifier = user?.email || user?.nombre || 'local_user';
-      const userDisplayName = user?.nombre || 'Usuario Local';
-
-      const updatedList = huariques.map(h => {
-        if (h._id !== huariqueId) return h;
-
-        const resenas = h.resenas || [];
-        const nuevaRes: Resena = {
-          usuarioId: userIdentifier,
-          usuarioNombre: userDisplayName,
-          comentario: newReviewComment,
-          calificacion: newReviewRating,
-          fecha: new Date().toISOString()
-        };
-
-        const updatedResenas = [...resenas, nuevaRes];
-        const totalCalificacion = updatedResenas.reduce((sum, r) => sum + r.calificacion, 0);
-        const numResenas = updatedResenas.length;
-        const ratingPromedio = Math.round((totalCalificacion / numResenas) * 10) / 10;
-
-        return {
-          ...h,
-          resenas: updatedResenas,
-          numResenas,
-          ratingPromedio
-        };
-      });
-
-      setHuariques(updatedList);
-      localStorage.setItem('local_huariques', JSON.stringify(updatedList));
-      setNewReviewComment('');
-      setNewReviewRating(5);
-      alert('┬íRese├▒a guardada localmente!');
-    }
-  };
-
-  // Helper para renderizar estrellas fijas
-  const renderStars = (rating: number) => {
-    const stars = [];
-    const rounded = Math.round(rating);
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <span key={i} className={`star-icon ${i <= rounded ? 'filled' : 'empty'}`}>
-          Ôÿà
-        </span>
-      );
-    }
-    return stars;
-  };
-
-  const selectedHuarique = huariques.find((h) => h._id === selectedId);
-
-  // Calcular m├®tricas de validaci├│n
-  const votosExisteCount = selectedHuarique?.votosExiste?.length || 0;
-  const votosNoExisteCount = selectedHuarique?.votosNoExiste?.length || 0;
-  const votosTotales = votosExisteCount + votosNoExisteCount;
-  const existenciaPercent = votosTotales > 0 ? Math.round((votosExisteCount / votosTotales) * 100) : 100;
-
-  const currentUserId = user ? (user.email || user.nombre) : null;
-  const haVotadoExiste = currentUserId && selectedHuarique?.votosExiste ? selectedHuarique.votosExiste.includes(currentUserId) : false;
-  const haVotadoNoExiste = currentUserId && selectedHuarique?.votosNoExiste ? selectedHuarique.votosNoExiste.includes(currentUserId) : false;
-
-  
-  const selectedHuarique = huariques.find((h) => h._id === selectedId);
+const selectedHuarique = huariques.find((h) => h._id === selectedId);
 
   return (
     <div className="dashboard-container">
