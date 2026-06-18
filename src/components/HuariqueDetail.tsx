@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import ReviewList from './Detail/ReviewList';
+import AddReviewDrawer from './Detail/AddReviewDrawer';
 import './HuariqueDetail.css';
 import comunidadImg from '../assets/comunidadHuarique.png';
 
@@ -360,91 +362,28 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
             </button>
           </div>
 
-          <div className="comments-card" style={{ padding: '0', background: 'transparent', border: 'none', boxShadow: 'none' }}>
-            <h2 className="detail-subtitle">Comentarios de la comunidad</h2>
-
-            <div className={`comments-list ${showAllComments ? 'scrollable' : ''}`}>
-              {comments.slice(0, showAllComments ? comments.length : 4).map(c => (
-                <div key={c.id} className="comment-item">
-                  <div className="comment-avatar" style={{ color: 'var(--peru-text)' }}><UserIcon /></div>
-                  <div className="comment-body">
-                    <div className="comment-header">
-                      <span className="comment-user">{c.user}</span>
-                      <span className="comment-date">{c.date}</span>
-                    </div>
-                    <div className="comment-stars">
-                      {Array.from({ length: c.rating }).map((_, i) => (
-                        <StarIcon key={i} />
-                      ))}
-                    </div>
-                    <p className="comment-text">{c.text}</p>
-                    
-                    {/* Botón Like de Comentario */}
-                    <div style={{ marginTop: '8px', display: 'flex' }}>
-                      <button 
-                        onClick={() => handleToggleLike(c.id)}
-                        style={{ 
-                          background: 'none', border: 'none', padding: '0', margin: '0', 
-                          display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer',
-                          color: c.likedByMe ? 'var(--peru-red)' : '#64748b', fontSize: '13px', fontWeight: '500',
-                          transition: 'all 0.2s'
-                        }}
-                      >
-                        <HeartIcon /> {c.likes > 0 ? c.likes : 'Me gusta'}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {comments.length > 4 && (
-              <button 
-                onClick={() => setShowAllComments(!showAllComments)}
-                style={{ width: '100%', marginTop: '16px', padding: '12px', background: 'var(--peru-white)', border: '1.5px solid var(--peru-border-btn)', borderRadius: '8px', fontWeight: '600', color: 'var(--peru-text-dark)', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', transition: 'all 0.2s ease' }}
-              >
-                {showAllComments ? 'Cargar menos comentarios' : `Cargar más comentarios (${comments.length - 4})`}
-              </button>
-            )}
-          </div>
+          <ReviewList
+            comments={comments}
+            showAllComments={showAllComments}
+            setShowAllComments={setShowAllComments}
+            handleToggleLike={handleToggleLike}
+            UserIcon={UserIcon}
+            StarIcon={StarIcon}
+            HeartIcon={HeartIcon}
+          />
         </div>
 
       </div>
 
-      {/* Floating Action Button para Comentarios */}
-      <button 
-        className="comment-fab"
-        onClick={handleFabClick}
-        title="Registra tu comentario"
-      >
-        <EditIcon />
-        Registrar comentario
-      </button>
-
-      {/* Drawer / Modal Lateral de Comentarios */}
-      <div className={`comment-drawer-overlay ${isCommentDrawerOpen ? 'open' : ''}`} onClick={() => setIsCommentDrawerOpen(false)}>
-        <div className="comment-drawer" onClick={(e) => e.stopPropagation()}>
-          <div className="drawer-header">
-            <h3>Registra tu comentario</h3>
-            <button className="drawer-close-btn" onClick={() => setIsCommentDrawerOpen(false)}>✕</button>
-          </div>
-          <div className="drawer-body">
-            <form className="comment-form" onSubmit={handleAddComment}>
-              <textarea 
-                className="comment-input" 
-                placeholder="¿Qué te pareció este huarique? ¡Queremos saberlo!"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                rows={5}
-                autoFocus
-              />
-              <button type="submit" className="comment-submit-btn" disabled={!newComment.trim()}>
-                Publicar comentario
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+      <AddReviewDrawer
+        isCommentDrawerOpen={isCommentDrawerOpen}
+        setIsCommentDrawerOpen={setIsCommentDrawerOpen}
+        newComment={newComment}
+        setNewComment={setNewComment}
+        handleAddComment={handleAddComment}
+        EditIcon={EditIcon}
+        handleFabClick={handleFabClick}
+      />
 
       {/* Footer */}
       <footer style={{ marginTop: '40px', paddingTop: '20px', paddingBottom: '10px', textAlign: 'center', color: 'var(--peru-text)', fontSize: '14px', borderTop: '1px solid var(--map-border)' }}>
