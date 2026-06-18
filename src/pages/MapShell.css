@@ -1,0 +1,553 @@
+/* apps/frontend/src/components/MapShell.css */
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--map-dashboard-bg);
+  font-family: 'Outfit', sans-serif;
+  color: var(--map-text);
+  transition: background 0.3s ease;
+}
+
+.dashboard-header {
+  display: none; /* Oculto ya que usamos el header unificado en App.tsx */
+}
+
+.dashboard-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 380px;
+  background: var(--map-sidebar);
+  border-right: 1px solid var(--map-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Fija la estructura para habilitar scroll interno en la lista */
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.sidebar-title {
+  padding: 16px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--map-border);
+  margin: 0;
+  color: var(--map-text-dark);
+}
+
+/* Filter Bar Styling */
+.filter-bar-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  background: var(--map-sidebar);
+  border-bottom: 1px solid var(--map-border);
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  flex: 1;
+  scroll-behavior: smooth;
+}
+
+.filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-arrow {
+  background: var(--peru-white);
+  border: 1.5px solid var(--peru-border-btn);
+  color: var(--peru-text);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  user-select: none;
+  z-index: 5;
+  transition: all 0.2s ease;
+  margin: 0 4px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.scroll-arrow:hover {
+  background: var(--map-active-item);
+  color: var(--peru-red-bright);
+  border-color: var(--peru-red-bright);
+}
+
+.scroll-arrow:active {
+  transform: scale(0.9);
+}
+
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--peru-border-btn);
+  background: var(--peru-white);
+  color: var(--peru-text);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Outfit', sans-serif;
+}
+
+.filter-btn:hover {
+  background: var(--map-active-item);
+  color: var(--peru-red-bright);
+  border-color: var(--peru-red-bright);
+}
+
+.filter-btn.active {
+  background: var(--peru-red-bright);
+  color: #ffffff;
+  border-color: var(--peru-red-bright);
+  box-shadow: 0 2px 6px rgba(189, 45, 45, 0.2);
+}
+
+.huariques-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto; /* Permite scroll solo en la lista de huariques */
+}
+
+.huarique-item {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--map-border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.huarique-item:hover {
+  background: var(--map-active-item);
+  opacity: 0.85;
+}
+
+.huarique-item.active {
+  background: var(--map-active-item);
+  border-left: 4px solid var(--map-accent);
+}
+
+.huarique-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.huarique-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--map-text-dark);
+  margin: 0;
+}
+
+.huarique-likes-badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--peru-white);
+  border: 1px solid var(--peru-border-btn);
+  color: var(--peru-text);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.25s ease;
+}
+
+.huarique-likes-badge:hover {
+  background: var(--map-active-item);
+  border-color: var(--peru-red-bright);
+  transform: scale(1.05);
+}
+
+.huarique-tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  align-self: flex-start;
+  font-weight: 600;
+  border: 1px solid var(--tag-border);
+}
+
+.huarique-desc {
+  font-size: 13px;
+  color: var(--map-text);
+  line-height: 1.4;
+  margin: 4px 0;
+}
+
+.huarique-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Map Shell Styling (Light/Dark Theme via Variables) */
+.map-shell {
+  flex: 1;
+  background-color: var(--map-bg);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.map-grid-overlay {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-family: monospace;
+  font-size: 11px;
+  color: #64748b;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.map-center-coordinates {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: var(--map-overlay);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--map-accent);
+  border: 1px solid var(--map-border);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom Leaflet Marker Styling */
+.custom-marker-container {
+  position: absolute;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.marker-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 42px;
+}
+
+/* Outer Pin Head shape */
+.marker-pin-head {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--map-accent-bright) 0%, var(--map-accent) 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.25s ease;
+}
+
+/* Inner Dot */
+.marker-pin-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+}
+
+/* Pin Tip pointing downwards */
+.marker-pin-tip {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid var(--map-accent);
+  margin-top: -3px;
+  z-index: 1;
+  filter: drop-shadow(0 3px 2px rgba(0,0,0,0.3));
+  transition: border-top-color 0.25s ease;
+}
+
+/* Pulsing effect behind active marker */
+.marker-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--map-active-item);
+  box-shadow: 0 0 15px var(--map-accent);
+  animation: markerPulse 1.8s infinite ease-out;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes markerPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.0);
+    opacity: 0;
+  }
+}
+
+/* Hover effects */
+.custom-marker-container:hover .marker-pin-head {
+  transform: scale(1.15) translateY(-2px);
+  background: radial-gradient(circle, var(--map-accent-bright) 0%, var(--map-accent) 100%);
+  filter: brightness(1.1);
+}
+
+/* Active State */
+.active-marker .marker-pin-head {
+  transform: scale(1.2) translateY(-4px);
+  background: radial-gradient(circle, var(--map-accent-bright) 0%, var(--map-accent) 100%);
+  border-color: #ffffff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), 0 0 12px var(--map-accent);
+}
+.active-marker .marker-pin-tip {
+  border-top-color: var(--map-accent);
+  transform: translateY(-4px);
+}
+
+/* Custom Leaflet Popup Overrides */
+.leaflet-popup-content-wrapper {
+  background: var(--map-overlay) !important;
+  color: var(--map-text) !important;
+  border: 1px solid var(--map-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px var(--map-shadow) !important;
+  padding: 4px 6px;
+}
+
+.leaflet-popup-tip {
+  background: var(--map-overlay) !important;
+  border-left: 1px solid var(--map-border) !important;
+  border-top: 1px solid var(--map-border) !important;
+  box-shadow: none !important;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--map-text) !important;
+}
+
+/* Animations */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.detail-overlay {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 320px;
+  background: var(--map-overlay);
+  border: 1px solid var(--map-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 30px var(--map-shadow);
+  z-index: 1010;
+  text-align: left;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.detail-overlay h3 {
+  margin: 0 0 6px 0;
+  color: var(--map-text-dark);
+  font-size: 18px;
+}
+
+.detail-overlay p {
+  font-size: 13px;
+  color: var(--map-text);
+  line-height: 1.5;
+  margin: 8px 0;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--map-text);
+  margin-top: 10px;
+}
+
+.detail-label {
+  color: #64748b;
+  min-width: 85px;
+}
+
+/* Interactive Likes Button */
+.like-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1.5px solid var(--peru-border-btn);
+  background: var(--peru-white);
+  color: var(--map-text-dark);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: 'Outfit', sans-serif;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.like-button:hover {
+  background: var(--map-active-item);
+  border-color: var(--peru-red-bright);
+  color: var(--peru-red-bright);
+}
+
+.like-button.liked {
+  background: var(--peru-red-bright);
+  color: #ffffff;
+  border-color: var(--peru-red-bright);
+  box-shadow: 0 4px 10px rgba(189, 45, 45, 0.25);
+}
+
+.like-button .heart-icon {
+  fill: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.like-button:active .heart-icon {
+  transform: scale(1.4);
+}
+
+.guide-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1.5px solid var(--peru-border-btn);
+  background: var(--peru-white);
+  color: var(--map-text-dark);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: 'Outfit', sans-serif;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.guide-button:hover {
+  background: var(--map-active-item);
+  border-color: var(--map-accent);
+  color: var(--map-accent);
+}
+
+.guide-button:active {
+  transform: scale(0.98);
+}
+
+.no-data-msg {
+  padding: 40px 20px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* Hide the Leaflet Routing Machine itinerary block to prevent it from covering our overlays */
+.leaflet-routing-container {
+  display: none !important;
+}
+
+/* Character Speech Bubble */
+.character-speech-bubble {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  transform: translateY(-10px);
+  background: white;
+  border: 2px solid var(--peru-red-bright);
+  border-radius: 12px;
+  border-bottom-right-radius: 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--map-text-dark);
+  width: max-content;
+  max-width: 180px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10;
+}
+
+.character-speech-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 15px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: var(--peru-red-bright) transparent transparent transparent;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(0) scale(0.8); }
+  to { opacity: 1; transform: translateY(-10px) scale(1); }
+}

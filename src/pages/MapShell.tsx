@@ -5,11 +5,11 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import './MapShell.css';
-import AddHuariqueForm from './Map/AddHuariqueForm';
-import MapSidebarList from './Map/MapSidebarList';
+import AddHuariqueForm from '../components/Map/AddHuariqueForm';
+import MapSidebarList from '../components/Map/MapSidebarList';
 import mapahuariqueImg from '../assets/mapahuarique.png';
 import { CATEGORIES } from '../data/constants';
-import HuariqueDetailOverlay from './Map/HuariqueDetailOverlay';
+import HuariqueDetailOverlay from '../components/Map/HuariqueDetailOverlay';
 
 interface Resena {
   usuarioId: string;

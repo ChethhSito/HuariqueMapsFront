@@ -1,40 +1,23 @@
-import { useState, useEffect } from 'react';
-import LandingPage from './components/LandingPage';
-import MapShell from './components/MapShell';
+import { useState } from 'react';
+import LandingPage from './pages/LandingPage';
+import { useAuth } from './context/AuthContext';
+import MapShell from './pages/MapShell';
 import HuariqueDetail from './components/HuariqueDetail';
 import logoImage from './assets/HuariqueMap.png';
 import AuthModal from './components/AuthModal';
 import './App.css';
 
-interface User {
-  nombre: string;
-  email?: string;
-  token?: string | null;
-  isLocal?: boolean;
-}
 
 function App() {
   const [currentView, setCurrentView] = useState<'landing' | 'map' | 'detail'>('landing');
   const [activeDetailHuarique, setActiveDetailHuarique] = useState<any | null>(null);
   const [isDark, setIsDark] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const { user, login, logout } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
 
   // User Dropdown state for Map view
   const [showUserDropdown, setShowUserDropdown] = useState(false);
-
-  // Cargar usuario desde localStorage al montar
-  useEffect(() => {
-    const savedUser = localStorage.getItem('huarique_user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (e) {
-        console.error('Error al parsear el usuario guardado', e);
-      }
-    }
-  }, []);
 
   const navigateTo = (view: 'landing' | 'map' | 'detail') => {
     setCurrentView(view);
@@ -70,14 +53,12 @@ function App() {
   };
 
   const handleAuthSuccess = (userData: any) => {
-    setUser(userData);
-    localStorage.setItem('huarique_user', JSON.stringify(userData));
+    login(userData);
     setShowAuthModal(false);
   };
 
   const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('huarique_user');
+    logout();
   };
 
   return (

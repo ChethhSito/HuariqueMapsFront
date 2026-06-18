@@ -3,13 +3,13 @@ import heroImage from '../assets/peruvian_cuisine_hero.png';
 import cevicheImage from '../assets/ceviche_carretilla.png';
 import anticuchosImage from '../assets/anticuchos_lima.png';
 import './LandingPage.css';
-import LandingNavbar from './Landing/LandingNavbar';
-import HeroSection from './Landing/HeroSection';
-import ConceptSection from './Landing/ConceptSection';
-import UsoSection from './Landing/UsoSection';
-import RestaurantsSection from './Landing/RestaurantsSection';
-import SuggestionsSection from './Landing/SuggestionsSection';
-import Footer from './Landing/Footer';
+import LandingNavbar from '../components/Landing/LandingNavbar';
+import HeroSection from '../components/Landing/HeroSection';
+import ConceptSection from '../components/Landing/ConceptSection';
+import UsoSection from '../components/Landing/UsoSection';
+import RestaurantsSection from '../components/Landing/RestaurantsSection';
+import SuggestionsSection from '../components/Landing/SuggestionsSection';
+import Footer from '../components/Landing/Footer';
 
 interface LandingPageProps {
   onNavigate: (view: 'landing' | 'map') => void;
