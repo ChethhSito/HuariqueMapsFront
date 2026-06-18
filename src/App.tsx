@@ -209,11 +209,10 @@ function App() {
           <button className="auth-modal-close" onClick={() => setShowAuthModal(false)}>✕</button>
 
           <div className="auth-modal-image-container">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '30px' }}>
-              <img src={logoImage} alt="Huarique Logo" style={{ height: '40px' }} />
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '40px', marginTop: '30px' }}>
               <h1 style={{ 
                 margin: 0, 
-                fontSize: '32px', 
+                fontSize: '48px', 
                 color: 'var(--peru-text)', 
                 fontFamily: 'Pacifico, cursive', 
                 fontWeight: 'normal',
