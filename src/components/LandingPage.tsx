@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import heroImage from '../assets/peruvian_cuisine_hero.png';
 import cevicheImage from '../assets/ceviche_carretilla.png';
 import anticuchosImage from '../assets/anticuchos_lima.png';
-import characterImage from '../assets/ContactoHuarique.png';
-import logoImage from '../assets/HuariqueMap.png';
 import './LandingPage.css';
 import LandingNavbar from './Landing/LandingNavbar';
 import HeroSection from './Landing/HeroSection';
 import ConceptSection from './Landing/ConceptSection';
 import UsoSection from './Landing/UsoSection';
+import RestaurantsSection from './Landing/RestaurantsSection';
+import SuggestionsSection from './Landing/SuggestionsSection';
+import Footer from './Landing/Footer';
 
 interface LandingPageProps {
   onNavigate: (view: 'landing' | 'map') => void;
@@ -135,178 +136,20 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
       {/* Popular Restaurants Section */}
       <UsoSection />
 
-      <section id="restaurantes" className="restaurants-section">
-        <div className="section-container">
-          <span className="section-tag">Recomendaciones</span>
-          <h2 className="section-title">Restaurantes Populares</h2>
-          <p className="restaurants-section-desc">
-            Una selección de huariques tradicionales muy queridos por la comunidad.
-            Explora su sabor único antes de ver su ubicación geoespacial en el mapa.
-          </p>
+      <RestaurantsSection popularRestaurants={popularRestaurants} />
 
-          <div className="restaurants-grid">
-            {popularRestaurants.map((res) => (
-              <div key={res.id} className="restaurant-card">
-                <div className="restaurant-img-wrapper">
-                  <img src={res.imagen} alt={res.nombre} className="restaurant-img" />
-                </div>
-                <div className="restaurant-card-body">
-                  <div className="restaurant-card-header">
-                    <h3 className="restaurant-card-title">{res.nombre}</h3>
-                    <span className="huarique-tag" style={{ margin: 0 }}>{res.tipoComida}</span>
-                  </div>
-                  <p className="restaurant-card-desc">{res.descripcion}</p>
-                  <div className="restaurant-card-footer">
-                    <span>Horario: {res.horario}</span>
-                    <span>Ubicación: {res.ubicacion}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <SuggestionsSection 
+        isSubmitted={isSubmitted}
+        nombre={nombre}
+        setNombre={setNombre}
+        correo={correo}
+        setCorreo={setCorreo}
+        descripcion={descripcion}
+        setDescripcion={setDescripcion}
+        handleSuggestionSubmit={handleSuggestionSubmit}
+      />
 
-      {/* Suggestions Box Section */}
-      <section id="sugerencias" className="suggestions-section">
-        <div className="section-container">
-          <span className="section-tag">Participa</span>
-          <h2 className="section-title">Buzón de Sugerencias</h2>
-
-          <div className="suggestions-container-grid">
-            {/* Left Column: Image for suggestion box */}
-            <div className="suggestions-image-column">
-              <img
-                src={characterImage}
-                alt="Contacto Huarique"
-                className="suggestions-image"
-              />
-            </div>
-
-            {/* Right Column: Suggestions Card & Form */}
-            <div className="suggestions-form-column">
-              <div className="suggestions-card">
-                <h3 className="suggestions-title">Recomienda un Huarique</h3>
-                <p className="suggestions-desc">
-                  ¿Conoces algún rincón culinario secreto que merezca estar en el mapa?
-                  Escríbenos y ayúdanos a expandir nuestra comunidad de sabor.
-                </p>
-
-                {isSubmitted ? (
-                  <div className="success-message">
-                    ¡Gracias por tu recomendación! Analizaremos el huarique sugerido para agregarlo pronto al mapa interactivo.
-                  </div>
-                ) : (
-                  <form onSubmit={handleSuggestionSubmit}>
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="nombre">Nombre Completo</label>
-                      <input
-                        type="text"
-                        id="nombre"
-                        className="form-input"
-                        value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
-                        required
-                        placeholder="Ej. Juan Pérez"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="correo">Correo Electrónico</label>
-                      <input
-                        type="email"
-                        id="correo"
-                        className="form-input"
-                        value={correo}
-                        onChange={(e) => setCorreo(e.target.value)}
-                        required
-                        placeholder="Ej. juan@correo.com"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="descripcion">Detalles del Huarique (Nombre, especialidad, dirección)</label>
-                      <textarea
-                        id="descripcion"
-                        className="form-textarea"
-                        value={descripcion}
-                        onChange={(e) => setDescripcion(e.target.value)}
-                        required
-                        placeholder="Ej. Cevichería El Primo en Surquillo, Jr. Dante 420. Recomiendo el ceviche de pota."
-                      ></textarea>
-                    </div>
-
-                    <button type="submit" className="btn-submit">
-                      Enviar Sugerencia
-                    </button>
-                  </form>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Improved 3-Column Footer */}
-      <footer className="footer">
-        <div className="section-container">
-          <div className="footer-grid">
-            {/* Left Column: Logo and Info */}
-            <div className="footer-col">
-              <a href="#" className="footer-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={(e) => { e.preventDefault(); scrollToSection('inicio'); }}>
-                <img src={logoImage} alt="HuariqueMap Logo" style={{ height: '65px', objectFit: 'contain', marginBottom: '15px' }} />
-                Huarique<span>Map</span>
-              </a>
-              <p className="footer-info-text">
-                Conectando a los amantes de la buena comida con los rincones culinarios más emblemáticos
-                y tradicionales del Perú. Promovemos el turismo gastronomómico local de forma gratuita.
-              </p>
-            </div>
-
-            {/* Middle Column: Site Map */}
-            <div className="footer-col">
-              <h3 className="footer-col-title">Mapa del Sitio</h3>
-              <ul className="footer-links">
-                <li>
-                  <span className="footer-link-item" onClick={() => scrollToSection('inicio')}>
-                    Inicio
-                  </span>
-                </li>
-                <li>
-                  <span className="footer-link-item" onClick={() => scrollToSection('concepto')}>
-                    Nuestra historia
-                  </span>
-                </li>
-                <li>
-                  <span className="footer-link-item" onClick={() => scrollToSection('restaurantes')}>
-                    Te brindamos
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Right Column: Contact Details */}
-            <div className="footer-col">
-              <h3 className="footer-col-title">Contacto</h3>
-              <div className="footer-contact-info">
-                <div className="footer-contact-item">
-                  <span className="footer-contact-label">Línea de Atención</span>
-                  <span className="footer-contact-value">+51 999 888 777</span>
-                </div>
-                <div className="footer-contact-item">
-                  <span className="footer-contact-label">Correo de Soporte</span>
-                  <span className="footer-contact-value">contacto@huariquemap.pe</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Footer Bottom copyright */}
-          <div className="footer-bottom">
-            <p>© 2026 HuariqueMap. Creado con orgullo en Perú. Todos los derechos reservados.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer scrollToSection={scrollToSection} />
     </div>
   );
 }
