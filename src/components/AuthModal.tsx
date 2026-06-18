@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import loginImage from '../assets/IniciasesionHuarique.png';
 import registerImage from '../assets/RegistrateHuariqueR.png';
+import { loginUser, registerUser } from '../api/auth';
 
 interface AuthModalProps {
   show: boolean;
@@ -24,53 +25,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
     setAuthError(null);
     setAuthLoading(true);
 
-    const apiUrl = import.meta.env.VITE_API_URL as string;
-
-    if (isLoginMode) {
-      try {
-        const response = await fetch(`${apiUrl}/auth/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email: authEmail, password: authPassword })
-        });
-
-        if (!response.ok) {
-          throw new Error('Credenciales inválidas o error en el servidor');
-        }
-
-        const data = await response.json();
+    try {
+      if (isLoginMode) {
+        const data = await loginUser(authEmail, authPassword);
         onAuthSuccess({ ...data.user, token: data.access_token });
-      } catch (err: any) {
-        setAuthError(err.message || 'Error al iniciar sesión');
-      } finally {
-        setAuthLoading(false);
+      } else {
+        const data = await registerUser(authName, authEmail, authPassword);
+        onAuthSuccess({ ...data.user, token: data.access_token });
       }
-    } else {
-      try {
-        const response = await fetch(`${apiUrl}/auth/register`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ nombre: authName, email: authEmail, password: authPassword })
-        });
-
-        if (!response.ok) {
-          throw new Error('No se pudo registrar el usuario');
-        }
-
-        const data = await response.json();
-        onAuthSuccess({ ...data.user, token: data.access_token });
-      } catch (err: any) {
+    } catch (err: any) {
+      if (!isLoginMode) {
         setAuthError(err.message || 'Error de conexión. Simulando modo local...');
         const fallbackUser = { nombre: authName, email: authEmail, isLocal: true };
         onAuthSuccess(fallbackUser);
         alert('API NestJS no disponible. Registrado en Modo Local de respaldo.');
-      } finally {
-        setAuthLoading(false);
+      } else {
+        setAuthError(err.message || 'Error al autenticar');
       }
+    } finally {
+      setAuthLoading(false);
     }
   };
 

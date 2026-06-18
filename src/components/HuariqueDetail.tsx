@@ -28,6 +28,8 @@ export interface Huarique {
   }>;
 }
 
+import { addReview } from '../api/huariques';
+
 interface User {
   nombre: string;
   email?: string;
@@ -212,20 +214,11 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
     if (!newComment.trim()) return;
 
     if (user?.token && !user.isLocal) {
-      const apiUrl = import.meta.env.VITE_API_URL as string;
       try {
-        const res = await fetch(`${apiUrl}/huariques/${huarique._id}/resenas`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}`
-          },
-          body: JSON.stringify({
-            comentario: newComment,
-            calificacion: 5
-          })
-        });
-        if (!res.ok) throw new Error("Error en servidor al guardar comentario");
+        await addReview(huarique._id, {
+          comentario: newComment,
+          calificacion: 5
+        }, user.token);
       } catch (err) {
         console.error("Error submitting comment to backend", err);
       }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { Huarique } from '../types';
 import { FALLBACK_HUARIQUES } from '../data/constants';
+import { getHuariques, createHuarique, validateHuarique } from '../api/huariques';
 
 export function useMapData(
   isConnected: boolean,
@@ -50,14 +51,9 @@ export function useMapData(
   // Cargar huariques desde API o datos de respaldo
   useEffect(() => {
     const fetchHuariques = async () => {
-      const apiUrl = import.meta.env.VITE_API_URL as string;
       try {
         setLoading(true);
-        const response = await fetch(`${apiUrl}/huariques`);
-        if (!response.ok) {
-          throw new Error(`Error en el servidor: ${response.statusText}`);
-        }
-        const data = await response.json();
+        const data = await getHuariques();
         if (data && data.length > 0) {
           setHuariques(data);
           setIsConnected(true);
@@ -159,23 +155,8 @@ export function useMapData(
     };
 
     if (isConnected && user?.token && !user.isLocal) {
-      const apiUrl = import.meta.env.VITE_API_URL as string;
       try {
-        const response = await fetch(`${apiUrl}/huariques`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}`
-          },
-          body: JSON.stringify(newHuariqueData)
-        });
-
-        if (!response.ok) {
-          const errData = await response.json();
-          throw new Error(errData.message || 'Error al registrar el huarique');
-        }
-
-        const registeredHuarique = await response.json();
+        const registeredHuarique = await createHuarique(newHuariqueData, user.token);
         
         const fullHuarique: Huarique = {
           ...registeredHuarique,
@@ -228,22 +209,8 @@ export function useMapData(
     const userIdentifier = user.email || user.nombre;
 
     if (isConnected && user.token && !user.isLocal) {
-      const apiUrl = import.meta.env.VITE_API_URL as string;
       try {
-        const response = await fetch(`${apiUrl}/huariques/${huariqueId}/validar`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}`
-          },
-          body: JSON.stringify({ existe })
-        });
-
-        if (!response.ok) {
-          throw new Error('Error al enviar el voto al servidor.');
-        }
-
-        const updatedHuarique = await response.json();
+        const updatedHuarique = await validateHuarique(huariqueId, existe, user.token);
         setHuariques(prev => prev.map(h => h._id === huariqueId ? updatedHuarique : h));
       } catch (err: any) {
         alert(`Error al guardar validación: ${err.message}`);
