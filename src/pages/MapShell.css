@@ -882,76 +882,119 @@
   transition: background 0.2s;
 }
 
-.review-submit-btn:hover {
-  background: var(--peru-red-dark);
+.like-button:active .heart-icon {
+  transform: scale(1.4);
 }
 
-.review-login-prompt {
-  font-size: 11px;
-  color: var(--peru-red-bright);
-  background: rgba(189, 45, 45, 0.05);
-  border: 1px dashed rgba(189, 45, 45, 0.2);
-  border-radius: 6px;
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-  font-weight: 600;
-  margin-top: 6px;
-  transition: all 0.2s ease;
-}
-
-.review-login-prompt:hover {
-  background: rgba(189, 45, 45, 0.1);
-}
-
-/* Extra badges */
-.huarique-tags-row {
-  display: flex;
-  gap: 6px;
+.guide-button {
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 2px;
-}
-
-.huarique-rating-badge {
-  display: inline-block;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: rgba(234, 179, 8, 0.1);
-  color: #d97706;
-  font-weight: bold;
-  border: 1px solid rgba(234, 179, 8, 0.2);
-}
-
-.huarique-creator-badge {
-  display: inline-block;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: rgba(100, 116, 139, 0.08);
-  color: #475569;
-  font-weight: 500;
-  border: 1px solid rgba(100, 116, 139, 0.15);
-}
-
-.huarique-detail-desc {
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1.5px solid var(--peru-border-btn);
+  background: var(--peru-white);
+  color: var(--map-text-dark);
   font-size: 13px;
-  color: var(--map-text);
-  line-height: 1.5;
-  margin: 10px 0;
-  border-left: 2.5px solid var(--peru-red-bright);
-  padding-left: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: 'Outfit', sans-serif;
+  width: 100%;
+  margin-top: 8px;
 }
 
-/* Adjust detail overlay layout to allow internal scrolling if content is long */
-.detail-overlay {
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
+.guide-button:hover {
+  background: var(--map-active-item);
+  border-color: var(--map-accent);
+  color: var(--map-accent);
 }
-.detail-overlay::-webkit-scrollbar {
-  width: 4px;
+
+.guide-button:active {
+  transform: scale(0.98);
 }
-.detail-overlay::-webkit-scrollbar-thumb {
-  background-color: var(--peru-border-btn);
-  border-radius: 2px;
+
+.no-data-msg {
+  padding: 40px 20px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
 }
+
+/* Hide the Leaflet Routing Machine itinerary block to prevent it from covering our overlays */
+.leaflet-routing-container {
+  display: none !important;
+}
+
+/* Character Speech Bubble */
+.character-speech-bubble {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  transform: translateY(-10px);
+  background: white;
+  border: 2px solid var(--peru-red-bright);
+  border-radius: 12px;
+  border-bottom-right-radius: 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--map-text-dark);
+  width: max-content;
+  max-width: 180px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10;
+}
+
+.character-speech-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 15px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: var(--peru-red-bright) transparent transparent transparent;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(0) scale(0.8); }
+  to { opacity: 1; transform: translateY(-10px) scale(1); }
+}
+
+.add-huarique-btn {
+  background-color: var(--peru-red-bright, #d43b3b);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(212, 59, 59, 0.25);
+}
+
+.add-huarique-btn:hover {
+  background-color: var(--peru-red-dark, #b91c1c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 59, 59, 0.3);
+}
+
+.add-huarique-btn:active {
+  transform: translateY(0);
+}
+
+
+.sidebar-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--peru-border, #ccc);
+  margin-bottom: 15px;
+}
+
