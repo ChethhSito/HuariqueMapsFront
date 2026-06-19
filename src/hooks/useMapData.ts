@@ -25,7 +25,9 @@ export function useMapData(
   const [regNombre, setRegNombre] = useState('');
   const [regDescripcion, setRegDescripcion] = useState('');
   const [regTipoComida, setRegTipoComida] = useState('Marina');
-  const [regHorario, setRegHorario] = useState('');
+  const [regHoraApertura, setRegHoraApertura] = useState('11:00');
+  const [regHoraCierre, setRegHoraCierre] = useState('17:00');
+  const [regImagen, setRegImagen] = useState('');
   const [regCoordinates, setRegCoordinates] = useState<[number, number] | null>(null); // [lat, lng]
 
   const characterMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -44,7 +46,9 @@ export function useMapData(
     setRegNombre('');
     setRegDescripcion('');
     setRegTipoComida('Marina');
-    setRegHorario('');
+    setRegHoraApertura('11:00');
+    setRegHoraCierre('17:00');
+    setRegImagen('');
     setRegCoordinates(null);
   };
 
@@ -151,7 +155,8 @@ export function useMapData(
         type: 'Point' as const,
         coordinates: [regCoordinates[1], regCoordinates[0]] // [longitud, latitud]
       },
-      horario: regHorario
+      horario: `${regHoraApertura} - ${regHoraCierre}`,
+      imagen: regImagen
     };
 
     if (isConnected && user?.token && !user.isLocal) {
@@ -246,15 +251,22 @@ export function useMapData(
 
   // Auto-seleccionar primer elemento filtrado si el actual queda excluido
   useEffect(() => {
-    if (filteredHuariques.length > 0) {
+    if (isRegisterMode) {
+      setSelectedId(null);
+      return;
+    }
+
+    if (selectedId !== null && filteredHuariques.length > 0) {
       const exists = filteredHuariques.some(h => h._id === selectedId);
       if (!exists) {
         setSelectedId(filteredHuariques[0]._id);
       }
-    } else {
+    }
+    
+    if (filteredHuariques.length === 0) {
       setSelectedId(null);
     }
-  }, [selectedCategory, filteredHuariques, selectedId]);
+  }, [selectedCategory, filteredHuariques, selectedId, isRegisterMode]);
 
   const selectedHuarique = huariques.find((h) => h._id === selectedId);
 
@@ -270,7 +282,9 @@ export function useMapData(
     regNombre, setRegNombre,
     regDescripcion, setRegDescripcion,
     regTipoComida, setRegTipoComida,
-    regHorario, setRegHorario,
+    regHoraApertura, setRegHoraApertura,
+    regHoraCierre, setRegHoraCierre,
+    regImagen, setRegImagen,
     regCoordinates, setRegCoordinates,
     handleToggleLike,
     handleVoteExistence,

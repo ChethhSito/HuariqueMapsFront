@@ -61,7 +61,9 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
     regNombre, setRegNombre,
     regDescripcion, setRegDescripcion,
     regTipoComida, setRegTipoComida,
-    regHorario, setRegHorario,
+    regHoraApertura, setRegHoraApertura,
+    regHoraCierre, setRegHoraCierre,
+    regImagen, setRegImagen,
     regCoordinates, setRegCoordinates,
     handleToggleLike,
     handleVoteExistence,
@@ -337,8 +339,12 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
               regTipoComida={regTipoComida}
               setRegTipoComida={setRegTipoComida}
               CATEGORIES={CATEGORIES}
-              regHorario={regHorario}
-              setRegHorario={setRegHorario}
+              regHoraApertura={regHoraApertura}
+              setRegHoraApertura={setRegHoraApertura}
+              regHoraCierre={regHoraCierre}
+              setRegHoraCierre={setRegHoraCierre}
+              regImagen={regImagen}
+              setRegImagen={setRegImagen}
               regCoordinates={regCoordinates}
             />
           ) : (
@@ -420,12 +426,7 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
         <section className="map-shell">
           <div id="map-container" ref={mapContainerRef} style={{ width: '100%', height: '100%', zIndex: 1 }} />
 
-          {/* Simulated grid info overlay */}
-          <div className="map-grid-overlay" style={{ zIndex: 1010 }}>
-            <div>GPS ENGINE: ACTIVE</div>
-            <div>MAP: OPENSTREETMAP</div>
-            <div>STATUS: {isConnected ? 'LIVE API' : 'LOCAL FALLBACK'}</div>
-          </div>
+          
 
           {/* Detailed Overlay Card for selected Huarique */}
           {selectedHuarique && !isRegisterMode && (
@@ -494,9 +495,7 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
                 <img src={mapahuariqueImg} alt="Mapa Huarique" style={{ height: '140px', width: 'auto', marginBottom: '-5px', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.2))' }} />
               </div>
 
-              <div className="map-center-coordinates" style={{ position: 'relative', bottom: 'auto', right: 'auto' }}>
-                Ubicación: {selectedHuarique.coordenadas.coordinates[1].toFixed(6)}° N, {selectedHuarique.coordenadas.coordinates[0].toFixed(6)}° W
-              </div>
+              
             </div>
           )}
         
@@ -504,8 +503,8 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
           {isRegisterMode && (
             <div className="map-center-coordinates register-help-banner" style={{ zIndex: 1010 }}>
               {regCoordinates 
-                ? '📍 Ubicación seleccionada. Arrastra el pin rojo si necesitas reajustarlo.' 
-                : '👈 Haz clic en cualquier lugar del mapa para fijar el huarique.'
+                ? ' Ubicación seleccionada. Arrastra el pin rojo si necesitas reajustarlo.' 
+                : ' Haz clic en cualquier lugar del mapa para fijar el huarique.'
               }
             </div>
           )}

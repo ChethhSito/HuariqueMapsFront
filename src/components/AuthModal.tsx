@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import loginImage from '../assets/IniciasesionHuarique.png';
 import registerImage from '../assets/RegistrateHuariqueR.png';
-import { loginUser, registerUser } from '../api/auth';
+import { auth } from '../config/firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 interface AuthModalProps {
   show: boolean;
@@ -27,21 +28,34 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
 
     try {
       if (isLoginMode) {
-        const data = await loginUser(authEmail, authPassword);
-        onAuthSuccess({ ...data.user, token: data.access_token });
+        const userCredential = await signInWithEmailAndPassword(auth, authEmail, authPassword);
+        const firebaseUser = userCredential.user;
+        const token = await firebaseUser.getIdToken();
+        onAuthSuccess({
+          nombre: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Usuario',
+          email: firebaseUser.email || undefined,
+          token: token,
+          uid: firebaseUser.uid
+        });
       } else {
-        const data = await registerUser(authName, authEmail, authPassword);
-        onAuthSuccess({ ...data.user, token: data.access_token });
+        const userCredential = await createUserWithEmailAndPassword(auth, authEmail, authPassword);
+        const firebaseUser = userCredential.user;
+        
+        await updateProfile(firebaseUser, {
+          displayName: authName
+        });
+
+        const token = await firebaseUser.getIdToken();
+        onAuthSuccess({
+          nombre: authName,
+          email: firebaseUser.email || undefined,
+          token: token,
+          uid: firebaseUser.uid
+        });
       }
     } catch (err: any) {
-      if (!isLoginMode) {
-        setAuthError(err.message || 'Error de conexión. Simulando modo local...');
-        const fallbackUser = { nombre: authName, email: authEmail, isLocal: true };
-        onAuthSuccess(fallbackUser);
-        alert('API NestJS no disponible. Registrado en Modo Local de respaldo.');
-      } else {
-        setAuthError(err.message || 'Error al autenticar');
-      }
+      console.error(err);
+      setAuthError(err.message || 'Error de autenticación');
     } finally {
       setAuthLoading(false);
     }
@@ -165,6 +179,40 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
                 {authLoading ? 'Cargando...' : (isLoginMode ? 'Iniciar Sesión' : 'Registrarse')}
               </button>
             </form>
+
+            <div style={{ display: 'flex', alignItems: 'center', margin: '15px 0' }}>
+              <hr style={{ flex: 1, border: 'none', borderTop: '1px dashed var(--peru-border)', opacity: 0.3 }} />
+              <span style={{ padding: '0 10px', fontSize: '12px', color: 'var(--peru-text)', opacity: 0.6 }}>O también</span>
+              <hr style={{ flex: 1, border: 'none', borderTop: '1px dashed var(--peru-border)', opacity: 0.3 }} />
+            </div>
+
+            <button 
+              type="button" 
+              onClick={() => {
+                onAuthSuccess({
+                  nombre: authName.trim() || (isLoginMode ? "Gastón Acurio" : "Visitante Local"),
+                  email: authEmail.trim() || "demo@huariquemap.com",
+                  token: "mock-session-token",
+                  uid: "mock-uid-" + Date.now(),
+                  isLocal: true
+                });
+              }}
+              className="btn-secondary" 
+              style={{ 
+                width: '100%', 
+                display: 'flex', 
+                justifyContent: 'center', 
+                borderColor: 'var(--peru-red)', 
+                color: 'var(--peru-red)',
+                padding: '10px',
+                borderRadius: '8px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                fontFamily: 'Outfit, sans-serif'
+              }}
+            >
+              Entrar en Modo Demostración (Simulado)
+            </button>
 
             <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '14px' }}>
               <span 

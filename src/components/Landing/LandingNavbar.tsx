@@ -106,7 +106,8 @@ export default function LandingNavbar({
                     borderRadius: '8px',
                     background: showUserDropdown ? 'var(--peru-red-light)' : 'transparent',
                     transition: 'all 0.2s',
-                    fontFamily: 'var(--font-sans)'
+                    fontFamily: 'var(--font-sans)',
+                    whiteSpace: 'nowrap'
                   }}
                   onMouseEnter={(e) => { if (!showUserDropdown) e.currentTarget.style.background = 'var(--peru-red-light)'; }}
                   onMouseLeave={(e) => { if (!showUserDropdown) e.currentTarget.style.background = 'transparent'; }}

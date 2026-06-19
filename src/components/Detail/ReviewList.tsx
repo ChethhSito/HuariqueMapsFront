@@ -54,7 +54,7 @@ export default function ReviewList({
                     background: 'none', border: 'none', padding: '0', margin: '0', 
                     display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer',
                     color: c.likedByMe ? 'var(--peru-red)' : '#64748b', fontSize: '13px', fontWeight: '500',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s' 
                   }}
                 >
                   <HeartIcon /> {c.likes > 0 ? c.likes : 'Me gusta'}

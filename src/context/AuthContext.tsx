@@ -1,10 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { auth } from '../config/firebase';
+import { onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
 
 export interface User {
   nombre: string;
   email?: string;
   token?: string | null;
+  uid?: string;
   isLocal?: boolean;
 }
 
@@ -20,25 +23,52 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('huariques_user');
-    if (savedUser) {
+    // Check if there is a mock session first
+    const savedMockUser = localStorage.getItem('mock_user_session');
+    if (savedMockUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        setUser(JSON.parse(savedMockUser));
+        return;
       } catch (e) {
-        console.error("Error parsing saved user", e);
+        localStorage.removeItem('mock_user_session');
       }
     }
+
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const token = await firebaseUser.getIdToken();
+        setUser({
+          nombre: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Usuario',
+          email: firebaseUser.email || undefined,
+          token: token,
+          uid: firebaseUser.uid
+        });
+      } else {
+        if (!localStorage.getItem('mock_user_session')) {
+          setUser(null);
+        }
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const login = (userData: User) => {
+    if (userData.isLocal) {
+      localStorage.setItem('mock_user_session', JSON.stringify(userData));
+    }
     setUser(userData);
-    localStorage.setItem('huariques_user', JSON.stringify(userData));
   };
 
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem('huariques_user');
-    window.location.reload(); // Para forzar limpieza del estado de la app si es necesario
+    localStorage.removeItem('mock_user_session');
+    firebaseSignOut(auth).then(() => {
+      setUser(null);
+      window.location.reload();
+    }).catch(() => {
+      setUser(null);
+      window.location.reload();
+    });
   };
 
   return (

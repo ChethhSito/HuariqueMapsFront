@@ -369,6 +369,7 @@
   transition: all 0.3s ease;
   font-family: var(--font-sans);
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .btn-join:hover {
@@ -388,7 +389,9 @@
   transition: all 0.3s ease;
   font-family: var(--font-sans);
   font-size: 14px;
-  width: 50%;
+  width: 100%;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .btn-join-2:hover {
@@ -409,6 +412,7 @@
   transition: transform 0.2s, box-shadow 0.2s;
   font-family: var(--font-sans);
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .btn-nav-map:hover {
@@ -429,7 +433,9 @@
   transition: transform 0.2s, box-shadow 0.2s;
   font-family: var(--font-sans);
   font-size: 14px;
-  width: 50%;
+  width: 100%;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .btn-nav-map-2:hover {
@@ -438,11 +444,12 @@
   filter: brightness(1.15);
 }
 
-
 .mobile-auth-buttons {
   display: flex;
+  flex-direction: column;
   gap: 12px;
-  justify-content: center;
+  align-items: stretch;
+  width: 100%;
 }
 
 /* Hero Section */
@@ -1167,10 +1174,6 @@
   .suggestions-card {
     padding: 24px 20px;
   }
-}
-
-/* Tablets & Half-Screens (Less than 968px) */
-@media (max-width: 968px) {
 
   .section-container,
   .navbar-container {

@@ -1,10 +1,10 @@
-const API_URL = import.meta.env.VITE_API_URL as string;
+const API_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:3000';
 
 export async function loginUser(email: string, contrasena: string) {
   const response = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, contrasena })
+    body: JSON.stringify({ email, password: contrasena })
   });
 
   if (!response.ok) {
@@ -19,7 +19,7 @@ export async function registerUser(nombre: string, email: string, contrasena: st
   const response = await fetch(`${API_URL}/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ nombre, email, contrasena })
+    body: JSON.stringify({ nombre, email, password: contrasena })
   });
 
   if (!response.ok) {

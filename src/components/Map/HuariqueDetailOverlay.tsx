@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import type { Huarique } from '../../types';
 
 interface HuariqueDetailOverlayProps {
@@ -12,6 +13,8 @@ interface HuariqueDetailOverlayProps {
   showCharacterMessage: (msg: string) => void;
 }
 
+const addressCache: { [id: string]: { road?: string; suburb?: string } } = {};
+
 export default function HuariqueDetailOverlay({
   selectedHuarique,
   user,
@@ -23,6 +26,63 @@ export default function HuariqueDetailOverlay({
   handleGuideMe,
   showCharacterMessage
 }: HuariqueDetailOverlayProps) {
+  const [address, setAddress] = useState<{ road?: string; suburb?: string } | null>(null);
+  const [addressLoading, setAddressLoading] = useState(false);
+
+  useEffect(() => {
+    const id = selectedHuarique._id;
+    if (addressCache[id]) {
+      setAddress(addressCache[id]);
+      return;
+    }
+
+    if (!selectedHuarique.coordenadas || !selectedHuarique.coordenadas.coordinates || selectedHuarique.coordenadas.coordinates.length < 2) {
+      setAddress(null);
+      return;
+    }
+
+    const [lng, lat] = selectedHuarique.coordenadas.coordinates;
+    setAddress(null);
+    setAddressLoading(true);
+
+    const controller = new AbortController();
+
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'HuariqueMap-App'
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.address) {
+          const addr = {
+            road: data.address.road || data.address.pedestrian || data.address.suburb || '',
+            suburb: data.address.suburb || data.address.neighbourhood || data.address.city_district || data.address.town || data.address.city || ''
+          };
+          addressCache[id] = addr;
+          setAddress(addr);
+        } else {
+          setAddress(null);
+        }
+      })
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          console.error("Error fetching address:", err);
+        }
+        setAddress(null);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setAddressLoading(false);
+        }
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, [selectedHuarique._id]);
+
   return (
     <div className="detail-overlay" style={{ zIndex: 1010 }}>
       <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '10px' }}>
@@ -30,6 +90,22 @@ export default function HuariqueDetailOverlay({
       </h3>
       <span className="huarique-tag" style={{ marginBottom: '12px' }}>{selectedHuarique.tipoComida}</span>
       <p>{selectedHuarique.descripcion}</p>
+
+      {addressLoading && (
+        <div style={{ fontSize: '11px', color: '#64748b', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span className="loading-spinner-small" style={{ display: 'inline-block', width: '12px', height: '12px', border: '2px solid #bd2d2d', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }}></span>
+          <span>Obteniendo dirección de referencia...</span>
+        </div>
+      )}
+
+      {!addressLoading && address && address.suburb && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', background: 'var(--peru-red-light, rgba(189, 45, 45, 0.04))', padding: '10px 12px', borderRadius: '8px', borderLeft: '3px solid var(--peru-red-bright, #bd2d2d)', marginBottom: '12px', fontSize: '12px' }}>
+          <div style={{ display: 'flex', gap: '6px', color: 'var(--peru-text-dark)' }}>
+            <span style={{ fontWeight: 'bold' }}>Distrito:</span>
+            <span style={{ color: 'var(--peru-text)' }}>{address.suburb}</span>
+          </div>
+        </div>
+      )}
 
       <div className="detail-row">
         <span className="detail-label">Horario:</span>
@@ -102,7 +178,7 @@ export default function HuariqueDetailOverlay({
         <button
           className={`like-button ${myLikesMap[selectedHuarique._id] ? 'liked' : ''}`}
           onClick={() => handleToggleLike(selectedHuarique._id)}
-          style={{ flex: 1, marginTop: 0 }}
+          style={{ flex: 1, marginTop: 0}}
         >
           <svg className="heart-icon" viewBox="0 0 24 24" width="16" height="16">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />

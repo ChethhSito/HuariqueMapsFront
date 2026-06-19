@@ -19,6 +19,7 @@ export interface Huarique {
   coordenadas: PointGeometry;
   horario: string;
   direccion?: string;
+  imagen?: string;
   resenas?: Array<{
     usuarioId: string;
     usuarioNombre: string;
@@ -151,9 +152,9 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
       .then(res => res.json())
       .then(data => {
         if (data && data.address) {
-          const street = data.address.road || data.address.pedestrian || data.address.suburb || 'Calle sin nombre';
+          const district = data.address.suburb || data.address.neighbourhood || data.address.city_district || data.address.town || '';
           const city = data.address.city || data.address.town || data.address.village || '';
-          setAddress(`${street}${city ? `, ${city}` : ''}`);
+          setAddress(`${district}${city ? `, ${city}` : ''}`);
         } else {
           setAddress('Ubicación en el mapa');
         }
@@ -316,6 +317,12 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
               </div>
             </div>
           </div>
+
+          {huarique.imagen && (
+            <div className="detail-card image-card" style={{ padding: '0', overflow: 'hidden', borderRadius: '12px', marginTop: '16px', height: '220px', border: '1.5px solid var(--peru-border)', boxShadow: '0 8px 16px rgba(0,0,0,0.1)' }}>
+              <img src={huarique.imagen} alt={huarique.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+          )}
 
           <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', background: 'transparent', border: 'none', boxShadow: 'none', margin: '20px -30px 0 -30px' }}>
             <img src={comunidadImg} alt="Comunidad Huarique" style={{ width: '150%', maxWidth: 'none', maxHeight: '600px', objectFit: 'contain', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.15))' }} />

@@ -881,9 +881,82 @@
   font-family: 'Outfit', sans-serif;
   transition: background 0.2s;
 }
+.like-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1.5px solid var(--peru-border-btn);
+  background: var(--peru-white);
+  color: var(--map-text-dark);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Outfit', sans-serif;
+  user-select: none;
+}
 
-.like-button:active .heart-icon {
-  transform: scale(1.4);
+.like-button .heart-icon {
+  display: inline-block;
+  vertical-align: middle;
+  fill: none;
+  stroke: var(--peru-red-bright);
+  stroke-width: 2px;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), fill 0.25s ease, stroke 0.25s ease;
+}
+
+.like-button:hover {
+  background: var(--map-active-item);
+  border-color: var(--peru-red-bright);
+  color: var(--peru-red-bright);
+}
+
+.like-button:hover .heart-icon {
+  transform: scale(1.2);
+  fill: var(--peru-red-light);
+}
+
+/* Liked (Active) state styling */
+.like-button.liked {
+  background: var(--peru-red-bright);
+  border-color: var(--peru-red-bright);
+  color: white;
+  box-shadow: 0 4px 12px rgba(189, 45, 45, 0.25);
+}
+
+.like-button.liked .heart-icon {
+  fill: white;
+  stroke: white;
+  stroke-width: 0;
+  animation: heartPulse 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.like-button.liked:hover {
+  background: var(--peru-red-dark);
+  border-color: var(--peru-red-dark);
+  box-shadow: 0 6px 16px rgba(189, 45, 45, 0.35);
+}
+
+.like-button:active {
+  transform: scale(0.95);
+}
+
+@keyframes heartPulse {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.4);
+  }
+  60% {
+    transform: scale(0.85);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .guide-button {
@@ -996,5 +1069,10 @@
   padding-bottom: 10px;
   border-bottom: 1px solid var(--peru-border, #ccc);
   margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
