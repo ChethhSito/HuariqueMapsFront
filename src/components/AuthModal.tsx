@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import loginImage from '../assets/IniciasesionHuarique.png';
 import registerImage from '../assets/RegistrateHuariqueR.png';
-import { loginUser, registerUser } from '../api/auth';
+import { loginUser, registerUser, loginWithGoogle } from '../api/auth';
+import { signInWithGoogle } from '../firebase-client';
 
 interface AuthModalProps {
   show: boolean;
@@ -42,6 +43,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
       } else {
         setAuthError(err.message || 'Error al autenticar');
       }
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setAuthError(null);
+    setAuthLoading(true);
+    try {
+      const result = await signInWithGoogle();
+      const backendData = await loginWithGoogle(result.token);
+      onAuthSuccess({ ...backendData.user, token: backendData.access_token });
+    } catch (err: any) {
+      setAuthError(err.message || 'Error al autenticar con Google');
     } finally {
       setAuthLoading(false);
     }
@@ -174,6 +189,35 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
                 {isLoginMode ? '¿No tienes cuenta? Regístrate aquí' : '¿Ya tienes cuenta? Inicia sesión aquí'}
               </span>
             </div>
+
+            <div style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px', color: 'var(--peru-text)', fontSize: '14px' }}>
+              o continúa con
+            </div>
+
+            <button 
+              onClick={handleGoogleSignIn}
+              disabled={authLoading}
+              style={{
+                width: '100%',
+                padding: '12px',
+                background: 'white',
+                border: '1px solid #d1d5db',
+                borderRadius: '8px',
+                color: '#374151',
+                fontSize: '15px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                fontFamily: 'Outfit, sans-serif',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+              }}
+            >
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" style={{ width: '20px', height: '20px' }} />
+              Continuar con Google
+            </button>
           </div>
         </div>
       </div>

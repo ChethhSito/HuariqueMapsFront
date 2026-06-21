@@ -160,8 +160,8 @@ body {
   border-radius: 8px;
   font-size: 15px;
   font-family: 'Outfit', sans-serif;
-  background-color: var(--peru-bg);
-  color: var(--peru-text);
+  background-color: var(--peru-white, #ffffff);
+  color: var(--peru-text, #110906);
   transition: all 0.2s ease;
 }
 
@@ -173,6 +173,16 @@ body {
 
 .input-group input::placeholder {
   color: #94a3b8;
+}
+
+/* Autofill fix */
+.input-group input:-webkit-autofill,
+.input-group input:-webkit-autofill:hover, 
+.input-group input:-webkit-autofill:focus, 
+.input-group input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px var(--peru-white, #ffffff) inset !important;
+  -webkit-text-fill-color: var(--peru-text, #110906) !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .btn-primary {

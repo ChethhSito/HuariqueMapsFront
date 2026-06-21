@@ -29,3 +29,18 @@ export async function registerUser(nombre: string, email: string, contrasena: st
 
   return response.json();
 }
+
+export async function loginWithGoogle(token: string) {
+  const response = await fetch(`${API_URL}/auth/google`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token })
+  });
+
+  if (!response.ok) {
+    const errData = await response.json();
+    throw new Error(errData.message || 'Error en login con Google');
+  }
+
+  return response.json();
+}

@@ -221,12 +221,12 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
       // Añadir popup de Leaflet
       marker.bindPopup(`
         <div class="leaflet-popup-content-inner" style="font-family: 'Outfit', sans-serif; min-width: 140px;">
-          <strong style="color: #110906; font-size: 14px; display: block; margin-bottom: 2px;">${h.nombre}</strong>
-          <span style="font-size: 11px; color: #bd2d2d; font-weight: 600; display: block;">${h.tipoComida}</span>
-          <div style="font-size: 11px; margin-top: 6px; display: flex; align-items: center; justify-content: space-between; gap: 4px; color: #64748b;">
+          <strong style="color: var(--map-text-dark, #110906); font-size: 14px; display: block; margin-bottom: 2px;">${h.nombre}</strong>
+          <span style="font-size: 11px; color: var(--peru-red, #bd2d2d); font-weight: 600; display: block;">${h.tipoComida}</span>
+          <div style="font-size: 11px; margin-top: 6px; display: flex; align-items: center; justify-content: space-between; gap: 4px; color: var(--map-text, #64748b);">
             <div>
               <span>❤️ ${likesCount} likes</span>
-              ${hasUserLiked ? '<strong style="color: #bd2d2d; font-size: 10px;">(Liked)</strong>' : ''}
+              ${hasUserLiked ? '<strong style="color: var(--peru-red, #bd2d2d); font-size: 10px;">(Liked)</strong>' : ''}
             </div>
             <button 
               onclick="window.dispatchEvent(new CustomEvent('openHuariqueDetail', { detail: '${h._id}' }))"
