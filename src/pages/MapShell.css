@@ -174,6 +174,26 @@
   margin: 0;
 }
 
+.huarique-likes-badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--peru-white);
+  border: 1px solid var(--peru-border-btn);
+  color: var(--peru-text);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.25s ease;
+}
+
+.huarique-likes-badge:hover {
+  background: var(--map-active-item);
+  border-color: var(--peru-red-bright);
+  transform: scale(1.05);
+}
+
 .huarique-tag {
   display: inline-block;
   font-size: 10px;
@@ -412,475 +432,7 @@
   min-width: 85px;
 }
 
-.no-data-msg {
-  padding: 40px 20px;
-  text-align: center;
-  color: #64748b;
-  font-size: 14px;
-}
-
-/* Sidebar Header Row with Registrar button */
-.sidebar-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--map-border);
-}
-
-.sidebar-header-row .sidebar-title {
-  padding: 0;
-  border: none;
-}
-
-.add-huarique-btn {
-  background: var(--peru-red-bright);
-  color: #ffffff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: 'Outfit', sans-serif;
-}
-
-.add-huarique-btn:hover {
-  background: var(--peru-red-dark);
-  transform: translateY(-1px);
-}
-
-/* Registration Form styles */
-.registration-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow-y: auto;
-  background: var(--map-sidebar);
-}
-
-.registration-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--map-border);
-}
-
-.registration-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--map-text-dark);
-  margin: 0;
-}
-
-.registration-close-btn {
-  background: transparent;
-  border: none;
-  font-size: 16px;
-  color: var(--map-text);
-  cursor: pointer;
-  padding: 4px;
-}
-
-.registration-form {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  text-align: left;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--map-text-dark);
-}
-
-.form-input, .form-textarea, .form-select {
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1.5px solid var(--peru-border-btn);
-  background: var(--peru-white);
-  color: var(--map-text-dark);
-  font-family: 'Outfit', sans-serif;
-  font-size: 13px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.form-input:focus, .form-textarea:focus, .form-select:focus {
-  border-color: var(--peru-red-bright);
-}
-
-.form-row {
-  display: flex;
-  gap: 12px;
-}
-
-/* Coordinates box styling */
-.coordinates-status-box {
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  border: 1.5px dashed var(--peru-border-btn);
-}
-
-.coordinates-status-box.pending {
-  background: rgba(100, 116, 139, 0.05);
-  color: var(--map-text);
-}
-
-.coordinates-status-box.success {
-  background: rgba(16, 185, 129, 0.08);
-  border-color: #10b981;
-  color: #10b981;
-  font-weight: 600;
-}
-
-.coords-display {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-}
-
-.coords-helper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pulse-icon {
-  animation: blink 1.5s infinite;
-}
-
-.form-submit-btn {
-  background: var(--map-accent);
-  color: #ffffff;
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-  font-family: 'Outfit', sans-serif;
-  margin-top: 10px;
-}
-
-.form-submit-btn:hover {
-  background: var(--map-accent-bright);
-  transform: translateY(-1px);
-}
-
-.register-help-banner {
-  background: var(--peru-red-bright) !important;
-  color: #ffffff !important;
-  font-weight: 600;
-  border: none !important;
-  animation: popIn 0.3s ease-out;
-}
-
-@keyframes popIn {
-  0% { transform: scale(0.9); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.register-overlay-flash {
-  background: #ef4444;
-  color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: bold;
-  animation: blink 1s infinite;
-  display: inline-block;
-  align-self: flex-start;
-}
-
-/* Custom styles for the registration marker */
-.reg-marker-active .marker-pin-head {
-  background: radial-gradient(circle, #f87171 0%, #ef4444 100%) !important;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5) !important;
-}
-
-.reg-marker-active .marker-pin-tip {
-  border-top-color: #ef4444 !important;
-}
-
-.reg-marker-active .marker-pulse {
-  background-color: rgba(239, 68, 68, 0.2) !important;
-  box-shadow: 0 0 15px #ef4444 !important;
-}
-
-/* Validation Component Styles */
-.validation-container {
-  background: rgba(100, 116, 139, 0.03);
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 16px;
-  border: 1px solid var(--map-border);
-}
-
-.validation-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.validation-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--map-text-dark);
-}
-
-.validation-badge {
-  font-size: 10px;
-  color: #ffffff;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.validation-bar-container {
-  height: 6px;
-  background: var(--peru-border-btn);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-bottom: 6px;
-}
-
-.validation-bar {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.4s ease;
-}
-
-.validation-info-row {
-  font-size: 10px;
-  color: #64748b;
-  text-align: right;
-  margin-bottom: 10px;
-}
-
-.validation-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.val-btn {
-  flex: 1;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--peru-border-btn);
-  background: var(--peru-white);
-  color: var(--map-text);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: 'Outfit', sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.val-btn:hover {
-  background: var(--map-active-item);
-}
-
-.val-btn.active {
-  border-color: transparent;
-  color: #ffffff;
-}
-
-.val-btn-yes.active {
-  background: #10b981;
-  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
-}
-
-.val-btn-no.active {
-  background: #ef4444;
-  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
-}
-
-/* Reviews Component Styles */
-.reviews-container {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--map-border);
-  padding-top: 14px;
-  margin-top: 14px;
-}
-
-.reviews-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--map-text-dark);
-  margin: 0 0 10px 0;
-  text-align: left;
-}
-
-.reviews-scroller {
-  max-height: 160px;
-  overflow-y: auto;
-  margin-bottom: 12px;
-  padding-right: 4px;
-}
-
-.reviews-scroller::-webkit-scrollbar {
-  width: 4px;
-}
-.reviews-scroller::-webkit-scrollbar-thumb {
-  background-color: var(--peru-border-btn);
-  border-radius: 2px;
-}
-
-.no-reviews-text {
-  font-size: 12px;
-  color: #64748b;
-  font-style: italic;
-  padding: 10px 0;
-  text-align: center;
-}
-
-.reviews-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.review-card {
-  background: rgba(100, 116, 139, 0.02);
-  border: 1px solid var(--map-border);
-  border-radius: 6px;
-  padding: 8px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.review-card-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--map-text-dark);
-}
-
-.review-date {
-  color: #94a3b8;
-  font-weight: normal;
-}
-
-.review-stars-row {
-  display: flex;
-  gap: 1px;
-}
-
-.star-icon {
-  font-size: 11px;
-}
-.star-icon.filled {
-  color: #eab308;
-}
-.star-icon.empty {
-  color: var(--peru-border-btn);
-}
-
-.review-comment-text {
-  font-size: 12px;
-  color: var(--map-text);
-  line-height: 1.4;
-  margin: 2px 0 0 0;
-}
-
-/* Review submission form styles */
-.review-form {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  border-top: 1px dashed var(--map-border);
-  padding-top: 10px;
-}
-
-.review-rating-selector {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--map-text-dark);
-}
-
-.review-star-picker {
-  display: flex;
-  gap: 2px;
-}
-
-.star-picker-btn {
-  background: transparent;
-  border: none;
-  font-size: 16px;
-  color: var(--peru-border-btn);
-  cursor: pointer;
-  padding: 0;
-  transition: transform 0.1s ease, color 0.1s ease;
-}
-
-.star-picker-btn.selected {
-  color: #eab308;
-}
-
-.star-picker-btn:hover {
-  transform: scale(1.2);
-}
-
-.review-input-row {
-  display: flex;
-  gap: 6px;
-}
-
-.review-input-field {
-  flex: 1;
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--peru-border-btn);
-  background: var(--peru-white);
-  color: var(--map-text-dark);
-  font-family: 'Outfit', sans-serif;
-  font-size: 11px;
-  outline: none;
-}
-
-.review-input-field:focus {
-  border-color: var(--peru-red-bright);
-}
-
-.review-submit-btn {
-  background: var(--peru-red-bright);
-  color: white;
-  border: none;
-  padding: 0 12px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-  transition: background 0.2s;
-}
+/* Interactive Likes Button */
 .like-button {
   display: inline-flex;
   align-items: center;
@@ -894,18 +446,10 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s ease;
   font-family: 'Outfit', sans-serif;
-  user-select: none;
-}
-
-.like-button .heart-icon {
-  display: inline-block;
-  vertical-align: middle;
-  fill: none;
-  stroke: var(--peru-red-bright);
-  stroke-width: 2px;
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), fill 0.25s ease, stroke 0.25s ease;
+  width: 100%;
+  margin-top: 12px;
 }
 
 .like-button:hover {
@@ -914,49 +458,20 @@
   color: var(--peru-red-bright);
 }
 
-.like-button:hover .heart-icon {
-  transform: scale(1.2);
-  fill: var(--peru-red-light);
-}
-
-/* Liked (Active) state styling */
 .like-button.liked {
   background: var(--peru-red-bright);
+  color: #ffffff;
   border-color: var(--peru-red-bright);
-  color: white;
-  box-shadow: 0 4px 12px rgba(189, 45, 45, 0.25);
+  box-shadow: 0 4px 10px rgba(189, 45, 45, 0.25);
 }
 
-.like-button.liked .heart-icon {
-  fill: white;
-  stroke: white;
-  stroke-width: 0;
-  animation: heartPulse 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.like-button .heart-icon {
+  fill: currentColor;
+  transition: transform 0.2s ease;
 }
 
-.like-button.liked:hover {
-  background: var(--peru-red-dark);
-  border-color: var(--peru-red-dark);
-  box-shadow: 0 6px 16px rgba(189, 45, 45, 0.35);
-}
-
-.like-button:active {
-  transform: scale(0.95);
-}
-
-@keyframes heartPulse {
-  0% {
-    transform: scale(1);
-  }
-  30% {
-    transform: scale(1.4);
-  }
-  60% {
-    transform: scale(0.85);
-  }
-  100% {
-    transform: scale(1);
-  }
+.like-button:active .heart-icon {
+  transform: scale(1.4);
 }
 
 .guide-button {
@@ -1069,10 +584,5 @@
   padding-bottom: 10px;
   border-bottom: 1px solid var(--peru-border, #ccc);
   margin-bottom: 15px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 

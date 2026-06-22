@@ -474,7 +474,7 @@
   position: absolute;
   top: 0;
   right: 15%;
-  background: white;
+  background: var(--peru-white, #ffffff);
   border: 2px solid var(--peru-red);
   border-radius: 16px;
   padding: 12px 16px;
@@ -506,7 +506,7 @@
   left: -6px;
   border-width: 6px 6px 0;
   border-style: solid;
-  border-color: white transparent transparent transparent;
+  border-color: var(--peru-white, #ffffff) transparent transparent transparent;
   display: block;
   width: 0;
 }
