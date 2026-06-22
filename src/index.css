@@ -62,6 +62,8 @@
 
 body {
   margin: 0;
+  overflow-x: hidden;
+  zoom: 0.85;
 }
 
 h1,
