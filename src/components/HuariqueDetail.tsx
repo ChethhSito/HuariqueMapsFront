@@ -242,6 +242,10 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
   };
 
   const handleToggleLike = (id: number) => {
+    if (!user) {
+      onAuthClick && onAuthClick();
+      return;
+    }
     let isLiking = false;
     setComments(comments.map(c => {
       if (c.id === id) {

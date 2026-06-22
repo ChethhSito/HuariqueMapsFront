@@ -156,17 +156,17 @@ export default function HuariqueDetailOverlay({
 
         <div className="validation-buttons" style={{ display: 'flex', gap: '8px' }}>
           <button 
-            className={`val-btn val-btn-yes ${(selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? 'active' : ''}`}
+            className={`val-btn val-btn-yes ${user && (selectedHuarique.votosExiste || []).includes(user.email || user.nombre || '') ? 'active' : ''}`}
             onClick={() => handleVoteExistence(selectedHuarique._id, true)}
-            style={{ flex: 1, padding: '8px 10px', borderRadius: '8px', border: '1px solid #059669', background: (selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? '#059669' : 'transparent', color: (selectedHuarique.votosExiste || []).includes(user?.email || user?.nombre || '') ? '#fff' : '#059669', cursor: 'pointer', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transition: 'all 0.2s' }}
+            style={{ flex: 1, padding: '8px 10px', borderRadius: '8px', border: '1px solid #059669', background: user && (selectedHuarique.votosExiste || []).includes(user.email || user.nombre || '') ? '#059669' : 'transparent', color: user && (selectedHuarique.votosExiste || []).includes(user.email || user.nombre || '') ? '#fff' : '#059669', cursor: 'pointer', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transition: 'all 0.2s' }}
           >
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
             Sí existe
           </button>
           <button 
-            className={`val-btn val-btn-no ${(selectedHuarique.votosNoExiste || []).includes(user?.email || user?.nombre || '') ? 'active' : ''}`}
+            className={`val-btn val-btn-no ${user && (selectedHuarique.votosNoExiste || []).includes(user.email || user.nombre || '') ? 'active' : ''}`}
             onClick={() => handleVoteExistence(selectedHuarique._id, false)}
-            style={{ flex: 1, padding: '8px 10px', borderRadius: '8px', border: '1px solid #ef4444', background: (selectedHuarique.votosNoExiste || []).includes(user?.email || user?.nombre || '') ? '#ef4444' : 'transparent', color: (selectedHuarique.votosNoExiste || []).includes(user?.email || user?.nombre || '') ? '#fff' : '#ef4444', cursor: 'pointer', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transition: 'all 0.2s' }}
+            style={{ flex: 1, padding: '8px 10px', borderRadius: '8px', border: '1px solid #ef4444', background: user && (selectedHuarique.votosNoExiste || []).includes(user.email || user.nombre || '') ? '#ef4444' : 'transparent', color: user && (selectedHuarique.votosNoExiste || []).includes(user.email || user.nombre || '') ? '#fff' : '#ef4444', cursor: 'pointer', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transition: 'all 0.2s' }}
           >
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
             Ya cerró

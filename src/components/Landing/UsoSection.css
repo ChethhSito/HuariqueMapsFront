@@ -1,0 +1,197 @@
+/* apps/frontend/src/components/Landing/UsoSection.css */
+
+.uso-section {
+  background-color: var(--peru-white, #ffffff);
+  padding: 80px 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.timeline-wrapper {
+  position: relative;
+  max-width: 900px;
+  margin: 50px auto 0 auto;
+  padding: 20px 0;
+}
+
+/* Vertical line */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--peru-red-light, rgba(189, 45, 45, 0.1));
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 10px 40px;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s forwards;
+}
+
+/* Alternate entry animations and spacing */
+.timeline-item:nth-child(2) { animation-delay: 0.1s; }
+.timeline-item:nth-child(3) { animation-delay: 0.2s; }
+.timeline-item:nth-child(4) { animation-delay: 0.3s; }
+.timeline-item:nth-child(5) { animation-delay: 0.4s; }
+.timeline-item:nth-child(6) { animation-delay: 0.5s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.timeline-item.left {
+  left: 0;
+  text-align: right;
+}
+
+.timeline-item.right {
+  left: 50%;
+  text-align: left;
+}
+
+/* Indicator Circle */
+.timeline-icon-circle {
+  position: absolute;
+  top: 15px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--peru-white, #ffffff);
+  border: 4px solid var(--peru-red-bright, #bd2d2d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.timeline-item:hover .timeline-icon-circle {
+  background: var(--peru-red-bright, #bd2d2d);
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.timeline-item.left .timeline-icon-circle {
+  right: -22px;
+}
+
+.timeline-item.right .timeline-icon-circle {
+  left: -22px;
+}
+
+.timeline-icon-svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--peru-red-bright, #bd2d2d);
+  fill: none;
+  transition: all 0.3s ease;
+}
+
+.timeline-item:hover .timeline-icon-svg {
+  stroke: #ffffff;
+}
+
+/* Timeline content card */
+.timeline-content-box {
+  background: var(--peru-white, #ffffff);
+  border: 1.5px solid var(--peru-border, #110906);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.timeline-item:hover .timeline-content-box {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(189, 45, 45, 0.1);
+  border-color: var(--peru-red-bright, #bd2d2d);
+}
+
+.timeline-content-box h3 {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--peru-text-dark, #bd2d2d);
+  margin: 0 0 10px 0;
+  font-family: var(--font-sans, 'Outfit', sans-serif);
+}
+
+.timeline-content-box p {
+  font-size: 14.5px;
+  color: var(--peru-text, #110906);
+  line-height: 1.6;
+  margin: 0;
+  font-family: var(--font-sans, 'Outfit', sans-serif);
+}
+
+/* Timeline Arrow Pointer */
+.timeline-content-box::before {
+  content: '';
+  position: absolute;
+  top: 25px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.timeline-item.left .timeline-content-box::before {
+  right: -10px;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent var(--peru-border, #110906);
+}
+
+.timeline-item.right .timeline-content-box::before {
+  left: -10px;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent var(--peru-border, #110906) transparent transparent;
+}
+
+/* Responsiveness for timeline */
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 24px;
+    transform: none;
+  }
+  
+  .timeline-item {
+    width: 100%;
+    padding-left: 65px;
+    padding-right: 20px;
+    text-align: left !important;
+  }
+  
+  .timeline-item.left {
+    left: 0;
+  }
+  
+  .timeline-item.right {
+    left: 0;
+  }
+  
+  .timeline-item.left .timeline-icon-circle,
+  .timeline-item.right .timeline-icon-circle {
+    left: 2px;
+    right: auto;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .timeline-content-box::before {
+    left: -10px !important;
+    right: auto !important;
+    border-width: 10px 10px 10px 0 !important;
+    border-color: transparent var(--peru-border, #110906) transparent transparent !important;
+  }
+}
