@@ -10,6 +10,11 @@ import {
 import type { Huarique } from '../types';
 
 export async function getHuariques(): Promise<Huarique[]> {
+  const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
+  if (!apiKey || apiKey === "mock-api-key") {
+    throw new Error("Firebase no está configurado (usando credenciales mock).");
+  }
+
   const querySnapshot = await getDocs(collection(db, 'huariques'));
   const list: Huarique[] = [];
   querySnapshot.forEach((docSnap) => {

@@ -22,16 +22,7 @@
   box-sizing: border-box;
 }
 
-/* Vertical line on the left */
-.timeline-line-left {
-  position: absolute;
-  left: 24px;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: var(--peru-red-light, rgba(189, 45, 45, 0.1));
-  border-radius: 2px;
-}
+
 
 /* Timeline item left-aligned */
 .timeline-item-left {
