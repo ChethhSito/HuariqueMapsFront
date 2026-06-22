@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import loginImage from '../assets/IniciasesionHuarique.png';
 import registerImage from '../assets/RegistrateHuariqueR.png';
-import { auth, signInWithGoogle } from '../firebase-client';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { loginUser, registerUser } from '../api/auth';
+import { signInWithGoogle } from '../firebase-client';
 
 interface AuthModalProps {
   show: boolean;
@@ -28,39 +28,30 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
 
     try {
       if (isLoginMode) {
-        const userCredential = await signInWithEmailAndPassword(auth, authEmail, authPassword);
-        const firebaseUser = userCredential.user;
-        const token = await firebaseUser.getIdToken();
+        const res = await loginUser(authEmail, authPassword);
         onAuthSuccess({
-          nombre: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Usuario',
-          email: firebaseUser.email || undefined,
-          token: token,
-          uid: firebaseUser.uid
+          nombre: res.user?.nombre || 'Usuario',
+          email: res.user?.email,
+          token: res.access_token,
+          uid: res.user?.id
         });
       } else {
-        const userCredential = await createUserWithEmailAndPassword(auth, authEmail, authPassword);
-        const firebaseUser = userCredential.user;
-        
-        await updateProfile(firebaseUser, {
-          displayName: authName
-        });
-
-        const token = await firebaseUser.getIdToken();
+        const res = await registerUser(authName, authEmail, authPassword);
         onAuthSuccess({
-          nombre: authName,
-          email: firebaseUser.email || undefined,
-          token: token,
-          uid: firebaseUser.uid
+          nombre: res.user?.nombre || authName,
+          email: res.user?.email || authEmail,
+          token: res.access_token,
+          uid: res.user?.id
         });
       }
     } catch (err: any) {
       if (!isLoginMode) {
-        setAuthError(err.message || 'Error de conexión con Firebase. Simulando modo local...');
+        setAuthError(err.message || 'Error de conexión con el servidor. Simulando modo local...');
         const fallbackUser = { nombre: authName, email: authEmail, isLocal: true };
         onAuthSuccess(fallbackUser);
-        alert('Servicio de Firebase no disponible (usando credenciales mock o no configuradas). Registrado en Modo Local de respaldo.');
+        alert('API NestJS no disponible. Registrado en Modo Local de respaldo.');
       } else {
-        setAuthError(err.message || 'Error al autenticar con Firebase');
+        setAuthError(err.message || 'Error al autenticar');
       }
     } finally {
       setAuthLoading(false);

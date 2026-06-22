@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Check if there is a mock session first
+    // 1. Check if there is a mock session first
     const savedMockUser = localStorage.getItem('mock_user_session');
     if (savedMockUser) {
       try {
@@ -34,17 +34,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
 
+    // 2. Check if there is a regular backend session
+    const savedUser = localStorage.getItem('user_session');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+        return;
+      } catch (e) {
+        localStorage.removeItem('user_session');
+      }
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const token = await firebaseUser.getIdToken();
-        setUser({
+        const userData = {
           nombre: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Usuario',
           email: firebaseUser.email || undefined,
           token: token,
           uid: firebaseUser.uid
-        });
+        };
+        setUser(userData);
+        localStorage.setItem('user_session', JSON.stringify(userData));
       } else {
-        if (!localStorage.getItem('mock_user_session')) {
+        if (!localStorage.getItem('mock_user_session') && !localStorage.getItem('user_session')) {
           setUser(null);
         }
       }
@@ -56,12 +69,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = (userData: User) => {
     if (userData.isLocal) {
       localStorage.setItem('mock_user_session', JSON.stringify(userData));
+    } else {
+      localStorage.setItem('user_session', JSON.stringify(userData));
     }
     setUser(userData);
   };
 
   const logout = () => {
     localStorage.removeItem('mock_user_session');
+    localStorage.removeItem('user_session');
     firebaseSignOut(auth).then(() => {
       setUser(null);
       window.location.reload();
