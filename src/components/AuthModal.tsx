@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import loginImage from '../assets/IniciasesionHuarique.png';
 import registerImage from '../assets/RegistrateHuariqueR.png';
-import { loginUser, registerUser, loginWithGoogle } from '../api/auth';
-import { signInWithGoogle } from '../firebase-client';
+import { auth, signInWithGoogle } from '../firebase-client';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 interface AuthModalProps {
   show: boolean;
@@ -55,12 +55,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
       }
     } catch (err: any) {
       if (!isLoginMode) {
-        setAuthError(err.message || 'Error de conexión. Simulando modo local...');
+        setAuthError(err.message || 'Error de conexión con Firebase. Simulando modo local...');
         const fallbackUser = { nombre: authName, email: authEmail, isLocal: true };
         onAuthSuccess(fallbackUser);
-        alert('API NestJS no disponible. Registrado en Modo Local de respaldo.');
+        alert('Servicio de Firebase no disponible (usando credenciales mock o no configuradas). Registrado en Modo Local de respaldo.');
       } else {
-        setAuthError(err.message || 'Error al autenticar');
+        setAuthError(err.message || 'Error al autenticar con Firebase');
       }
     } finally {
       setAuthLoading(false);
@@ -72,8 +72,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
     setAuthLoading(true);
     try {
       const result = await signInWithGoogle();
-      const backendData = await loginWithGoogle(result.token);
-      onAuthSuccess({ ...backendData.user, token: backendData.access_token });
+      onAuthSuccess({
+        nombre: result.user.displayName || result.user.email?.split('@')[0] || 'Usuario',
+        email: result.user.email || undefined,
+        token: result.token,
+        uid: result.user.uid
+      });
     } catch (err: any) {
       setAuthError(err.message || 'Error al autenticar con Google');
     } finally {
