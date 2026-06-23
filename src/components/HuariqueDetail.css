@@ -519,3 +519,95 @@
   from { opacity: 0; transform: translate(-50%, 10px); }
   to { opacity: 1; transform: translate(-50%, 0); }
 }
+
+/* Estilos de Drawer de Comentarios */
+.drawer-huarique-info {
+  background: var(--map-active-item, rgba(189, 45, 45, 0.05));
+  border: 1.5px solid var(--peru-border-btn, #e2e8f0);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.drawer-huarique-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--peru-text-dark, #1e293b);
+  line-height: 1.3;
+  text-align: left;
+}
+
+.drawer-huarique-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.meta-tag {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.meta-tag.food-tag {
+  background: var(--tag-bg, #fee2e2);
+  color: var(--tag-text, #bd2d2d);
+  border: 1px solid var(--tag-border, #fecaca);
+}
+
+.meta-tag.location-tag {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.drawer-rating-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+.rating-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--peru-text-dark, #1e293b);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: left;
+}
+
+.stars-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rating-value-text {
+  margin-left: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--peru-text-dark, #1e293b);
+}
+
+.interactive-star {
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.interactive-star:hover {
+  transform: scale(1.25);
+  filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.5));
+}
+
+.comment-drawer .comment-submit-btn {
+  align-self: stretch;
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  margin-top: 15px;
+}

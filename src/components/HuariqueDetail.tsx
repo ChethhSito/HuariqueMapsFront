@@ -101,6 +101,7 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
   const mapInstanceRef = useRef<L.Map | null>(null);
 
   const [newComment, setNewComment] = useState('');
+  const [newRating, setNewRating] = useState(5);
   const [comments, setComments] = useState<any[]>(() => {
     if (huarique.resenas && huarique.resenas.length > 0) {
       return huarique.resenas.map((r, i) => ({
@@ -218,7 +219,7 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
       try {
         await addReview(huarique._id, {
           comentario: newComment,
-          calificacion: 5
+          calificacion: newRating
         }, user.token);
       } catch (err) {
         console.error("Error submitting comment to backend", err);
@@ -229,7 +230,7 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
       id: Date.now(),
       user: user?.nombre || 'Tú (Usuario)',
       text: newComment,
-      rating: 5,
+      rating: newRating,
       date: 'Justo ahora',
       likes: 0,
       likedByMe: false
@@ -237,6 +238,7 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
 
     setComments([added, ...comments]);
     setNewComment('');
+    setNewRating(5);
     setIsCommentDrawerOpen(false);
     showCharacterMessage('¡Comentario publicado, buenazo!');
   };
@@ -384,9 +386,12 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
         setIsCommentDrawerOpen={setIsCommentDrawerOpen}
         newComment={newComment}
         setNewComment={setNewComment}
+        newRating={newRating}
+        setNewRating={setNewRating}
         handleAddComment={handleAddComment}
         EditIcon={EditIcon}
         handleFabClick={handleFabClick}
+        huarique={huarique}
       />
 
       {/* Footer */}
