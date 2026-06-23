@@ -25,4 +25,5 @@ export interface Huarique {
   ratingPromedio?: number;
   numResenas?: number;
   imagen?: string; // used for popularRestaurants
+  distrito?: string;
 }

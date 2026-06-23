@@ -16,6 +16,8 @@ export function useMapData(
 
   // Estados de filtros y likes
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
+  const [selectedDistrict, setSelectedDistrict] = useState<string>('Todos');
+  const [availableDistricts, setAvailableDistricts] = useState<string[]>([]);
   const [likesMap, setLikesMap] = useState<{ [id: string]: number }>({});
   const [characterMessage, setCharacterMessage] = useState<string | null>(null);
   const [myLikesMap, setMyLikesMap] = useState<{ [id: string]: boolean }>({});
@@ -28,6 +30,7 @@ export function useMapData(
   const [regHoraApertura, setRegHoraApertura] = useState('11:00');
   const [regHoraCierre, setRegHoraCierre] = useState('17:00');
   const [regImagen, setRegImagen] = useState('');
+  const [regDistrito, setRegDistrito] = useState<string>('');
   const [regCoordinates, setRegCoordinates] = useState<[number, number] | null>(null); // [lat, lng]
 
   const characterMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -50,7 +53,36 @@ export function useMapData(
     setRegHoraCierre('17:00');
     setRegImagen('');
     setRegCoordinates(null);
+    setRegDistrito('');
   };
+
+  // Cargar ubigeos desde API pública
+  useEffect(() => {
+    const loadUbigeos = async () => {
+      try {
+        const response = await fetch('https://free.e-api.net.pe/ubigeos.json');
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        if (data && data.LIMA && data.LIMA.LIMA) {
+          const list = Object.keys(data.LIMA.LIMA).sort();
+          setAvailableDistricts(list);
+        } else {
+          throw new Error('Formato de datos de ubigeo no reconocido');
+        }
+      } catch (err) {
+        console.warn('Error cargando ubigeos de la API, usando lista de respaldo local:', err);
+        setAvailableDistricts([
+          'BARRANCO',
+          'CHORRILLOS',
+          'LIMA',
+          'LINCE',
+          'MIRAFLORES',
+          'SAN ISIDRO'
+        ]);
+      }
+    };
+    loadUbigeos();
+  }, []);
 
   // Cargar huariques desde API o datos de respaldo
   useEffect(() => {
@@ -156,7 +188,8 @@ export function useMapData(
         coordinates: [regCoordinates[1], regCoordinates[0]] // [longitud, latitud]
       },
       horario: `${regHoraApertura} - ${regHoraCierre}`,
-      imagen: regImagen
+      imagen: regImagen,
+      distrito: regDistrito || 'LIMA'
     };
 
     if (isConnected && user?.token && !user.isLocal) {
@@ -245,8 +278,9 @@ export function useMapData(
   };
 
   const filteredHuariques = huariques.filter((h) => {
-    if (selectedCategory === 'Todos') return true;
-    return h.tipoComida.toLowerCase().includes(selectedCategory.toLowerCase());
+    const matchesCategory = selectedCategory === 'Todos' || h.tipoComida.toLowerCase().includes(selectedCategory.toLowerCase());
+    const matchesDistrict = selectedDistrict === 'Todos' || (h.distrito && h.distrito.toUpperCase() === selectedDistrict.toUpperCase());
+    return matchesCategory && matchesDistrict;
   });
 
   // Auto-seleccionar primer elemento filtrado si el actual queda excluido
@@ -266,7 +300,7 @@ export function useMapData(
     if (filteredHuariques.length === 0) {
       setSelectedId(null);
     }
-  }, [selectedCategory, filteredHuariques, selectedId, isRegisterMode]);
+  }, [selectedCategory, selectedDistrict, filteredHuariques, selectedId, isRegisterMode]);
 
   const selectedHuarique = huariques.find((h) => h._id === selectedId);
 
@@ -275,6 +309,8 @@ export function useMapData(
     selectedId, setSelectedId,
     loading, error,
     selectedCategory, setSelectedCategory,
+    selectedDistrict, setSelectedDistrict,
+    availableDistricts, setAvailableDistricts,
     likesMap, setLikesMap,
     myLikesMap, setMyLikesMap,
     characterMessage, showCharacterMessage,
@@ -285,6 +321,7 @@ export function useMapData(
     regHoraApertura, setRegHoraApertura,
     regHoraCierre, setRegHoraCierre,
     regImagen, setRegImagen,
+    regDistrito, setRegDistrito,
     regCoordinates, setRegCoordinates,
     handleToggleLike,
     handleVoteExistence,

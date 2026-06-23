@@ -10,7 +10,8 @@ export const FALLBACK_HUARIQUES: Huarique[] = [
       type: 'Point',
       coordinates: [-77.0305, -12.1611] // Chorrillos
     },
-    horario: 'Mar - Dom: 11:00 AM - 4:30 PM'
+    horario: 'Mar - Dom: 11:00 AM - 4:30 PM',
+    distrito: 'CHORRILLOS'
   },
   {
     _id: 'fallback-2',
@@ -21,7 +22,8 @@ export const FALLBACK_HUARIQUES: Huarique[] = [
       type: 'Point',
       coordinates: [-77.0222, -12.1495] // Barranco
     },
-    horario: 'Lun - Sáb: 6:00 PM - 11:30 PM'
+    horario: 'Lun - Sáb: 6:00 PM - 11:30 PM',
+    distrito: 'BARRANCO'
   },
   {
     _id: 'fallback-3',
@@ -32,7 +34,8 @@ export const FALLBACK_HUARIQUES: Huarique[] = [
       type: 'Point',
       coordinates: [-77.036886, -12.046374] // Centro de Lima
     },
-    horario: 'Lun - Dom: 12:00 PM - 10:00 PM'
+    horario: 'Lun - Dom: 12:00 PM - 10:00 PM',
+    distrito: 'LIMA'
   },
   {
     _id: 'fallback-4',
@@ -43,7 +46,8 @@ export const FALLBACK_HUARIQUES: Huarique[] = [
       type: 'Point',
       coordinates: [-77.0358, -12.0825] // Lince
     },
-    horario: 'Lun-Sab: 18:00 - 23:00'
+    horario: 'Lun-Sab: 18:00 - 23:00',
+    distrito: 'LINCE'
   },
   {
     _id: 'fallback-5',
@@ -54,7 +58,32 @@ export const FALLBACK_HUARIQUES: Huarique[] = [
       type: 'Point',
       coordinates: [-77.029891, -12.121147] // Miraflores
     },
-    horario: 'Mar-Dom: 11:30 - 16:30'
+    horario: 'Mar-Dom: 11:30 - 16:30',
+    distrito: 'MIRAFLORES'
+  },
+  {
+    _id: 'fallback-rockys',
+    nombre: "Rocky's Pollería",
+    descripcion: 'Clásico pollo a la brasa con papas fritas crocantes, ensalada fresca y cremas peruanas.',
+    tipoComida: 'Pollerías',
+    coordenadas: {
+      type: 'Point',
+      coordinates: [-77.0300, -12.1220] // Miraflores
+    },
+    horario: 'Lun - Dom: 12:00 PM - 11:00 PM',
+    distrito: 'MIRAFLORES'
+  },
+  {
+    _id: 'fallback-pizzahut',
+    nombre: 'Pizza Hut',
+    descripcion: 'Pizzas americanas clásicas con masa pan de estilo original y abundante queso mozzarella.',
+    tipoComida: 'Comida Rápida',
+    coordenadas: {
+      type: 'Point',
+      coordinates: [-77.0285, -12.0950] // San Isidro
+    },
+    horario: 'Lun - Dom: 11:00 AM - 11:00 PM',
+    distrito: 'SAN ISIDRO'
   }
 ];
 

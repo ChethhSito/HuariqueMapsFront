@@ -37,10 +37,8 @@
 }
 
 .sidebar-title {
-  padding: 16px 20px;
   font-size: 16px;
   font-weight: 600;
-  border-bottom: 1px solid var(--map-border);
   margin: 0;
   color: var(--map-text-dark);
 }
@@ -576,13 +574,55 @@
   transform: translateY(0);
 }
 
-
 .sidebar-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--peru-border, #ccc);
-  margin-bottom: 15px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--map-border);
+  background: var(--map-sidebar);
 }
+
+.district-filter-container {
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-bottom: 1px solid var(--map-border);
+  background: var(--map-sidebar);
+}
+
+.district-filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--map-text-dark);
+  text-align: left;
+}
+
+.district-select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--peru-border-btn);
+  background: var(--peru-white);
+  color: var(--map-text-dark);
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.district-select:hover {
+  border-color: var(--peru-red-bright);
+}
+
+.district-select:focus {
+  border-color: var(--peru-red-bright);
+  box-shadow: 0 0 0 3px rgba(189, 45, 45, 0.15);
+}
+
+
+
 

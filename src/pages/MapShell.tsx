@@ -54,6 +54,8 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
     selectedId, setSelectedId,
     loading, error,
     selectedCategory, setSelectedCategory,
+    selectedDistrict, setSelectedDistrict,
+    availableDistricts,
     likesMap,
     myLikesMap,
     characterMessage, showCharacterMessage,
@@ -64,6 +66,7 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
     regHoraApertura, setRegHoraApertura,
     regHoraCierre, setRegHoraCierre,
     regImagen, setRegImagen,
+    regDistrito, setRegDistrito,
     regCoordinates, setRegCoordinates,
     handleToggleLike,
     handleVoteExistence,
@@ -346,6 +349,9 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
               regImagen={regImagen}
               setRegImagen={setRegImagen}
               regCoordinates={regCoordinates}
+              availableDistricts={availableDistricts}
+              regDistrito={regDistrito}
+              setRegDistrito={setRegDistrito}
             />
           ) : (
             <>
@@ -364,6 +370,31 @@ export default function MapShell({ isConnected, setIsConnected, user, onAuthClic
                 >
                   + Registrar
                 </button>
+              </div>
+
+              {/* Selector de Filtro de Distrito */}
+              <div className="district-filter-container">
+                <label className="district-filter-label" htmlFor="district-select">
+                  📍 Filtrar por Distrito:
+                </label>
+                <select
+                  id="district-select"
+                  className="district-select"
+                  value={selectedDistrict}
+                  onChange={(e) => setSelectedDistrict(e.target.value)}
+                >
+                  <option value="Todos">Todos los distritos</option>
+                  {availableDistricts.map((dist) => {
+                    const formattedName = dist === 'LIMA' 
+                      ? 'Cercado de Lima' 
+                      : dist.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                    return (
+                      <option key={dist} value={dist}>
+                        {formattedName}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
 
           {/* Category Filter Bar with Scroll Arrows */}

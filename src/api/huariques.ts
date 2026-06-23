@@ -15,15 +15,23 @@ export async function getHuariques(): Promise<Huarique[]> {
     throw new Error("Firebase no está configurado (usando credenciales mock).");
   }
 
-  const querySnapshot = await getDocs(collection(db, 'huariques'));
-  const list: Huarique[] = [];
-  querySnapshot.forEach((docSnap) => {
-    list.push({
-      _id: docSnap.id,
-      ...docSnap.data()
-    } as Huarique);
-  });
-  return list;
+  const fetchPromise = (async () => {
+    const querySnapshot = await getDocs(collection(db, 'huariques'));
+    const list: Huarique[] = [];
+    querySnapshot.forEach((docSnap) => {
+      list.push({
+        _id: docSnap.id,
+        ...docSnap.data()
+      } as Huarique);
+    });
+    return list;
+  })();
+
+  const timeoutPromise = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error("Timeout de conexión con Firestore (1.5s)")), 1500)
+  );
+
+  return Promise.race([fetchPromise, timeoutPromise]);
 }
 
 export async function createHuarique(huariqueData: any, _token: string): Promise<Huarique> {

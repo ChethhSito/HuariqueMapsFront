@@ -19,6 +19,9 @@ interface AddHuariqueFormProps {
   regImagen: string;
   setRegImagen: (val: string) => void;
   regCoordinates: [number, number] | null;
+  availableDistricts: string[];
+  regDistrito: string;
+  setRegDistrito: (val: string) => void;
 }
 
 export default function AddHuariqueForm({
@@ -37,19 +40,21 @@ export default function AddHuariqueForm({
   setRegHoraCierre,
   regImagen,
   setRegImagen,
-  regCoordinates
+  regCoordinates,
+  availableDistricts,
+  regDistrito,
+  setRegDistrito
 }: AddHuariqueFormProps) {
-  const [district, setDistrict] = useState<string | null>(null);
   const [loadingDistrict, setLoadingDistrict] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => {
     if (!regCoordinates) {
-      setDistrict(null);
+      setRegDistrito('');
       return;
     }
     const [lat, lng] = regCoordinates;
-    setDistrict(null);
+    setRegDistrito('');
     setLoadingDistrict(true);
 
     const controller = new AbortController();
@@ -63,16 +68,26 @@ export default function AddHuariqueForm({
       .then(res => res.json())
       .then(data => {
         if (data && data.address) {
-          const dist = data.address.suburb || data.address.neighbourhood || data.address.city_district || data.address.town || data.address.city || 'Desconocido';
-          setDistrict(dist);
+          const dist = data.address.suburb || data.address.neighbourhood || data.address.city_district || data.address.town || data.address.city || '';
+          if (dist) {
+            const searchName = dist.toUpperCase().trim();
+            const match = availableDistricts.find(d => searchName.includes(d) || d.includes(searchName));
+            if (match) {
+              setRegDistrito(match);
+            } else {
+              setRegDistrito('LIMA'); // default fallback (Cercado de Lima)
+            }
+          } else {
+            setRegDistrito('LIMA');
+          }
         } else {
-          setDistrict('Desconocido');
+          setRegDistrito('LIMA');
         }
       })
       .catch(err => {
         if (err.name !== 'AbortError') {
           console.error("Error fetching district:", err);
-          setDistrict('Error al obtener');
+          setRegDistrito('LIMA');
         }
       })
       .finally(() => {
@@ -84,7 +99,7 @@ export default function AddHuariqueForm({
     return () => {
       controller.abort();
     };
-  }, [regCoordinates]);
+  }, [regCoordinates, availableDistricts]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -220,9 +235,31 @@ export default function AddHuariqueForm({
                   <span>Lat: {regCoordinates[0].toFixed(6)}</span>
                   <span>Lng: {regCoordinates[1].toFixed(6)}</span>
                 </div>
-                <div style={{ borderTop: '1px dashed rgba(255,255,255,0.3)', paddingTop: '4px', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <span> Distrito: </span>
-                  <strong>{loadingDistrict ? 'Obteniendo...' : district}</strong>
+                <div style={{ borderTop: '1px dashed rgba(255,255,255,0.3)', paddingTop: '6px', marginTop: '6px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255,255,255,0.8)' }}>📍 Distrito Seleccionado:</span>
+                  <select
+                    value={regDistrito}
+                    onChange={(e) => setRegDistrito(e.target.value)}
+                    style={{
+                      padding: '5px 8px',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      background: 'white',
+                      color: '#1e293b',
+                      fontFamily: 'Outfit, sans-serif',
+                      fontSize: '12px',
+                      cursor: 'pointer',
+                      width: '100%',
+                      fontWeight: 500
+                    }}
+                  >
+                    <option value="">-- Selecciona un distrito --</option>
+                    {availableDistricts.map(d => {
+                      const name = d === 'LIMA' ? 'Cercado de Lima' : d.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                      return <option key={d} value={d}>{name}</option>;
+                    })}
+                  </select>
+                  {loadingDistrict && <small style={{ fontSize: '10px', fontStyle: 'italic', opacity: 0.8 }}>Buscando distrito en el mapa...</small>}
                 </div>
               </div>
             ) : (
