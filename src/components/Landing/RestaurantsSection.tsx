@@ -42,6 +42,11 @@ export default function RestaurantsSection({ popularRestaurants }: RestaurantsSe
               </div>
             </div>
           ))}
+          {popularRestaurants.length === 0 && (
+            <div style={{ gridColumn: 'span 3', textAlign: 'center', padding: '40px', color: 'var(--peru-text)', fontStyle: 'italic', fontFamily: 'Outfit, sans-serif' }}>
+              No hay huariques populares destacados actualmente en la base de datos.
+            </div>
+          )}
         </div>
       </div>
     </section>

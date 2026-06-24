@@ -1,5 +1,4 @@
 import type { Huarique } from '../types';
-import { FALLBACK_HUARIQUES } from '../data/constants';
 
 const API_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:3000';
 
@@ -14,11 +13,10 @@ export async function getHuariques(): Promise<Huarique[]> {
       throw new Error('Error al obtener huariques del backend');
     }
 
-    const data = await response.json();
-    return data && data.length > 0 ? data : FALLBACK_HUARIQUES;
+    return response.json();
   } catch (error) {
-    console.warn('Backend NestJS no disponible. Cargando huariques locales de respaldo:', error);
-    return FALLBACK_HUARIQUES;
+    console.warn('Backend NestJS no disponible:', error);
+    return [];
   }
 }
 
@@ -38,9 +36,8 @@ export async function getHuariquesAdmin(token: string): Promise<Huarique[]> {
 
     return response.json();
   } catch (error) {
-    console.warn('Error al conectar con backend admin. Devolviendo todos los de respaldo:', error);
-    // Devolver lista de respaldo local para propósitos de prueba offline
-    return FALLBACK_HUARIQUES;
+    console.warn('Error al conectar con backend admin:', error);
+    return [];
   }
 }
 

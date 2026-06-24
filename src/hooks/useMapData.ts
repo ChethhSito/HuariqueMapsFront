@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import type { Huarique } from '../types';
-import { FALLBACK_HUARIQUES } from '../data/constants';
 import { getHuariques, createHuarique, validateHuarique } from '../api/huariques';
 
 export function useMapData(
@@ -90,23 +89,20 @@ export function useMapData(
       try {
         setLoading(true);
         const data = await getHuariques();
+        setHuariques(data || []);
+        setIsConnected(true);
+        setError(null);
         if (data && data.length > 0) {
-          setHuariques(data);
-          setIsConnected(true);
-          setError(null);
           setSelectedId(data[0]._id);
         } else {
-          setHuariques(FALLBACK_HUARIQUES);
-          setIsConnected(true);
-          setError(null);
-          setSelectedId(FALLBACK_HUARIQUES[0]._id);
+          setSelectedId(null);
         }
       } catch (err: any) {
-        console.warn('Error conectando al API, usando huariques de respaldo:', err);
-        setHuariques(FALLBACK_HUARIQUES);
-        setError('Sin conexión al backend NestJS. Mostrando huariques de respaldo.');
+        console.error('Error conectando al API:', err);
+        setHuariques([]);
+        setError('Sin conexión al backend NestJS.');
         setIsConnected(false);
-        setSelectedId(FALLBACK_HUARIQUES[0]._id);
+        setSelectedId(null);
       } finally {
         setLoading(false);
       }

@@ -72,37 +72,6 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
     }
   };
 
-  // Default mockup restaurants as fallback
-  const defaultPopular = [
-    {
-      id: 1,
-      nombre: 'El Ceviche de Pedro',
-      tipoComida: 'Marina',
-      descripcion: 'Ceviche clásico de carretilla preparado al momento con pesca fresca del día, abundante limón piurano y choclo desgranado.',
-      imagen: cevicheImage,
-      horario: 'Mar - Dom: 11:00 AM - 4:30 PM',
-      ubicacion: 'Chorrillos, Lima',
-    },
-    {
-      id: 2,
-      nombre: 'Anticuchos del Puente',
-      tipoComida: 'Criolla',
-      descripcion: 'Tradicionales brochetas de corazón a la parrilla marinados en ají panca y especias, acompañados de papas doradas y choclo tierno.',
-      imagen: anticuchosImage,
-      horario: 'Lun - Sáb: 6:00 PM - 11:30 PM',
-      ubicacion: 'Barranco, Lima',
-    },
-    {
-      id: 3,
-      nombre: 'El Rinconcito Lomeño',
-      tipoComida: 'Fusión / Criolla',
-      descripcion: 'Especialistas en lomo saltado ahumado al wok con cebolla crujiente, tomates jugosos y papas nativas amarillas fritas al instante.',
-      imagen: heroImage,
-      horario: 'Lun - Dom: 12:00 PM - 10:00 PM',
-      ubicacion: 'Centro de Lima',
-    },
-  ];
-
   const [popularHuariques, setPopularHuariques] = useState<any[]>([]);
 
   useEffect(() => {
@@ -124,11 +93,11 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
           }));
           setPopularHuariques(mapped);
         } else {
-          setPopularHuariques(defaultPopular);
+          setPopularHuariques([]);
         }
       } catch (err) {
-        console.warn('Error cargando huariques populares desde backend. Usando respaldo local:', err);
-        setPopularHuariques(defaultPopular);
+        console.warn('Error cargando huariques populares desde backend:', err);
+        setPopularHuariques([]);
       }
     };
     fetchPopular();
