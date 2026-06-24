@@ -65,7 +65,7 @@ export async function createHuarique(huariqueData: any, token: string): Promise<
     return {
       _id: `offline-${Date.now()}`,
       ...huariqueData,
-      estado: 'PENDIENTE',
+      estado: 'APROBADO',
       ratingPromedio: 0,
       numResenas: 0,
       votosExiste: [],

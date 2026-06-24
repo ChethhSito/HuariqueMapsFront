@@ -164,7 +164,7 @@ export default function AddHuariqueForm({
 
         <div className="form-row">
           <div className="form-group form-group-half">
-            <label className="form-label">Tipo de Comida *</label>
+            <label className="form-label">Tipo de Comida</label>
             <select
               value={regTipoComida}
               onChange={(e) => setRegTipoComida(e.target.value)}
@@ -177,7 +177,7 @@ export default function AddHuariqueForm({
           </div>
 
           <div className="form-group form-group-half">
-            <label className="form-label">Horario de Atención *</label>
+            <label className="form-label">Horario de Atención</label>
             <div className="time-inputs-row">
               <input
                 type="time"
