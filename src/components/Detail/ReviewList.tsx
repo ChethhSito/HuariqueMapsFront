@@ -32,8 +32,13 @@ export default function ReviewList({
       <h2 className="detail-subtitle">Comentarios de la comunidad</h2>
 
       <div className={`comments-list ${showAllComments ? 'scrollable' : ''}`}>
-        {comments.slice(0, showAllComments ? comments.length : 4).map(c => (
-          <div key={c.id} className="comment-item">
+        {comments.length === 0 ? (
+          <div style={{ padding: '20px 0', textAlign: 'center', color: '#64748b', fontSize: '14px', fontFamily: 'Outfit, sans-serif' }}>
+            Aún no hay comentarios. ¡Sé el primero en dejar una reseña!
+          </div>
+        ) : (
+          comments.slice(0, showAllComments ? comments.length : 4).map(c => (
+            <div key={c.id} className="comment-item">
             <div className="comment-avatar" style={{ color: 'var(--peru-text)' }}><UserIcon /></div>
             <div className="comment-body">
               <div className="comment-header">
@@ -62,7 +67,7 @@ export default function ReviewList({
               </div>
             </div>
           </div>
-        ))}
+        )))}
       </div>
 
       {comments.length > 4 && (

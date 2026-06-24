@@ -86,16 +86,6 @@ const EditIcon = () => (
   </svg>
 );
 
-// Comentarios simulados
-const FAKE_COMMENTS = [
-  { id: 1, user: 'Juan Pérez', text: '¡Excelente lugar! La comida tiene un sabor casero increíble, muy recomendado.', rating: 5, date: 'Hace 2 días', likes: 12, likedByMe: false },
-  { id: 2, user: 'María González', text: 'El ambiente es un poco ruidoso, pero la sazón vale la pena totalmente. Volveré.', rating: 4, date: 'Hace 1 semana', likes: 8, likedByMe: true },
-  { id: 3, user: 'Carlos M.', text: 'El mejor point para ir con la mancha el fin de semana. Precios justos.', rating: 5, date: 'Hace 2 semanas', likes: 4, likedByMe: false },
-  { id: 4, user: 'Lucía F.', text: 'La comida nunca decepciona, siempre todo calentito y buenazo.', rating: 5, date: 'Hace 3 semanas', likes: 21, likedByMe: false },
-  { id: 5, user: 'Pedro S.', text: 'Un clásico de Lima. Las cremas son espectaculares.', rating: 5, date: 'Hace 1 mes', likes: 5, likedByMe: false },
-  { id: 6, user: 'Ana T.', text: 'Fui por primera vez y me encantó, aunque hay que hacer fila a veces.', rating: 4, date: 'Hace 1 mes', likes: 2, likedByMe: false },
-];
-
 export default function HuariqueDetail({ huarique, onBack, likesCount, user, onAuthClick }: HuariqueDetailProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -114,7 +104,7 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
         likedByMe: false
       })).reverse();
     }
-    return FAKE_COMMENTS;
+    return [];
   });
   const [showAllComments, setShowAllComments] = useState(false);
   const [isCommentDrawerOpen, setIsCommentDrawerOpen] = useState(false);
