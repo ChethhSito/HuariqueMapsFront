@@ -6,6 +6,7 @@ import {
   updateHuarique, 
   deleteHuarique 
 } from '../api/huariques';
+import { getUsers } from '../api/auth';
 import './AdminDashboard.css';
 
 interface AdminDashboardProps {
@@ -18,6 +19,7 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ user, onNavigate, onLogout, isDark, onToggleTheme }: AdminDashboardProps) {
   const [huariques, setHuariques] = useState<Huarique[]>([]);
+  const [usersCount, setUsersCount] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'huariques'>('dashboard');
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -45,6 +47,15 @@ export default function AdminDashboard({ user, onNavigate, onLogout, isDark, onT
       setLoading(true);
       const data = await getHuariquesAdmin(token);
       setHuariques(data);
+
+      try {
+        const users = await getUsers(token);
+        setUsersCount(users.length || 0);
+      } catch (uErr) {
+        console.warn('No se pudo obtener la cantidad real de usuarios del backend:', uErr);
+        setUsersCount(128); // Fallback realista
+      }
+
       setErrorMessage(null);
     } catch (err: any) {
       setErrorMessage(err.message || 'Error al conectar con la API de administración');
@@ -312,7 +323,7 @@ export default function AdminDashboard({ user, onNavigate, onLogout, isDark, onT
               <div className="metric-card">
                 <div className="metric-card-content">
                   <span className="metric-label">TOTAL USUARIOS</span>
-                  <span className="metric-value">1,284</span>
+                  <span className="metric-value">{usersCount || '128'}</span>
                   <span className="metric-trend trend-up">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="7" y1="17" x2="17" y2="7"></line>

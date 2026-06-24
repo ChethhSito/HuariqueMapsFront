@@ -44,3 +44,19 @@ export async function loginWithGoogle(token: string) {
 
   return response.json();
 }
+
+export async function getUsers(token: string) {
+  const response = await fetch(`${API_URL}/users`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    const errData = await response.json();
+    throw new Error(errData.message || 'Error al obtener usuarios');
+  }
+
+  return response.json();
+}
