@@ -43,36 +43,21 @@ export async function getHuariquesAdmin(token: string): Promise<Huarique[]> {
 
 // Crear un nuevo huarique (Crowdsourcing)
 export async function createHuarique(huariqueData: any, token: string): Promise<Huarique> {
-  try {
-    const response = await fetch(`${API_URL}/huariques`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(huariqueData)
-    });
+  const response = await fetch(`${API_URL}/huariques`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(huariqueData)
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Error al registrar huarique');
-    }
-
-    return response.json();
-  } catch (error: any) {
-    console.warn('Backend NestJS offline. Creando huarique localmente en memoria de respaldo:', error);
-    // Simular creación offline
-    return {
-      _id: `offline-${Date.now()}`,
-      ...huariqueData,
-      estado: 'APROBADO',
-      ratingPromedio: 0,
-      numResenas: 0,
-      votosExiste: [],
-      votosNoExiste: [],
-      resenas: []
-    } as Huarique;
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Error al registrar huarique');
   }
+
+  return response.json();
 }
 
 // Validar existencia de huarique (Crowdsourcing)
