@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { auth } from '../config/firebase';
 import { onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
+import { loginWithGoogle } from '../api/auth';
 
 export interface User {
   nombre: string;
@@ -48,15 +49,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        const token = await firebaseUser.getIdToken();
-        const userData = {
-          nombre: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Usuario',
-          email: firebaseUser.email || undefined,
-          token: token,
-          uid: firebaseUser.uid
-        };
-        setUser(userData);
-        localStorage.setItem('user_session', JSON.stringify(userData));
+        // Solo intercambiar si no hay una sesión activa de backend o mock ya almacenada
+        if (!localStorage.getItem('user_session') && !localStorage.getItem('mock_user_session')) {
+          try {
+            const firebaseToken = await firebaseUser.getIdToken();
+            const res = await loginWithGoogle(firebaseToken);
+            const userData = {
+              nombre: res.user?.nombre || firebaseUser.displayName || 'Usuario',
+              email: res.user?.email || firebaseUser.email || undefined,
+              token: res.access_token,
+              uid: res.user?.id || firebaseUser.uid,
+              rol: res.user?.rol || 'USER'
+            };
+            setUser(userData);
+            localStorage.setItem('user_session', JSON.stringify(userData));
+          } catch (err) {
+            console.error('Error al intercambiar token de Firebase con NestJS:', err);
+          }
+        }
       } else {
         if (!localStorage.getItem('mock_user_session') && !localStorage.getItem('user_session')) {
           setUser(null);
