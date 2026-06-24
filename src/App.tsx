@@ -5,11 +5,12 @@ import MapShell from './pages/MapShell';
 import HuariqueDetail from './components/HuariqueDetail';
 import logoImage from './assets/HuariqueMap.png';
 import AuthModal from './components/AuthModal';
+import AdminDashboard from './pages/AdminDashboard';
 import './App.css';
 
 
 function App() {
-  const [currentView, setCurrentView] = useState<'landing' | 'map' | 'detail'>('landing');
+  const [currentView, setCurrentView] = useState<'landing' | 'map' | 'detail' | 'admin'>('landing');
   const [activeDetailHuarique, setActiveDetailHuarique] = useState<any | null>(null);
   const [isDark, setIsDark] = useState(false);
   const { user, login, logout } = useAuth();
@@ -19,7 +20,7 @@ function App() {
   // User Dropdown state for Map view
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
-  const navigateTo = (view: 'landing' | 'map' | 'detail') => {
+  const navigateTo = (view: 'landing' | 'map' | 'detail' | 'admin') => {
     setCurrentView(view);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -72,6 +73,25 @@ function App() {
           onAuthClick={() => setShowAuthModal(true)}
           onLogout={handleLogout}
         />
+      ) : currentView === 'admin' ? (
+        user?.rol === 'ADMIN' ? (
+          <AdminDashboard
+            user={user}
+            onNavigate={navigateTo}
+            onLogout={handleLogout}
+            isDark={isDark}
+            onToggleTheme={toggleTheme}
+          />
+        ) : (
+          <LandingPage
+            onNavigate={navigateTo}
+            isDark={isDark}
+            onToggleTheme={toggleTheme}
+            user={user}
+            onAuthClick={() => setShowAuthModal(true)}
+            onLogout={handleLogout}
+          />
+        )
       ) : (
         <div style={{
           background: 'var(--map-bg)',
@@ -190,6 +210,27 @@ function App() {
                       minWidth: '130px',
                       zIndex: 1000
                     }}>
+                      {user.rol === 'ADMIN' && (
+                        <button
+                          onClick={() => {
+                            navigateTo('admin');
+                            setShowUserDropdown(false);
+                          }}
+                          style={{
+                            padding: '8px 16px',
+                            background: 'transparent',
+                            border: 'none',
+                            color: 'var(--peru-red-bright)',
+                            fontWeight: 'bold',
+                            textAlign: 'left',
+                            width: '100%',
+                            cursor: 'pointer',
+                            fontFamily: 'Outfit, sans-serif'
+                          }}
+                        >
+                          Panel Admin
+                        </button>
+                      )}
                       <button
                         onClick={() => {
                           handleLogout();
@@ -202,7 +243,8 @@ function App() {
                           color: 'var(--peru-text)',
                           textAlign: 'left',
                           width: '100%',
-                          cursor: 'pointer'
+                          cursor: 'pointer',
+                          fontFamily: 'Outfit, sans-serif'
                         }}
                       >
                         Cerrar Sesión

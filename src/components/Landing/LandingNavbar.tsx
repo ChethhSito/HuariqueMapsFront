@@ -6,10 +6,10 @@ interface LandingNavbarProps {
   scrollToSection: (id: string) => void;
   isDark: boolean;
   onToggleTheme: () => void;
-  user: { nombre: string } | null;
+  user: any;
   onAuthClick: () => void;
   onLogout: () => void;
-  onNavigate: (view: 'landing' | 'map') => void;
+  onNavigate: (view: 'landing' | 'map' | 'admin') => void;
 }
 
 export default function LandingNavbar({
@@ -59,7 +59,7 @@ export default function LandingNavbar({
           <div className="nav-links">
             <span className={`nav-link ${activeSection === 'concepto' ? 'active' : ''}`} onClick={() => scrollToSection('concepto')}>Identidad</span>
             <span className={`nav-link ${activeSection === 'uso' ? 'active' : ''}`} onClick={() => scrollToSection('uso')}>¿Cómo funciona?</span>
-            <span className={`nav-link ${activeSection === 'restaurantes' ? 'active' : ''}`} onClick={() => scrollToSection('restaurantes')}>Restaurantes</span>
+            <span className={`nav-link ${activeSection === 'restaurantes' ? 'active' : ''}`} onClick={() => scrollToSection('restaurantes')}>Huariques Populares</span>
             <span className={`nav-link ${activeSection === 'sugerencias' ? 'active' : ''}`} onClick={() => scrollToSection('sugerencias')}>Sugerencias</span>
           </div>
 
@@ -145,6 +145,35 @@ export default function LandingNavbar({
                       display: 'flex',
                       flexDirection: 'column'
                     }}>
+                      {user?.rol === 'ADMIN' && (
+                        <button
+                          onClick={() => {
+                            onNavigate('admin');
+                            setShowUserDropdown(false);
+                          }}
+                          style={{
+                            padding: '8px 16px',
+                            background: 'transparent',
+                            border: 'none',
+                            color: 'var(--peru-red-bright)',
+                            fontWeight: 'bold',
+                            textAlign: 'left',
+                            fontSize: '13px',
+                            cursor: 'pointer',
+                            fontFamily: 'var(--font-sans)',
+                            width: '100%',
+                            transition: 'background 0.2s'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = 'var(--peru-red-light)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                          }}
+                        >
+                          Panel Admin
+                        </button>
+                      )}
                       <button
                         onClick={() => {
                           onLogout();
@@ -203,7 +232,7 @@ export default function LandingNavbar({
                 ¿Cómo funciona?
               </span>
               <span className={`nav-link-mobile ${activeSection === 'restaurantes' ? 'active' : ''}`} onClick={() => { scrollToSection('restaurantes'); setIsMenuOpen(false); }}>
-                Restaurantes
+                Huariques Populares
               </span>
               <span className={`nav-link-mobile ${activeSection === 'sugerencias' ? 'active' : ''}`} onClick={() => { scrollToSection('sugerencias'); setIsMenuOpen(false); }}>
                 Sugerencias

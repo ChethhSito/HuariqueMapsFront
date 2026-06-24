@@ -9,6 +9,7 @@ export interface User {
   token?: string | null;
   uid?: string;
   isLocal?: boolean;
+  rol?: string;
 }
 
 interface AuthContextType {

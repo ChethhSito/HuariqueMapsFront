@@ -10,12 +10,13 @@ import UsoSection from '../components/Landing/UsoSection';
 import RestaurantsSection from '../components/Landing/RestaurantsSection';
 import SuggestionsSection from '../components/Landing/SuggestionsSection';
 import Footer from '../components/Landing/Footer';
+import { getHuariques } from '../api/huariques';
 
 interface LandingPageProps {
-  onNavigate: (view: 'landing' | 'map') => void;
+  onNavigate: (view: 'landing' | 'map' | 'admin') => void;
   isDark: boolean;
   onToggleTheme: () => void;
-  user: { nombre: string } | null;
+  user: any;
   onAuthClick: () => void;
   onLogout: () => void;
 }
@@ -71,7 +72,8 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
     }
   };
 
-  const popularRestaurants = [
+  // Default mockup restaurants as fallback
+  const defaultPopular = [
     {
       id: 1,
       nombre: 'El Ceviche de Pedro',
@@ -101,6 +103,37 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
     },
   ];
 
+  const [popularHuariques, setPopularHuariques] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchPopular = async () => {
+      try {
+        const allHuariques = await getHuariques();
+        // Filtrar huariques que estén aprobados y marcados como populares
+        const filtered = allHuariques.filter(h => h.estado === 'APROBADO' && h.popular);
+        
+        if (filtered.length > 0) {
+          const mapped = filtered.map(h => ({
+            id: h._id,
+            nombre: h.nombre,
+            tipoComida: h.tipoComida,
+            descripcion: h.descripcion || 'Una deliciosa experiencia gastronómica tradicional.',
+            imagen: h.imagenUrl || (h.tipoComida.toLowerCase().includes('marin') ? cevicheImage : h.tipoComida.toLowerCase().includes('crioll') ? anticuchosImage : heroImage),
+            horario: h.horario || 'Mar - Dom: 12:00 PM - 8:00 PM',
+            ubicacion: h.distrito ? `${h.distrito.charAt(0) + h.distrito.slice(1).toLowerCase()}, Lima` : 'Lima, Perú'
+          }));
+          setPopularHuariques(mapped);
+        } else {
+          setPopularHuariques(defaultPopular);
+        }
+      } catch (err) {
+        console.warn('Error cargando huariques populares desde backend. Usando respaldo local:', err);
+        setPopularHuariques(defaultPopular);
+      }
+    };
+    fetchPopular();
+  }, []);
+
   return (
     <div className="landing-container">
       {/* Navigation Bar */}
@@ -127,7 +160,7 @@ export default function LandingPage({ onNavigate, isDark, onToggleTheme, user, o
       {/* Popular Restaurants Section */}
       <UsoSection />
 
-      <RestaurantsSection popularRestaurants={popularRestaurants} />
+      <RestaurantsSection popularRestaurants={popularHuariques} />
 
       <SuggestionsSection 
         isSubmitted={isSubmitted}

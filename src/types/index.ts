@@ -26,4 +26,8 @@ export interface Huarique {
   numResenas?: number;
   imagen?: string; // used for popularRestaurants
   distrito?: string;
+  popular?: boolean;
+  estado?: 'PENDIENTE' | 'APROBADO' | 'RECHAZADO';
+  createdAt?: string;
+  imagenUrl?: string;
 }

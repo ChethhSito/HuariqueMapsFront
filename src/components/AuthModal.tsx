@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import loginImage from '../assets/IniciasesionHuarique.png';
 import registerImage from '../assets/RegistrateHuariqueR.png';
-import { loginUser, registerUser } from '../api/auth';
+import { loginUser, registerUser, loginWithGoogle } from '../api/auth';
 import { signInWithGoogle } from '../firebase-client';
 
 interface AuthModalProps {
@@ -33,7 +33,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
           nombre: res.user?.nombre || 'Usuario',
           email: res.user?.email,
           token: res.access_token,
-          uid: res.user?.id
+          uid: res.user?.id,
+          rol: res.user?.rol || 'USER'
         });
       } else {
         const res = await registerUser(authName, authEmail, authPassword);
@@ -41,13 +42,14 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
           nombre: res.user?.nombre || authName,
           email: res.user?.email || authEmail,
           token: res.access_token,
-          uid: res.user?.id
+          uid: res.user?.id,
+          rol: res.user?.rol || 'USER'
         });
       }
     } catch (err: any) {
       if (!isLoginMode) {
         setAuthError(err.message || 'Error de conexión con el servidor. Simulando modo local...');
-        const fallbackUser = { nombre: authName, email: authEmail, isLocal: true };
+        const fallbackUser = { nombre: authName, email: authEmail, isLocal: true, rol: 'USER' };
         onAuthSuccess(fallbackUser);
         alert('API NestJS no disponible. Registrado en Modo Local de respaldo.');
       } else {
@@ -63,14 +65,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
     setAuthLoading(true);
     try {
       const result = await signInWithGoogle();
+      // Intercambiar token de Firebase por token JWT de NestJS
+      const res = await loginWithGoogle(result.token);
       onAuthSuccess({
-        nombre: result.user.displayName || result.user.email?.split('@')[0] || 'Usuario',
-        email: result.user.email || undefined,
-        token: result.token,
-        uid: result.user.uid
+        nombre: res.user?.nombre || result.user.displayName || 'Usuario',
+        email: res.user?.email || result.user.email || undefined,
+        token: res.access_token,
+        uid: res.user?.id || result.user.uid,
+        rol: res.user?.rol || 'USER'
       });
     } catch (err: any) {
-      setAuthError(err.message || 'Error al autenticar con Google');
+      console.warn('Error al autenticar con Google en backend, usando sesión local:', err);
+      setAuthError(err.message || 'Error al autenticar con Google en el servidor.');
     } finally {
       setAuthLoading(false);
     }

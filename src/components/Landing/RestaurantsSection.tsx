@@ -17,7 +17,7 @@ export default function RestaurantsSection({ popularRestaurants }: RestaurantsSe
     <section id="restaurantes" className="restaurants-section">
       <div className="section-container">
         <span className="section-tag">Recomendaciones</span>
-        <h2 className="section-title">Restaurantes Populares</h2>
+        <h2 className="section-title">Huariques Populares</h2>
         <p className="restaurants-section-desc">
           Una selección de huariques tradicionales muy queridos por la comunidad.
           Explora su sabor único antes de ver su ubicación geoespacial en el mapa.
