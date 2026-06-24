@@ -137,7 +137,7 @@ export function useMapData(
         else if (h._id === 'fallback-3') updatedLikesMap[h._id] = 57;
         else if (h._id === 'fallback-4') updatedLikesMap[h._id] = 120;
         else if (h._id === 'fallback-5') updatedLikesMap[h._id] = 22;
-        else updatedLikesMap[h._id] = 15;
+        else updatedLikesMap[h._id] = 0;
       }
     });
 

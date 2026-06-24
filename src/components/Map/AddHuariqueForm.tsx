@@ -130,7 +130,8 @@ export default function AddHuariqueForm({
     };
     reader.readAsDataURL(file);
   };
-  return (
+
+  return (
     <div className="registration-container">
       <div className="registration-header-row">
         <h3 className="registration-title">Nuevo Huarique</h3>
