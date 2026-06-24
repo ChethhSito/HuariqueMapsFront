@@ -130,8 +130,7 @@ export default function AddHuariqueForm({
     };
     reader.readAsDataURL(file);
   };
-
-  return (
+  return (
     <div className="registration-container">
       <div className="registration-header-row">
         <h3 className="registration-title">Nuevo Huarique</h3>
@@ -163,7 +162,7 @@ export default function AddHuariqueForm({
         </div>
 
         <div className="form-row">
-          <div className="form-group" style={{ flex: 1 }}>
+          <div className="form-group form-group-half">
             <label className="form-label">Tipo de Comida *</label>
             <select
               value={regTipoComida}
@@ -176,25 +175,23 @@ export default function AddHuariqueForm({
             </select>
           </div>
 
-          <div className="form-group" style={{ flex: 1 }}>
+          <div className="form-group form-group-half">
             <label className="form-label">Horario de Atención *</label>
-            <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <div className="time-inputs-row">
               <input
                 type="time"
                 required
                 value={regHoraApertura}
                 onChange={(e) => setRegHoraApertura(e.target.value)}
-                className="form-input"
-                style={{ padding: '6px 8px', fontSize: '12px' }}
+                className="form-input form-input-time"
               />
-              <span style={{ fontSize: '12px', color: 'var(--peru-text)' }}>a</span>
+              <span className="time-separator">a</span>
               <input
                 type="time"
                 required
                 value={regHoraCierre}
                 onChange={(e) => setRegHoraCierre(e.target.value)}
-                className="form-input"
-                style={{ padding: '6px 8px', fontSize: '12px' }}
+                className="form-input form-input-time"
               />
             </div>
           </div>
@@ -202,22 +199,28 @@ export default function AddHuariqueForm({
 
         <div className="form-group">
           <label className="form-label">Foto del Huarique</label>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="file-upload-wrapper">
             <input
+              id="huarique-file-input"
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              style={{ fontSize: '12px', fontFamily: 'Outfit' }}
+              className="file-input-hidden"
               disabled={uploadingImage}
             />
-            {uploadingImage && <div style={{ fontSize: '11px', color: '#ea580c', fontWeight: 600 }}>Subiendo foto...</div>}
+            <label htmlFor="huarique-file-input" className="file-upload-trigger">
+              <span className="upload-btn-text">
+                {uploadingImage ? 'Subiendo foto...' : 'Seleccionar foto'}
+              </span>
+            </label>
             {!uploadingImage && regImagen && (
-              <div style={{ position: 'relative', width: '100%', height: '120px', borderRadius: '8px', overflow: 'hidden', border: '1.5px solid var(--peru-border)' }}>
-                <img src={regImagen} alt="Vista previa" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div className="image-preview-container">
+                <img src={regImagen} alt="Vista previa" className="image-preview" />
                 <button
                   type="button"
                   onClick={() => setRegImagen('')}
-                  style={{ position: 'absolute', top: '5px', right: '5px', background: 'rgba(0,0,0,0.6)', color: 'white', border: 'none', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '10px' }}
+                  className="image-preview-remove"
+                  title="Eliminar imagen"
                 >
                   ✕
                 </button>
@@ -227,52 +230,30 @@ export default function AddHuariqueForm({
         </div>
 
         <div className="form-group">
-          <label className="form-label">Ubicación Geográfica *</label>
-          <div className={`coordinates-status-box ${regCoordinates ? 'success' : 'pending'}`}>
-            {regCoordinates ? (
-              <div className="coords-display" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
-                  <span>Lat: {regCoordinates[0].toFixed(6)}</span>
-                  <span>Lng: {regCoordinates[1].toFixed(6)}</span>
-                </div>
-                <div style={{ borderTop: '1px dashed rgba(255,255,255,0.3)', paddingTop: '6px', marginTop: '6px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                  <span style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255,255,255,0.8)' }}>📍 Distrito Seleccionado:</span>
-                  <select
-                    value={regDistrito}
-                    onChange={(e) => setRegDistrito(e.target.value)}
-                    style={{
-                      padding: '5px 8px',
-                      borderRadius: '6px',
-                      border: '1px solid rgba(255,255,255,0.2)',
-                      background: 'white',
-                      color: '#1e293b',
-                      fontFamily: 'Outfit, sans-serif',
-                      fontSize: '12px',
-                      cursor: 'pointer',
-                      width: '100%',
-                      fontWeight: 500
-                    }}
-                  >
-                    <option value="">-- Selecciona un distrito --</option>
-                    {availableDistricts.map(d => {
-                      const name = d === 'LIMA' ? 'Cercado de Lima' : d.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-                      return <option key={d} value={d}>{name}</option>;
-                    })}
-                  </select>
-                  {loadingDistrict && <small style={{ fontSize: '10px', fontStyle: 'italic', opacity: 0.8 }}>Buscando distrito en el mapa...</small>}
-                </div>
+          <label className="form-label">Distrito *</label>
+          {regCoordinates ? (
+            <div className="district-select-wrapper">
+              <select
+                value={regDistrito}
+                onChange={(e) => setRegDistrito(e.target.value)}
+                className="form-select"
+                required
+              >
+                <option value="">-- Selecciona un distrito --</option>
+                {availableDistricts.map(d => {
+                  const name = d === 'LIMA' ? 'Cercado de Lima' : d.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                  return <option key={d} value={d}>{name}</option>;
+                })}
+              </select>
+              {loadingDistrict && <small className="loading-district-text">Buscando distrito en el mapa...</small>}
+            </div>
+          ) : (
+            <div className="map-placeholder-box">
+              <div className="map-placeholder-text">
+                <span className="pulse-icon-dot"></span>
+                <span>Haz clic en el mapa para ubicar el huarique</span>
               </div>
-            ) : (
-              <div className="coords-helper">
-                <span className="pulse-icon"></span>
-                <span>Haz clic en el mapa para marcar el huarique</span>
-              </div>
-            )}
-          </div>
-          {regCoordinates && (
-            <small style={{ color: 'var(--peru-text)', display: 'block', marginTop: '4px' }}>
-              (Puedes arrastrar el marcador rojo en el mapa para ajustar)
-            </small>
+            </div>
           )}
         </div>
 
