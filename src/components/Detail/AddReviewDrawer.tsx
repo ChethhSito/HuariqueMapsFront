@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface AddReviewDrawerProps {
   isCommentDrawerOpen: boolean;
@@ -84,65 +85,81 @@ export default function AddReviewDrawer({
         Registrar comentario
       </button>
 
-      <div className={`comment-drawer-overlay ${isCommentDrawerOpen ? 'open' : ''}`} onClick={() => setIsCommentDrawerOpen(false)}>
-        <div className="comment-drawer" onClick={(e) => e.stopPropagation()}>
-          <div className="drawer-header">
-            <h3>Nueva reseña</h3>
-            <button className="drawer-close-btn" onClick={() => setIsCommentDrawerOpen(false)}>✕</button>
-          </div>
-          
-          <div className="drawer-body">
-            {/* Cabecera de información del huarique */}
-            <div className="drawer-huarique-info">
-              <div className="drawer-huarique-title">{huarique.nombre}</div>
-              <div className="drawer-huarique-meta">
-                <span className="meta-tag food-tag">{huarique.tipoComida}</span>
-                {huarique.distrito && (
-                  <span className="meta-tag location-tag">{formatDistrict(huarique.distrito)}</span>
-                )}
-              </div>
+      {createPortal(
+        <div className={`comment-drawer-overlay ${isCommentDrawerOpen ? 'open' : ''}`} onClick={() => setIsCommentDrawerOpen(false)}>
+          <div className="comment-drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="drawer-header">
+              <h3>Nueva reseña</h3>
+              <button className="drawer-close-btn" onClick={() => setIsCommentDrawerOpen(false)}>✕</button>
             </div>
-
-            <form className="comment-form" onSubmit={handleAddComment}>
-              {/* Sección de calificación con estrellas */}
-              <div className="drawer-rating-section">
-                <label className="rating-label">Tu Calificación:</label>
-                <div className="stars-container">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <InteractiveStar
-                      key={star}
-                      filled={hoverRating !== null ? star <= hoverRating : star <= newRating}
-                      onClick={() => setNewRating(star)}
-                      onMouseEnter={() => setHoverRating(star)}
-                      onMouseLeave={() => setHoverRating(null)}
-                    />
-                  ))}
-                  <span className="rating-value-text">
-                    {getRatingText(hoverRating !== null ? hoverRating : newRating)}
-                  </span>
+            
+            <div className="drawer-body">
+              {/* Cabecera de información del huarique */}
+              <div className="drawer-huarique-info">
+                <div className="drawer-huarique-title">{huarique.nombre}</div>
+                <div className="drawer-huarique-meta">
+                  <span className="meta-tag food-tag">{huarique.tipoComida}</span>
+                  {huarique.distrito && (
+                    <span className="meta-tag location-tag">{formatDistrict(huarique.distrito)}</span>
+                  )}
                 </div>
               </div>
 
-              {/* Comentario */}
-              <div className="drawer-textarea-section" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <label className="rating-label">Tu Opinión:</label>
-                <textarea 
-                  className="comment-input" 
-                  placeholder="¿Qué te pareció este huarique? Cuéntanos tu experiencia..."
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  rows={6}
-                  autoFocus
-                />
-              </div>
-              
-              <button type="submit" className="comment-submit-btn" disabled={!newComment.trim()}>
-                Publicar comentario
-              </button>
-            </form>
+              <form className="comment-form" onSubmit={handleAddComment}>
+                {/* Sección de calificación con estrellas */}
+                <div className="drawer-rating-section">
+                  <label className="rating-label">Tu Calificación:</label>
+                  <div className="stars-container">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <InteractiveStar
+                        key={star}
+                        filled={hoverRating !== null ? star <= hoverRating : star <= newRating}
+                        onClick={() => setNewRating(star)}
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(null)}
+                      />
+                    ))}
+                    <span className="rating-value-text">
+                      {getRatingText(hoverRating !== null ? hoverRating : newRating)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Comentario */}
+                <div className="drawer-textarea-section">
+                  <label className="rating-label">Tu Opinión:</label>
+                  <textarea 
+                    className="comment-input" 
+                    placeholder="¿Qué te pareció este huarique? Cuéntanos tu experiencia..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    rows={5}
+                    autoFocus
+                  />
+                </div>
+                
+                {/* Guidelines Box */}
+                <div className="drawer-guidelines">
+                  <div className="guidelines-title">
+                    <span className="guidelines-icon">💡</span>
+                    <span>Consejos para tu reseña:</span>
+                  </div>
+                  <ul className="guidelines-list-items">
+                    <li>Describe los platos recomendados y su sabor.</li>
+                    <li>Menciona el tamaño de las porciones y el precio.</li>
+                    <li>Califica la rapidez de la atención y el ambiente.</li>
+                  </ul>
+                </div>
+                
+                <button type="submit" className="comment-submit-btn" disabled={!newComment.trim()}>
+                  Publicar comentario
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
-      </div>
+        </div>,
+        document.body
+      )}
     </>
   );
 }

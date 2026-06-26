@@ -62,6 +62,25 @@ function App() {
     logout();
   };
 
+  const getLikesCount = (huarique: any): number => {
+    if (!huarique) return 0;
+    try {
+      const savedLikes = localStorage.getItem('huariques_likes_map');
+      if (savedLikes) {
+        const likesMap = JSON.parse(savedLikes);
+        if (likesMap[huarique._id] !== undefined) {
+          return likesMap[huarique._id];
+        }
+      }
+    } catch (e) {
+      console.error('Error al obtener likes desde localStorage:', e);
+    }
+    if (huarique.likes && Array.isArray(huarique.likes)) {
+      return huarique.likes.length;
+    }
+    return 0;
+  };
+
   return (
     <>
       {currentView === 'landing' ? (
@@ -285,7 +304,7 @@ function App() {
               <HuariqueDetail
                 huarique={activeDetailHuarique}
                 onBack={() => navigateTo('map')}
-                likesCount={15} // En el futuro se puede pasar el contador real de likes
+                likesCount={getLikesCount(activeDetailHuarique)}
                 user={user}
                 onAuthClick={() => setShowAuthModal(true)}
               />
