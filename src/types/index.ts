@@ -30,4 +30,5 @@ export interface Huarique {
   estado?: 'PENDIENTE' | 'APROBADO' | 'RECHAZADO';
   createdAt?: string;
   imagenUrl?: string;
+  likes?: string[];
 }

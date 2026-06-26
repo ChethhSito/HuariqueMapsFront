@@ -27,6 +27,7 @@ export interface Huarique {
     calificacion: number;
     fecha: string | Date;
   }>;
+  likes?: string[];
 }
 
 import { addReview } from '../api/huariques';
