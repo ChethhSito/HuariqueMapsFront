@@ -36,7 +36,6 @@ interface User {
   nombre: string;
   email?: string;
   token?: string | null;
-  isLocal?: boolean;
 }
 
 interface HuariqueDetailProps {
@@ -206,7 +205,7 @@ export default function HuariqueDetail({ huarique, onBack, likesCount, user, onA
     e.preventDefault();
     if (!newComment.trim()) return;
 
-    if (user?.token && !user.isLocal) {
+    if (user?.token) {
       try {
         await addReview(huarique._id, {
           comentario: newComment,

@@ -188,7 +188,7 @@ export function useMapData(
       distrito: regDistrito || 'LIMA'
     };
 
-    if (isConnected && user?.token && !user.isLocal) {
+    if (isConnected && user?.token) {
       try {
         const registeredHuarique = await createHuarique(newHuariqueData, user.token);
         
@@ -242,7 +242,7 @@ export function useMapData(
 
     const userIdentifier = user.email || user.nombre;
 
-    if (isConnected && user.token && !user.isLocal) {
+    if (isConnected && user.token) {
       try {
         const updatedHuarique = await validateHuarique(huariqueId, existe, user.token);
         setHuariques(prev => prev.map(h => h._id === huariqueId ? updatedHuarique : h));

@@ -9,7 +9,6 @@ export interface User {
   email?: string;
   token?: string | null;
   uid?: string;
-  isLocal?: boolean;
   rol?: string;
 }
 
@@ -25,18 +24,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // 1. Check if there is a mock session first
-    const savedMockUser = localStorage.getItem('mock_user_session');
-    if (savedMockUser) {
-      try {
-        setUser(JSON.parse(savedMockUser));
-        return;
-      } catch (e) {
-        localStorage.removeItem('mock_user_session');
-      }
-    }
-
-    // 2. Check if there is a regular backend session
+    // 1. Check if there is a regular backend session
     const savedUser = localStorage.getItem('user_session');
     if (savedUser) {
       try {
@@ -49,8 +37,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        // Solo intercambiar si no hay una sesión activa de backend o mock ya almacenada
-        if (!localStorage.getItem('user_session') && !localStorage.getItem('mock_user_session')) {
+        // Solo intercambiar si no hay una sesión activa de backend almacenada
+        if (!localStorage.getItem('user_session')) {
           try {
             const firebaseToken = await firebaseUser.getIdToken();
             const res = await loginWithGoogle(firebaseToken);
@@ -68,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         }
       } else {
-        if (!localStorage.getItem('mock_user_session') && !localStorage.getItem('user_session')) {
+        if (!localStorage.getItem('user_session')) {
           setUser(null);
         }
       }
@@ -78,16 +66,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = (userData: User) => {
-    if (userData.isLocal) {
-      localStorage.setItem('mock_user_session', JSON.stringify(userData));
-    } else {
-      localStorage.setItem('user_session', JSON.stringify(userData));
-    }
+    localStorage.setItem('user_session', JSON.stringify(userData));
     setUser(userData);
   };
 
   const logout = () => {
-    localStorage.removeItem('mock_user_session');
     localStorage.removeItem('user_session');
     firebaseSignOut(auth).then(() => {
       setUser(null);

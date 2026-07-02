@@ -43,7 +43,7 @@ interface Huarique {
 interface MapShellProps {
   isConnected: boolean;
   setIsConnected: (connected: boolean) => void;
-  user: { nombre: string; email?: string; token?: string | null; isLocal?: boolean } | null;
+  user: { nombre: string; email?: string; token?: string | null } | null;
   onAuthClick: () => void;
   onViewDetail?: (huarique: Huarique) => void;
 }

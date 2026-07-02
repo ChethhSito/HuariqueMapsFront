@@ -47,14 +47,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
         });
       }
     } catch (err: any) {
-      if (!isLoginMode) {
-        setAuthError(err.message || 'Error de conexión con el servidor. Simulando modo local...');
-        const fallbackUser = { nombre: authName, email: authEmail, isLocal: true, rol: 'USER' };
-        onAuthSuccess(fallbackUser);
-        alert('API NestJS no disponible. Registrado en Modo Local de respaldo.');
-      } else {
-        setAuthError(err.message || 'Error al autenticar');
-      }
+      setAuthError(err.message || (isLoginMode ? 'Error al autenticar' : 'Error al registrar usuario'));
     } finally {
       setAuthLoading(false);
     }
@@ -201,39 +194,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ show, onClose, onAuthSuccess }) =
               </button>
             </form>
 
-            <div style={{ display: 'flex', alignItems: 'center', margin: '15px 0' }}>
-              <hr style={{ flex: 1, border: 'none', borderTop: '1px dashed var(--peru-border)', opacity: 0.3 }} />
-              <span style={{ padding: '0 10px', fontSize: '12px', color: 'var(--peru-text)', opacity: 0.6 }}>O también</span>
-              <hr style={{ flex: 1, border: 'none', borderTop: '1px dashed var(--peru-border)', opacity: 0.3 }} />
-            </div>
 
-            <button 
-              type="button" 
-              onClick={() => {
-                onAuthSuccess({
-                  nombre: authName.trim() || (isLoginMode ? "Gastón Acurio" : "Visitante Local"),
-                  email: authEmail.trim() || "demo@huariquemap.com",
-                  token: "mock-session-token",
-                  uid: "mock-uid-" + Date.now(),
-                  isLocal: true
-                });
-              }}
-              className="btn-secondary" 
-              style={{ 
-                width: '100%', 
-                display: 'flex', 
-                justifyContent: 'center', 
-                borderColor: 'var(--peru-red)', 
-                color: 'var(--peru-red)',
-                padding: '10px',
-                borderRadius: '8px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                fontFamily: 'Outfit, sans-serif'
-              }}
-            >
-              Entrar en Modo Demostración (Simulado)
-            </button>
 
             <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '14px' }}>
               <span 
